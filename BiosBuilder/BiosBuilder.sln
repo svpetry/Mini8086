@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiosBuilder", "BiosBuilder.csproj", "{A07EE159-DBA4-492D-91D4-22C2E4DE9F9E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A07EE159-DBA4-492D-91D4-22C2E4DE9F9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A07EE159-DBA4-492D-91D4-22C2E4DE9F9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A07EE159-DBA4-492D-91D4-22C2E4DE9F9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A07EE159-DBA4-492D-91D4-22C2E4DE9F9E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C273FF33-23E5-4C7D-9961-C70E42769154}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,17 @@
+What defines a binary number to be either even or odd? The LSB! If LSB=0, number is even else odd.
+
+Now we need to divide the 16 bit data bus into two separate parts so that the MuP will be able to read from or write to any 8/16 bit location as per the need. For this, we need use two separate memory banks viz. Low bank and the high bank, each with locations of 8 bit wide capacity. Now the low bank holds all the even numbered addresses and the high bank holds all the odd numbered addresses. In other words, your even address 0x00000 belongs to the 0x00000 address of the low bank (even bank) and the odd address 0x00001 belongs to the 0x00000 address of the high bank (odd bank) and so on. Why only this and not the opposite arrangement? This is because your first address i.e. 0x00000 is even. Note how the physical addresses are accessed. The actual memory address 0x00001 of low bank is address 0x00002 for the MuP while 0x00001 of the high bank is address 0x00003 for the MuP and so on. (Obviously you can’t alter the memory chip to change its addresses.)
+
+Now the question is how to fetch? There are two signals provided specially for this purpose viz ~BHE and the ~BLE (A0 of the 8086).
+
+When ~BHE=~BLE=00, both banks are enabled for a 16 bit transfer.
+
+When ~BLE=0, ~BLE=1, High bank is enabled for a 8 bit transfer.
+
+When ~BLE=1, ~BLE=0, Low bank is enabled for a 8 bit transfer.
+
+When ~BHE=~BLE=11, No bank is enabled.
+
+For further reading and clarification of the concept you may refer ‘The Intel Microprocessors by Barry B. Brey’. You will have to work out on your own on the memory interfacing and its logical diagrams for total clarification.
+
+Hope this helps :)

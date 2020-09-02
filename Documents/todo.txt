@@ -1,0 +1,10 @@
+- keyboard
+- RS232
+- graphics card
+	- text mode 80x25
+	- graphics mode 320x200 oder 320x240 (256 col)
+- sound: SID?
+- SD memory card
+	- FatFS
+
+- emulator

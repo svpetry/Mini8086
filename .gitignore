@@ -1,0 +1,7 @@
+*.err
+BiosBuilder/bin/
+BiosBuilder/obj/
+DecoderBuilder/bin/
+DecoderBuilder/obj/
+Emulator/bin/
+Emulator/obj/

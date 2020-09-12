@@ -1,0 +1,46 @@
+
+BIOS function at INT 10h
+
+
+------------------------------------------------------------
+AH = 00h	Clear screen
+
+------------------------------------------------------------
+AH = 01h	Set cursor position
+
+DH: row
+DL: column
+
+------------------------------------------------------------
+AH = 02h	Scroll window down
+
+AL: lines to scroll
+
+------------------------------------------------------------
+AH = 03h	Scroll window up
+
+AL: lines to scroll
+
+------------------------------------------------------------
+AH = 04h	Write char at cursor position
+
+AL: character code
+
+------------------------------------------------------------
+AH = 05h	Write character and color at cursor position
+
+AL: character code
+BL: color
+
+------------------------------------------------------------
+AH = 06h	Read character and color at cursor position
+
+returns:
+AL: character code
+BL: color
+
+------------------------------------------------------------
+AH = 07h	Write string at cursor position
+
+ES:SI: string address
+

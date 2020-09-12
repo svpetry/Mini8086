@@ -1,5 +1,5 @@
-﻿using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
+﻿using System.IO;
+using System.Runtime.CompilerServices;
 using Emulator.Utils;
 
 namespace Emulator.Components
@@ -20,9 +20,18 @@ namespace Emulator.Components
             _data = data;
         }
 
-        public async Task Load(string fileName)
+        public void Load(string filenameEven, string filenameOdd)
         {
-            // TODO
+            if (!File.Exists(filenameEven) || !File.Exists(filenameOdd))
+                throw new FileNotFoundException($"Rom files {filenameEven}, {filenameOdd} not found!");
+            var rom0 = File.ReadAllBytes(filenameEven);
+            var rom1 = File.ReadAllBytes(filenameOdd);
+            if (rom0.Length != rom1.Length)
+                throw new System.Exception("Even and odd ROM files do not have the same size!");
+
+            _data = new byte[rom0.Length * 2];
+            for (var i = 0; i < _data.Length; i++)
+                _data[i] = (i & 1) == 0 ? rom0[i / 2] : rom1[i / 2];
         }
 
         public int StartAddr => _startAddr;

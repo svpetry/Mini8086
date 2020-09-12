@@ -5,3 +5,15 @@ DecoderBuilder/bin/
 DecoderBuilder/obj/
 Emulator/bin/
 Emulator/obj/
+BIOS/_deprecated/
+*.suo
+*.b#?
+*.s#?
+links.txt
+BIOS/DOSBOX/APPINFO/
+BIOS/DOSBOX/DEVEL/
+BIOS/DOSBOX/DJGPP/
+BIOS/DOSBOX/LINKS/
+BIOS/DOSBOX/LOCAL/*.c
+BIOS/DOSBOX/LOCAL/*.h
+BIOS/DOSBOX/SOURCE/

@@ -22,3 +22,15 @@ BIOS/*.BIN
 *.kicad_pcb-bak
 *.bck
 fp-info-cache
+BIOS/DOSBOX/TMP/
+VGA/output_files/
+VGA/simulation/
+VGAreg/output_files/
+VGAreg/db/
+VGA/db/
+VGA/incremental_db/
+VGAreg/incremental_db/
+BIOS/DOSBOX/LOCAL/*.BIN
+BIOS/DOSBOX/LOCAL/*.O
+BIOS/DOSBOX/LOCAL/*.S
+BIOS/DOSBOX/LOCAL/*.I

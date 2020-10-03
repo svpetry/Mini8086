@@ -1,0 +1,12 @@
+move *.dri .\Gerber
+move *.gbl .\Gerber
+move *.gbo .\Gerber
+move *.gbs .\Gerber
+move *.gml .\Gerber
+move *.gpi .\Gerber
+move *.gtl .\Gerber
+move *.gto .\Gerber
+move *.gtp .\Gerber
+move *.gts .\Gerber
+move *.txt .\Gerber
+move *.gko .\Gerber

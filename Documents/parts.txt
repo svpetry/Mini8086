@@ -1,8 +1,9 @@
 1x	8086 CPU
 1x	P8259A PIC
-1x	8254 Timer
+1x	8254 Timer (NEC D71054C)
 1x	8284A Clock
 2x	8255A PPI
+1x	8042 keyboard controller
 
 1x	16550DN UART
 

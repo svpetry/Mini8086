@@ -14,7 +14,7 @@ int main() {
     while (1) {
         for (i = 0; i < 16; i++) {
             DisplayNumber(i);
-            for (j = 0; j < 40000; j++) ;
+            for (j = 0; j < 10000; j++) ;
         }
     }
 

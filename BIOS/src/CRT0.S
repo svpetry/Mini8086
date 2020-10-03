@@ -26,13 +26,13 @@ _start:
 
 	// write to PPI control port
 	movb $0x80, %al
-	outb %al, $0x0E
+	outb %al, $0x16
 
 	// set all port bits to 0
 	xorb %al, %al
-	outb %al, $0x08
-	outb %al, $0x0A
-	outb %al, $0x0C
+	outb %al, $0x10
+	outb %al, $0x12
+	outb %al, $0x14
 
 	# Run main
 	call main

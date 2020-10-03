@@ -62,5 +62,5 @@ void DisplayNumber(unsigned char x) {
             a = 0x71;
             break;
     }
-    outp(0x08, ~a);
+    outp(0x10, ~a);
 }

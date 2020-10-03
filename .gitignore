@@ -18,3 +18,7 @@ BIOS/DOSBOX/LOCAL/*.c
 BIOS/DOSBOX/LOCAL/*.h
 BIOS/DOSBOX/SOURCE/
 BIOS/*.BIN
+*.sch-bak
+*.kicad_pcb-bak
+*.bck
+fp-info-cache

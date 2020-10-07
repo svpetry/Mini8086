@@ -936,7 +936,7 @@ R0D[0..7]
 NoConn ~ 10000 1350
 Text Notes 7750 3650 0    50   ~ 0
 character ROM
-Text Notes 9300 3250 0    50   ~ 0
+Text Notes 9200 3250 0    50   ~ 0
 8:1 multiplexer
 Wire Bus Line
 	2850 2900 2800 2900

@@ -103,7 +103,7 @@ Text GLabel 9550 2800 2    50   Output ~ 0
 Text GLabel 9900 2900 2    50   Output ~ 0
 ~IO1
 Text GLabel 9550 3000 2    50   Output ~ 0
-~IO2
+~IO_DBG
 Text GLabel 9900 3100 2    50   Output ~ 0
 ~VGA_MEM
 Text GLabel 9550 3200 2    50   Output ~ 0
@@ -345,8 +345,6 @@ IRQ3
 Text GLabel 6000 2350 2    50   Input ~ 0
 IRQ2
 Wire Wire Line
-	5900 3150 6250 3150
-Wire Wire Line
 	6250 3150 6250 3050
 $Comp
 L power:VCC #PWR036
@@ -566,6 +564,19 @@ A[0..19]
 NoConn ~ 5900 2750
 NoConn ~ 5900 2850
 NoConn ~ 5900 2950
+$Comp
+L Device:R R5
+U 1 1 5F78548B
+P 6100 3150
+F 0 "R5" V 5893 3150 50  0000 C CNN
+F 1 "4K7" V 5984 3150 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 6030 3150 50  0001 C CNN
+F 3 "~" H 6100 3150 50  0001 C CNN
+	1    6100 3150
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5950 3150 5900 3150
 Wire Bus Line
 	2000 5800 2000 5950
 Wire Bus Line

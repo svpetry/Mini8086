@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 
 namespace Emulator.Lib.Components
 {
-    public enum GraphicsMode
+    public class Pic : BaseComponent, IPortProvider
     {
-        Text,
-        Graphics
-    }
+        private int _basePort;
 
-    public class Graphics : BaseComponent, IPortProvider
-    {
-        private GraphicsMode _Mode;
+        private IInterrupt _cpu;
+
+        public Pic(int basePort, IInterrupt cpu)
+        {
+            _basePort = basePort;
+            _cpu = cpu;
+        }
 
         public ushort In(int addr)
         {

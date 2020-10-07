@@ -1,10 +1,12 @@
 ﻿using Emulator.Components;
 using Emulator.CPU;
+using Emulator.Lib;
 using Emulator.Lib.Components;
 using Emulator.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +17,10 @@ namespace Emulator
         private Cpu8086 _cpu;
         private Rom _bios;
         private Ppi _ppi;
+        private Pic _pic;
+        private Timer _timer;
+        private KeybController _keybController;
+        private GraphicsAdapter _graphicsAdapter;
 
         private MemoryMapper _memMapper;
         private PortMapper _portMapper;
@@ -37,11 +43,21 @@ namespace Emulator
             _cpu = new Cpu8086(_memMapper, _portMapper);
             _disassembler = new Disassembler(_cpu, _memMapper);
 
-            _bios = new Rom(0xE0000);
-            _memMapper.Register(0xE0000, 0xFFFFF, _bios);
+            _bios = new Rom(Config.BiosMemAddress);
+            _memMapper.Register(Config.BiosMemAddress, Config.BiosMemAddress + Config.BiosMemSize - 1, _bios);
 
-            _ppi = new Ppi(0x008);
-            _portMapper.Register(0x008, 0x00F, _ppi);
+            _timer = new Timer(Config.TimerBasePort);
+            _portMapper.Register(Config.TimerBasePort, Config.TimerBasePort + 0x07, _timer);
+
+            _pic = new Pic(Config.PicBasePort, _cpu);
+            _portMapper.Register(Config.PicBasePort, Config.PicBasePort + 0x07, _pic);
+
+            _graphicsAdapter = new GraphicsAdapter(Config.VgaBasePort, Config.VgaMemAddress);
+            _portMapper.Register(Config.VgaBasePort, Config.VgaBasePort + 0x07, _graphicsAdapter);
+            _memMapper.Register(Config.VgaMemAddress, Config.VgaMemAddress + Config.VgaMemSize - 1, _graphicsAdapter);
+
+            _ppi = new Ppi(Config.PpiBasePort);
+            _portMapper.Register(Config.PpiBasePort, Config.PpiBasePort + 0x07, _ppi);
 
             _memMapper.FinishRegistration();
         }

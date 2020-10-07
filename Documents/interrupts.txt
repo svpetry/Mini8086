@@ -1,0 +1,8 @@
+IRQ0	8254 Timer 0
+IRQ1	8254 Timer 1
+IRQ2	keyboard
+IRQ3	VGA retrace
+IRQ4
+IRQ5
+IRQ6
+IRQ7

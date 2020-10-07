@@ -1,22 +1,26 @@
 0x000-0x007	Timer (8254)
-
+--------------------------------------------------------------------------------
 0x008-0x00F	PIC (8259)
-
-0x010-0x017	UART (16550)
-
-0x018-0x01F	Keyboard controller (8042)
-
-0x020-0x027	PPI (8255)
-0x020		Port A
-0x022		Port B
-0x024		Port C
-0x026		Control Port
-
+--------------------------------------------------------------------------------
+0x010-0x017	PPI (8255)
+0x010		Port A
+0x012		Port B
+0x014		Port C
+0x016		Control Port
+--------------------------------------------------------------------------------
+0x020-0x027	Keyboard controller (8042)
+--------------------------------------------------------------------------------
+0x027-0x02F	UART (16550)
+--------------------------------------------------------------------------------
 0x028-0x02F	VGA
 0x28		VGA control port
 0x2A		background color
 
------------------------------
+control port:	--ihvpmm
 
-0x000 - 0x1FF	512 device ports
-0x200 - 0x3FF	512 bytes disk I/O buffer
+mm	graphics mode (0 = text, 1 = 320x200x8)
+p	active plane
+v	vertical retrace (1 = active)
+h	horizontal retrace (1 = active)
+i	enable vertical retrace interrupt
+--------------------------------------------------------------------------------

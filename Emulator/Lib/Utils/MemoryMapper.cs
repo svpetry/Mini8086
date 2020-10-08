@@ -27,6 +27,7 @@ namespace Emulator.Utils
         public MemoryMapper(int ramSizeKb)
         {
             _ram = new byte[ramSizeKb * 1024];
+            MemUtils.RandomFill(_ram);
         }
 
         public byte[] Ram => _ram;

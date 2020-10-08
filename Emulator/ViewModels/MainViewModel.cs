@@ -1,10 +1,13 @@
 ﻿using CommonUtils;
 using Emulator.CPU;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Emulator.ViewModels
 {
@@ -18,6 +21,10 @@ namespace Emulator.ViewModels
         private byte _portC;
 
         private bool _doStop;
+
+        private DispatcherTimer _screenTimer;
+
+        private ImageSource _screenSource;
 
         #region Register fields
 
@@ -219,6 +226,19 @@ namespace Emulator.ViewModels
 
         public ActionCommand ResetCommand { get; }
 
+        public ImageSource ScreenSource
+        {
+            get
+            {
+                return _screenSource;
+            }
+            set
+            {
+                _screenSource = value;
+                OnPropertyChanged();
+            }
+        }
+
         public MainViewModel()
         {
             StartCommand = new ActionCommand(Start);
@@ -244,6 +264,9 @@ namespace Emulator.ViewModels
 
         private void Start(object Param)
         {
+            if (_screenTimer == null)
+                InitScreenTimer();
+
             StartCommand.Enabled = false;
             StepCommand.Enabled = false;
             ResetCommand.Enabled = false;
@@ -339,6 +362,21 @@ namespace Emulator.ViewModels
             DS = _emulator.Cpu.DS;
             ES = _emulator.Cpu.ES;
             SS = _emulator.Cpu.SS;
+        }
+
+        private void InitScreenTimer()
+        {
+            _screenTimer?.Stop();
+
+            _screenTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 1000 / Settings.ScreenUpdateRate) };
+            _screenTimer.Tick += UpdateScreen;
+            _screenTimer.Start();
+        }
+
+        private void UpdateScreen(object sender, EventArgs e)
+        {
+            _emulator.UpdateScreen();
+            ScreenSource = _emulator.Screen;
         }
     }
 }

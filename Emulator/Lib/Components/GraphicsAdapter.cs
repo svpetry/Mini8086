@@ -64,6 +64,8 @@ namespace Emulator.Lib.Components
             _memory[1] = new byte[0x10000];
 
             _charRom = File.ReadAllBytes(characterRomPath);
+            foreach (var mem in _memory)
+                MemUtils.RandomFill(mem);
         }
 
         public WriteableBitmap Screen => _screen;
@@ -71,7 +73,7 @@ namespace Emulator.Lib.Components
         public bool SupportWrite => true;
 
         public bool SupportRead => true;
-        
+
         public ushort In(int addr)
         {
             switch (addr - _basePort)
@@ -124,7 +126,7 @@ namespace Emulator.Lib.Components
 
         public byte Peek(int addr)
         {
-                var memAddr = addr - _baseMemAddress;
+            var memAddr = addr - _baseMemAddress;
             if (memAddr < 0x10000)
                 return _memory[0][memAddr];
             return _memory[1][memAddr - 0x10000];
@@ -139,6 +141,28 @@ namespace Emulator.Lib.Components
                 _memory[1][memAddr - 0x10000] = value;
         }
 
+        public void UpdateScreen()
+        {
+            WritePixelsInfo[] writePixelsInfos;
+
+            writePixelsInfos = new WritePixelsInfo[RowCount * ColCount];
+            Parallel.For(
+                0,
+                RowCount,
+                row =>
+                {
+                    for (var col = 0; col < ColCount; col++)
+                    {
+                        var info = PrepareDrawChar(col, row);
+                        if (info != null)
+                            writePixelsInfos[row * ColCount + col] = info;
+                    }
+                });
+
+            foreach (var info in writePixelsInfos.Where(pixelInfo => pixelInfo != null))
+                _screen.WritePixels(info.Rect, info.Pixels, info.Stride, 0);
+        }
+
         private WritePixelsInfo PrepareDrawChar(int col, int row)
         {
             if (col >= ColCount || row >= RowCount) return null;
@@ -149,34 +173,45 @@ namespace Emulator.Lib.Components
             byte[] pixels;
 
             var addr = (row * ColCount + col) * 2;
-            var chr = _memory[_activePlane][row * ColCount + col];
-            var color = _memory[_activePlane][row * ColCount + col];
-            pixels = GetChar(chr, color, _backgroundColor);
+            var chr = _memory[_activePlane][addr];
+            var color = _memory[_activePlane][addr + 1];
+            pixels = GetCharBytes(chr, color, _backgroundColor);
             return new WritePixelsInfo { Pixels = pixels, Rect = rect, Stride = stride };
         }
 
-        public static byte[] GetChar(byte charCode, byte fgColor, byte bgColor)
+        private byte[] GetCharBytes(byte charCode, byte fgColor, byte bgColor)
         {
             var result = new byte[CharWidth * CharHeight * 4];
             var resultIdx = 0;
 
-            for (int idx = 0; idx < CharWidth * CharHeight; idx++)
+            var romAddr = charCode * 16;
+            for (var row = 0; row < CharHeight; row++)
             {
-                if (FCharacters[chrCode, idx] == (invert ? 0 : 1))
+                var data = _charRom[romAddr];
+                for (var col = 0; col < CharWidth; col++)
                 {
-                    result[resultIdx] = fgColor.B;
-                    result[resultIdx + 1] = fgColor.G;
-                    result[resultIdx + 2] = fgColor.R;
+                    byte red, green, blue;
+                    if ((data & (1 << col)) > 0)
+                        GetColorBytes(fgColor, out red, out green, out blue);
+                    else
+                        GetColorBytes(bgColor, out red, out green, out blue);
+                    
+                    result[resultIdx] = red;
+                    result[resultIdx + 1] = green;
+                    result[resultIdx + 2] = blue;
+                    resultIdx += 4;
                 }
-                else
-                {
-                    result[resultIdx] = bgColor.B;
-                    result[resultIdx + 1] = bgColor.G;
-                    result[resultIdx + 2] = bgColor.R;
-                }
-                resultIdx += 4;
+                romAddr++;
             }
+
             return result;
+        }
+
+        private void GetColorBytes(byte color, out byte red, out byte green, out byte blue)
+        {
+            red = (byte)((color & 0b00000111) << 5);
+            green = (byte)((color & 0b00111000) << 2);
+            blue = (byte)(color & 0b11000000);
         }
     }
 }

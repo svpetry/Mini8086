@@ -9,6 +9,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace Emulator
 {
@@ -35,6 +37,8 @@ namespace Emulator
 
         public string DisassembledLine => _disassembler.DisassembledLine;
 
+        public WriteableBitmap Screen => _graphicsAdapter.Screen;
+
         public Mini8086Emulator()
         {
             _memMapper = new MemoryMapper(64);
@@ -52,7 +56,7 @@ namespace Emulator
             _pic = new Pic(Config.PicBasePort, _cpu);
             _portMapper.Register(Config.PicBasePort, Config.PicBasePort + 0x07, _pic);
 
-            _graphicsAdapter = new GraphicsAdapter(Config.VgaBasePort, Config.VgaMemAddress);
+            _graphicsAdapter = new GraphicsAdapter(_cpu, Config.VgaBasePort, Config.VgaMemAddress, @"..\..\..\ROMs\charrom.bin");
             _portMapper.Register(Config.VgaBasePort, Config.VgaBasePort + 0x07, _graphicsAdapter);
             _memMapper.Register(Config.VgaMemAddress, Config.VgaMemAddress + Config.VgaMemSize - 1, _graphicsAdapter);
 
@@ -60,6 +64,7 @@ namespace Emulator
             _portMapper.Register(Config.PpiBasePort, Config.PpiBasePort + 0x07, _ppi);
 
             _memMapper.FinishRegistration();
+
         }
 
         public void Init() 
@@ -78,6 +83,11 @@ namespace Emulator
         {
             _cpu.ExecNextInstruction();
             _disassembler.DoDisassemble();
+        }
+
+        public void UpdateScreen()
+        {
+            _graphicsAdapter.UpdateScreen();
         }
     }
 }

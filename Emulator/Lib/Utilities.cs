@@ -1,4 +1,6 @@
-﻿namespace Emulator
+﻿using System;
+
+namespace Emulator
 {
     public struct Point
     {
@@ -19,6 +21,16 @@
             Y = y;
             Width = width;
             Height = height;
+        }
+    }
+
+    public static class MemUtils
+    {
+        private static Random _rnd = new Random();
+
+        public static void RandomFill(byte[] data)
+        {
+            _rnd.NextBytes(data);
         }
     }
 }

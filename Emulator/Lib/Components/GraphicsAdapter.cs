@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -40,7 +41,7 @@ namespace Emulator.Lib.Components
         private readonly int _baseMemAddress;
         private readonly WriteableBitmap _screen;
         private readonly int _bytesPerPixel;
-        private GraphicsMode _mode;
+        private GraphicsMode _mode = GraphicsMode.Text;
 
         private byte[][] _memory;
         private byte[] _charRom;
@@ -143,24 +144,62 @@ namespace Emulator.Lib.Components
 
         public void UpdateScreen()
         {
-            WritePixelsInfo[] writePixelsInfos;
+            WritePixelsInfo[] writePixelsInfos = null;
 
-            writePixelsInfos = new WritePixelsInfo[RowCount * ColCount];
-            Parallel.For(
-                0,
-                RowCount,
-                row =>
-                {
-                    for (var col = 0; col < ColCount; col++)
-                    {
-                        var info = PrepareDrawChar(col, row);
-                        if (info != null)
-                            writePixelsInfos[row * ColCount + col] = info;
-                    }
-                });
+            switch (_mode)
+            {
+                case GraphicsMode.Text:
+                    writePixelsInfos = new WritePixelsInfo[RowCount * ColCount];
+                    Parallel.For(
+                        0,
+                        RowCount,
+                        row =>
+                        {
+                            for (var col = 0; col < ColCount; col++)
+                                writePixelsInfos[row * ColCount + col] = PrepareDrawChar(col, row);
+                        });
+                    break;
+                case GraphicsMode.Graphics320x200x8:
+                    writePixelsInfos = new WritePixelsInfo[RowCount];
+                    var mem = _memory[_activePlane];
+                    Parallel.For(
+                        0,
+                        RowCount,
+                        row =>
+                        {
+                            var rect = new Int32Rect(0, row * CharHeight, ScreenWidth, CharHeight);
+                            var pixels = new byte[rect.Width * rect.Height * _bytesPerPixel];
 
-            foreach (var info in writePixelsInfos.Where(pixelInfo => pixelInfo != null))
-                _screen.WritePixels(info.Rect, info.Pixels, info.Stride, 0);
+                            var ramBaseAddr = (row * CharHeight / 2) * 320;
+                            for (var y = 0; y < CharHeight; y++)
+                            {
+                                for (var x = 0; x < ScreenWidth; x++)
+                                {
+                                    var data = mem[ramBaseAddr + (y / 2) * 320 + x / 2];
+                                    GetColors(data, out var red, out var green, out var blue);
+                                    var pxAddr = (y * 640 + x) * 4;
+                                    pixels[pxAddr] = red;
+                                    pixels[pxAddr + 1] = green;
+                                    pixels[pxAddr + 2] = blue;
+                                }
+                            }
+
+                            var wpi = new WritePixelsInfo
+                            {
+                                Rect = rect,
+                                Stride = rect.Width * _bytesPerPixel,
+                                Pixels = pixels
+                            };
+                            writePixelsInfos[row] = wpi;
+                        });
+                    break;
+            }
+
+            if (writePixelsInfos != null)
+            {
+                foreach (var info in writePixelsInfos.Where(pixelInfo => pixelInfo != null))
+                    _screen.WritePixels(info.Rect, info.Pixels, info.Stride, 0);
+            }
         }
 
         private WritePixelsInfo PrepareDrawChar(int col, int row)
@@ -184,7 +223,7 @@ namespace Emulator.Lib.Components
             var result = new byte[CharWidth * CharHeight * 4];
             var resultIdx = 0;
 
-            var romAddr = charCode * 16;
+            var romAddr = charCode * CharHeight;
             for (var row = 0; row < CharHeight; row++)
             {
                 var data = _charRom[romAddr];
@@ -192,10 +231,10 @@ namespace Emulator.Lib.Components
                 {
                     byte red, green, blue;
                     if ((data & (1 << col)) > 0)
-                        GetColorBytes(fgColor, out red, out green, out blue);
+                        GetColors(fgColor, out red, out green, out blue);
                     else
-                        GetColorBytes(bgColor, out red, out green, out blue);
-                    
+                        GetColors(bgColor, out red, out green, out blue);
+
                     result[resultIdx] = red;
                     result[resultIdx + 1] = green;
                     result[resultIdx + 2] = blue;
@@ -207,7 +246,7 @@ namespace Emulator.Lib.Components
             return result;
         }
 
-        private void GetColorBytes(byte color, out byte red, out byte green, out byte blue)
+        private void GetColors(byte color, out byte red, out byte green, out byte blue)
         {
             red = (byte)((color & 0b00000111) << 5);
             green = (byte)((color & 0b00111000) << 2);

@@ -1,20 +1,46 @@
 .section .text
 .code16
 .global _start
+
+.global int_empty
+.global int00
+.global int02
+.global int04
+.global int08
+.global int09
+
+.set PIC_CMD, 0x08
+.set PIC_DATA, 0x0A
+.set TMR_CH0, 0x00
+.set TMR_CH1, 0x02
+.set TMR_CH2, 0x04
+.set TMR_CMD, 0x06
+.set PPI_PORTA, 0x10
+.set PPI_PORTB, 0x12
+.set PPI_PORTC, 0x14
+.set PPI_CTRL, 0x16
+
+// PIC initialization command words
+.set ICW1, 0b00010111
+.set ICW2, 0x08 // interrupt offset
+.set ICW4, 0b00001011
+.set OCW1, 0b11111100 // enable interrupts 0 and 1
+
 _start:
+	cli // no interrupts
 
 	// set segments
-	movw $0x0010, %dx
+	movw $0x0000, %dx
 	movw %dx, %ds
 	movw %dx, %es
 	movw %dx, %ss
-	movw $0xFEFE, %sp
+	movw $0x05FE, %sp
 
 	// copy .data segment to ram
 	movw %cs, %ax
 	movw %ax, %ds
 	movw $__data_loadaddr, %si
-	xorw %di, %di
+	movw $0x0400, %di
 	movw $__data_size, %cx
 	rep movsb
 	movw %dx, %ds
@@ -26,16 +52,98 @@ _start:
 
 	// write to PPI control port
 	movb $0x80, %al
-	outb %al, $0x16
+	outb %al, $PPI_CTRL
 
 	// set all port bits to 0
 	xorb %al, %al
-	outb %al, $0x10
-	outb %al, $0x12
-	outb %al, $0x14
+	outb %al, $PPI_PORTA
+	outb %al, $PPI_PORTB
+	outb %al, $PPI_PORTC
 
-	# Run main
+	// set all interrupt vectors to int_empty
+	movw %cs, %bx
+	movw $0x0100, %cx
+	mov $0x0000, %di
+clr_loop:
+	movw $int_empty-_start, (%di)
+	add $0x02, %di
+	movw %bx, (%di)
+	add $0x02, %di
+	loop clr_loop
+
+	// INT 00h
+	movw $0x0000, %di
+	movw $int00-_start, (%di)
+
+	// INT 02h
+	movw $0x0008, %di
+	movw $int02-_start, (%di)
+
+	// INT 04h
+	movw $0x0010, %di
+	movw $int04-_start, (%di)
+
+	// INT 08h
+	movw $0x0020, %di
+	movw $int08-_start, (%di)
+
+	// INT 09h
+	movw $0x0024, %di
+	movw $int09-_start, (%di)
+
+	// INT 10h
+	movw $0x0040, %di
+	movw $int10-_start, (%di)
+
+	// initialize timer 8254
+	movb $0x1B, %al // channel 0, access lobyte/hibyte, mode 3 (square wave generator)
+	out %al, $TMR_CMD
+	movb $0x50, %al // lobyte of 50000
+	out %al, $TMR_CH0
+	movb $0xC3, %al // hibyte of 50000
+	out %al, $TMR_CH0
+
+	// initialize PIC 8259
+	movb $ICW1, %al
+	out %al, $PIC_CMD
+	movb $ICW2, %al
+	out %al, $PIC_DATA
+	movb $ICW4, %al
+	out %al, $PIC_DATA
+	movb $OCW1, %al
+	out %al, $PIC_DATA
+
+	// run main
+	sti
 	call main
 	hlt
+
+	// interrupt handlers
+int_empty:
+	iret
+	
+	// CPU interrupts
+int00:
+	call int_div_by_zero
+	iret
+int02:
+	call int_nmi
+	iret
+int04:
+	call int_overflow
+	iret
+	
+	// hardware interrupts
+int08:
+	call int_timer
+	iret
+int09:
+	call int_keyboard
+	iret
+
+	// software interrupts
+int10:
+	call int_bios
+	iret
 
 .size _start, . - _start

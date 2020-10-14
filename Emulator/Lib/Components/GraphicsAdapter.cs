@@ -159,6 +159,7 @@ namespace Emulator.Lib.Components
                                 writePixelsInfos[row * ColCount + col] = PrepareDrawChar(col, row);
                         });
                     break;
+
                 case GraphicsMode.Graphics320x200x8:
                     writePixelsInfos = new WritePixelsInfo[RowCount];
                     var mem = _memory[_activePlane];
@@ -178,9 +179,9 @@ namespace Emulator.Lib.Components
                                     var data = mem[ramBaseAddr + (y / 2) * 320 + x / 2];
                                     GetColors(data, out var red, out var green, out var blue);
                                     var pxAddr = (y * 640 + x) * 4;
-                                    pixels[pxAddr] = red;
+                                    pixels[pxAddr] = blue;
                                     pixels[pxAddr + 1] = green;
-                                    pixels[pxAddr + 2] = blue;
+                                    pixels[pxAddr + 2] = red;
                                 }
                             }
 
@@ -235,9 +236,9 @@ namespace Emulator.Lib.Components
                     else
                         GetColors(bgColor, out red, out green, out blue);
 
-                    result[resultIdx] = red;
+                    result[resultIdx] = blue;
                     result[resultIdx + 1] = green;
-                    result[resultIdx + 2] = blue;
+                    result[resultIdx + 2] = red;
                     resultIdx += 4;
                 }
                 romAddr++;

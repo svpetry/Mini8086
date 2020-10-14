@@ -288,7 +288,7 @@ namespace Emulator.ViewModels
                 {
                     stopWatch.Restart();
                     var endCount = _emulator.Cpu.ClockCount + periodClockCount;
-                    while (_emulator.Cpu.ClockCount < endCount)
+                    while (_emulator.Cpu.ClockCount < endCount && !_doStop)
                     {
                         _emulator.Step();
                         lines.Enqueue(_emulator.DisassembledLine);
@@ -297,7 +297,7 @@ namespace Emulator.ViewModels
                     }
                     stopWatch.Stop();
 
-                    if (stopWatch.ElapsedTicks < periodTicks)
+                    if (stopWatch.ElapsedTicks < periodTicks && !_doStop)
                     {
                         sleepTicks += periodTicks - stopWatch.ElapsedTicks;
 

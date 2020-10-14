@@ -41,7 +41,7 @@ namespace Emulator
 
         public Mini8086Emulator()
         {
-            _memMapper = new MemoryMapper(64);
+            _memMapper = new MemoryMapper(512);
             _portMapper = new PortMapper();
 
             _cpu = new Cpu8086(_memMapper, _portMapper);
@@ -64,7 +64,6 @@ namespace Emulator
             _portMapper.Register(Config.PpiBasePort, Config.PpiBasePort + 0x07, _ppi);
 
             _memMapper.FinishRegistration();
-
         }
 
         public void Init() 

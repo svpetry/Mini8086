@@ -5,7 +5,7 @@
         /// <summary>
         ///     CPU frequency in KHz
         /// </summary>
-        public static int CpuFrequency = 4000;
+        public static int CpuFrequency = 10000;
 
         /// <summary>
         ///     Screen update rate in fps

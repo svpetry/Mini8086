@@ -422,7 +422,7 @@ Wire Wire Line
 Wire Wire Line
 	4400 3000 4050 3000
 Text GLabel 4400 3500 2    50   Input ~ 0
-IRQ2
+IRQ1
 Text GLabel 4400 3400 2    50   Input ~ 0
 IRQ3
 Text GLabel 4400 3300 2    50   Input ~ 0
@@ -438,27 +438,12 @@ D[0..15]
 Text GLabel 2700 5300 0    50   Input ~ 0
 A[0..19]
 NoConn ~ 4050 2200
-NoConn ~ 3100 2400
-NoConn ~ 3100 2300
 NoConn ~ 3100 2200
 NoConn ~ 3100 3100
 Wire Wire Line
 	3100 2600 2550 2600
 Text GLabel 2550 2600 0    50   Input ~ 0
 PCLK
-$Comp
-L main-rescue:Edge72-Mini8086 X2
-U 1 1 5F7F509D
-P 3550 3700
-AR Path="/5F7F509D" Ref="X2"  Part="1" 
-AR Path="/5F7408B5/5F7F509D" Ref="X2"  Part="1" 
-F 0 "X2" H 3575 5665 50  0000 C CNN
-F 1 "Edge72-Mini8086" H 3575 5574 50  0000 C CNN
-F 2 "Mini8086:BUS_72" H 4100 3700 50  0001 C CNN
-F 3 "" H 4100 3700 50  0001 C CNN
-	1    3550 3700
-	1    0    0    -1  
-$EndComp
 $Comp
 L Device:C C4
 U 1 1 5F81713B
@@ -756,8 +741,27 @@ Wire Wire Line
 	3100 2500 3000 2500
 Text GLabel 3000 2500 0    50   Input ~ 0
 ~IO_DBG
+$Comp
+L Mini8086:Edge72 X2
+U 1 1 5F808933
+P 3550 3700
+F 0 "X2" H 3575 5665 50  0000 C CNN
+F 1 "Edge72" H 3575 5574 50  0000 C CNN
+F 2 "Mini8086:BUS_72" H 4100 3700 50  0001 C CNN
+F 3 "" H 4100 3700 50  0001 C CNN
+	1    3550 3700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3100 2400 2550 2400
+Wire Wire Line
+	3100 2300 3000 2300
 Wire Bus Line
 	2750 3300 2750 5300
 Wire Bus Line
 	4500 3700 4500 5300
+Text GLabel 2550 2400 0    50   Input ~ 0
+NMI
+Text GLabel 3000 2300 0    50   Input ~ 0
+TMR2
 $EndSCHEMATC

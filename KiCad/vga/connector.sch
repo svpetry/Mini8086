@@ -458,18 +458,12 @@ Text Label 2200 5250 0    50   ~ 0
 A0
 Text GLabel 3850 2750 2    50   Output ~ 0
 ~BHE
-Text GLabel 4100 2850 2    50   Output ~ 0
-M_~IO
 Text GLabel 3850 2950 2    50   Output ~ 0
 ~WR
 Text GLabel 4100 3050 2    50   Output ~ 0
 ~RD
 Wire Wire Line
-	4100 2850 3800 2850
-Wire Wire Line
 	3800 3050 4100 3050
-Text GLabel 3850 2450 2    50   Output ~ 0
-RESET
 Entry Wire Line
 	4300 5150 4200 5250
 Entry Wire Line
@@ -574,8 +568,6 @@ Wire Wire Line
 	3850 2950 3800 2950
 Wire Wire Line
 	3850 2750 3800 2750
-Wire Wire Line
-	3800 2450 3850 2450
 Text GLabel 1950 3400 0    50   Output ~ 0
 A[0..19]
 Text GLabel 4350 3550 2    50   BiDi ~ 0
@@ -583,7 +575,6 @@ D[0..15]
 NoConn ~ 3800 3650
 NoConn ~ 3800 3550
 NoConn ~ 3800 3450
-NoConn ~ 3800 3350
 NoConn ~ 3800 3250
 NoConn ~ 3800 3150
 NoConn ~ 2850 2850
@@ -708,19 +699,6 @@ F 3 "" H 7600 4500 50  0001 C CNN
 	1    7600 4500
 	1    0    0    -1  
 $EndComp
-$Comp
-L Mini8086:Edge72 X2
-U 1 1 5F76D50A
-P 3300 3850
-AR Path="/5F76D50A" Ref="X2"  Part="1" 
-AR Path="/5FB1662F/5F76D50A" Ref="X2"  Part="1" 
-F 0 "X2" H 3325 5815 50  0000 C CNN
-F 1 "Edge72" H 3325 5724 50  0000 C CNN
-F 2 "Mini8086:BUS_72" H 3850 3850 50  0001 C CNN
-F 3 "" H 3850 3850 50  0001 C CNN
-	1    3300 3850
-	1    0    0    -1  
-$EndComp
 NoConn ~ 2850 3250
 NoConn ~ 2850 2750
 NoConn ~ 2850 2650
@@ -728,10 +706,157 @@ NoConn ~ 2850 2550
 NoConn ~ 2850 2450
 NoConn ~ 2850 2350
 NoConn ~ 3800 2350
+$Comp
+L Mini8086:Edge72 X2
+U 1 1 5F84BE1E
+P 3300 3850
+F 0 "X2" H 3325 5815 50  0000 C CNN
+F 1 "Edge72" H 3325 5724 50  0000 C CNN
+F 2 "Mini8086:BUS_72" H 3850 3850 50  0001 C CNN
+F 3 "" H 3850 3850 50  0001 C CNN
+	1    3300 3850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3800 3350 3850 3350
+Text GLabel 3850 3350 2    50   Input ~ 0
+IRQ5
+NoConn ~ 3800 2850
+$Comp
+L 74xx:74HC04 U20
+U 1 1 5F834415
+P 4550 2050
+F 0 "U20" V 4596 1870 50  0000 R CNN
+F 1 "74HC04" V 4505 1870 50  0000 R CNN
+F 2 "Package_SO:SO-14_5.3x10.2mm_P1.27mm" H 4550 2050 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 4550 2050 50  0001 C CNN
+	1    4550 2050
+	0    -1   -1   0   
+$EndComp
+$Comp
+L 74xx:74HC04 U20
+U 2 1 5F835814
+P 1600 6650
+F 0 "U20" H 1600 6967 50  0000 C CNN
+F 1 "74HC04" H 1600 6876 50  0000 C CNN
+F 2 "Package_SO:SO-14_5.3x10.2mm_P1.27mm" H 1600 6650 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 1600 6650 50  0001 C CNN
+	2    1600 6650
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74HC04 U20
+U 3 1 5F835EDF
+P 1600 7150
+F 0 "U20" H 1600 7467 50  0000 C CNN
+F 1 "74HC04" H 1600 7376 50  0000 C CNN
+F 2 "Package_SO:SO-14_5.3x10.2mm_P1.27mm" H 1600 7150 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 1600 7150 50  0001 C CNN
+	3    1600 7150
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74HC04 U20
+U 4 1 5F836C82
+P 2650 6650
+F 0 "U20" H 2650 6967 50  0000 C CNN
+F 1 "74HC04" H 2650 6876 50  0000 C CNN
+F 2 "Package_SO:SO-14_5.3x10.2mm_P1.27mm" H 2650 6650 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 2650 6650 50  0001 C CNN
+	4    2650 6650
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74HC04 U20
+U 5 1 5F837B15
+P 2650 7150
+F 0 "U20" H 2650 7467 50  0000 C CNN
+F 1 "74HC04" H 2650 7376 50  0000 C CNN
+F 2 "Package_SO:SO-14_5.3x10.2mm_P1.27mm" H 2650 7150 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 2650 7150 50  0001 C CNN
+	5    2650 7150
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74HC04 U20
+U 6 1 5F838924
+P 3700 6650
+F 0 "U20" H 3700 6967 50  0000 C CNN
+F 1 "74HC04" H 3700 6876 50  0000 C CNN
+F 2 "Package_SO:SO-14_5.3x10.2mm_P1.27mm" H 3700 6650 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 3700 6650 50  0001 C CNN
+	6    3700 6650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4550 2450 4550 2350
+Wire Wire Line
+	3800 2450 4550 2450
+Wire Wire Line
+	4550 1750 4550 1600
+Wire Wire Line
+	4550 1600 4250 1600
+Text GLabel 4250 1600 0    50   Output ~ 0
+~RESET
+$Comp
+L power:GND #PWR089
+U 1 1 5F84397A
+P 1300 7150
+F 0 "#PWR089" H 1300 6900 50  0001 C CNN
+F 1 "GND" H 1305 6977 50  0000 C CNN
+F 2 "" H 1300 7150 50  0001 C CNN
+F 3 "" H 1300 7150 50  0001 C CNN
+	1    1300 7150
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR088
+U 1 1 5F846DBC
+P 1300 6650
+F 0 "#PWR088" H 1300 6400 50  0001 C CNN
+F 1 "GND" H 1305 6477 50  0000 C CNN
+F 2 "" H 1300 6650 50  0001 C CNN
+F 3 "" H 1300 6650 50  0001 C CNN
+	1    1300 6650
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR090
+U 1 1 5F847016
+P 2350 6650
+F 0 "#PWR090" H 2350 6400 50  0001 C CNN
+F 1 "GND" H 2355 6477 50  0000 C CNN
+F 2 "" H 2350 6650 50  0001 C CNN
+F 3 "" H 2350 6650 50  0001 C CNN
+	1    2350 6650
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR091
+U 1 1 5F8472D3
+P 2350 7150
+F 0 "#PWR091" H 2350 6900 50  0001 C CNN
+F 1 "GND" H 2355 6977 50  0000 C CNN
+F 2 "" H 2350 7150 50  0001 C CNN
+F 3 "" H 2350 7150 50  0001 C CNN
+	1    2350 7150
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR092
+U 1 1 5F847594
+P 3400 6650
+F 0 "#PWR092" H 3400 6400 50  0001 C CNN
+F 1 "GND" H 3405 6477 50  0000 C CNN
+F 2 "" H 3400 6650 50  0001 C CNN
+F 3 "" H 3400 6650 50  0001 C CNN
+	1    3400 6650
+	0    1    1    0   
+$EndComp
 Wire Bus Line
 	5950 2650 8100 2650
 Wire Bus Line
-	2000 3400 2000 5150
-Wire Bus Line
 	4300 3550 4300 5150
+Wire Bus Line
+	2000 3400 2000 5150
 $EndSCHEMATC

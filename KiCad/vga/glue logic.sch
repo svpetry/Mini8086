@@ -890,6 +890,7 @@ Text GLabel 1850 5150 0    50   Input ~ 0
 ~CPU_RAM2
 Text GLabel 4350 5150 0    50   Input ~ 0
 ~CPU_RAM3
+NoConn ~ 9350 4850
 Wire Bus Line
 	6300 3950 6300 4750
 Wire Bus Line

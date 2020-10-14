@@ -1,9 +1,10 @@
-- keyboard
+- PS/2 keyboard
+- PS/2 mouse
 - RS232
 - graphics card
 	- text mode 80x25
-	- graphics mode 320x200 oder 320x240 (256 col)
-- sound: SID?
+	- graphics mode 320x200 (256 col)
+- sound: Adlib
 - SD memory card
 	- FatFS
 

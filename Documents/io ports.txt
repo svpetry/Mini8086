@@ -1,26 +1,32 @@
-0x000-0x007	Timer (8254)
+0x00-0x07	Timer (8254)
+0x00		channel 0 data port
+0x02		channel 1 data port
+0x04		channel 2 data port
+0x06		command register
 --------------------------------------------------------------------------------
-0x008-0x00F	PIC (8259)
+0x08-0x0F	PIC (8259)
+0x08		command port
+0x0A		data port
 --------------------------------------------------------------------------------
-0x010-0x017	PPI (8255)
-0x010		Port A
-0x012		Port B
-0x014		Port C
-0x016		Control Port
+0x10-0x17	PPI (8255)
+0x10		Port A
+0x12		Port B
+0x14		Port C
+0x16		Control Port
 --------------------------------------------------------------------------------
-0x020-0x027	Keyboard controller (8042)
+0x20-0x27	Keyboard controller (8042)
 --------------------------------------------------------------------------------
-0x027-0x02F	UART (16550)
+0x27-0x2F	UART (16550)
 --------------------------------------------------------------------------------
-0x028-0x02F	VGA
+0x28-0x2F	VGA
 0x28		VGA control port
 0x2A		background color
 
 control port:	--ihvpmm
 
-mm	graphics mode (0 = text, 1 = 320x200x8)
-p	active plane
-v	vertical retrace (1 = active)
-h	horizontal retrace (1 = active)
-i	enable vertical retrace interrupt
+mm	r/w	graphics mode (0 = text, 1 = 320x200x8)
+p	r/w	active plane				
+v	r	vertical retrace (1 = active)
+h	r	horizontal retrace (1 = active)
+i	r/w	enable vertical retrace interrupt
 --------------------------------------------------------------------------------

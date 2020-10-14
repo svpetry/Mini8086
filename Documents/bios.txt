@@ -44,3 +44,17 @@ AH = 07h	Write string at cursor position
 
 ES:SI: string address
 
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------
+BIOS startup
+
+- 

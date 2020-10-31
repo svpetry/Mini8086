@@ -1,2 +1,2 @@
 # Mini8086
-A small 8086 computer system.
+A small, extensible 8086 computer system.

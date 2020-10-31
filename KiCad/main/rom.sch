@@ -3,10 +3,10 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 3 5
-Title ""
+Sheet 3 6
+Title "Mini8086 main system board"
 Date ""
-Rev ""
+Rev "1.1"
 Comp ""
 Comment1 ""
 Comment2 ""

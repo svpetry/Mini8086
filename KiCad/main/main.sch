@@ -3,10 +3,10 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 5
-Title ""
+Sheet 1 6
+Title "Mini8086 main system board"
 Date ""
-Rev ""
+Rev "1.1"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -36,5 +36,11 @@ S 5500 1000 1000 1000
 U 5F7408B5
 F0 "connector" 50
 F1 "connector.sch" 50
+$EndSheet
+$Sheet
+S 7000 1000 1000 1000
+U 5F8BB07A
+F0 "glue logic" 50
+F1 "glue logic.sch" 50
 $EndSheet
 $EndSCHEMATC

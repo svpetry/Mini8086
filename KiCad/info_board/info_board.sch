@@ -1,0 +1,316 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 2
+Title "Mini8086 info board"
+Date ""
+Rev "1.1"
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L power:GND #PWR012
+U 1 1 5F78C8C2
+P 4600 5650
+F 0 "#PWR012" H 4600 5400 50  0001 C CNN
+F 1 "GND" V 4605 5522 50  0000 R CNN
+F 2 "" H 4600 5650 50  0001 C CNN
+F 3 "" H 4600 5650 50  0001 C CNN
+	1    4600 5650
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:GND #PWR011
+U 1 1 5F78CA92
+P 4600 5550
+F 0 "#PWR011" H 4600 5300 50  0001 C CNN
+F 1 "GND" V 4605 5422 50  0000 R CNN
+F 2 "" H 4600 5550 50  0001 C CNN
+F 3 "" H 4600 5550 50  0001 C CNN
+	1    4600 5550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:GND #PWR05
+U 1 1 5F78CC9B
+P 3650 5550
+F 0 "#PWR05" H 3650 5300 50  0001 C CNN
+F 1 "GND" V 3655 5422 50  0000 R CNN
+F 2 "" H 3650 5550 50  0001 C CNN
+F 3 "" H 3650 5550 50  0001 C CNN
+	1    3650 5550
+	0    1    1    0   
+$EndComp
+$Comp
+L power:VCC #PWR04
+U 1 1 5F78D59F
+P 3650 5450
+F 0 "#PWR04" H 3650 5300 50  0001 C CNN
+F 1 "VCC" V 3665 5577 50  0000 L CNN
+F 2 "" H 3650 5450 50  0001 C CNN
+F 3 "" H 3650 5450 50  0001 C CNN
+	1    3650 5450
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:VCC #PWR03
+U 1 1 5F78D817
+P 3650 5350
+F 0 "#PWR03" H 3650 5200 50  0001 C CNN
+F 1 "VCC" V 3665 5477 50  0000 L CNN
+F 2 "" H 3650 5350 50  0001 C CNN
+F 3 "" H 3650 5350 50  0001 C CNN
+	1    3650 5350
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:VCC #PWR09
+U 1 1 5F78DA44
+P 4600 5350
+F 0 "#PWR09" H 4600 5200 50  0001 C CNN
+F 1 "VCC" V 4615 5478 50  0000 L CNN
+F 2 "" H 4600 5350 50  0001 C CNN
+F 3 "" H 4600 5350 50  0001 C CNN
+	1    4600 5350
+	0    1    1    0   
+$EndComp
+$Comp
+L power:VCC #PWR010
+U 1 1 5F78E11D
+P 4600 5450
+F 0 "#PWR010" H 4600 5300 50  0001 C CNN
+F 1 "VCC" V 4615 5578 50  0000 L CNN
+F 2 "" H 4600 5450 50  0001 C CNN
+F 3 "" H 4600 5450 50  0001 C CNN
+	1    4600 5450
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR07
+U 1 1 5F78E35D
+P 4600 2150
+F 0 "#PWR07" H 4600 1900 50  0001 C CNN
+F 1 "GND" V 4605 2022 50  0000 R CNN
+F 2 "" H 4600 2150 50  0001 C CNN
+F 3 "" H 4600 2150 50  0001 C CNN
+	1    4600 2150
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:GND #PWR08
+U 1 1 5F78EBDA
+P 4600 2250
+F 0 "#PWR08" H 4600 2000 50  0001 C CNN
+F 1 "GND" V 4605 2122 50  0000 R CNN
+F 2 "" H 4600 2250 50  0001 C CNN
+F 3 "" H 4600 2250 50  0001 C CNN
+	1    4600 2250
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:GND #PWR02
+U 1 1 5F78ED56
+P 3650 2250
+F 0 "#PWR02" H 3650 2000 50  0001 C CNN
+F 1 "GND" V 3655 2122 50  0000 R CNN
+F 2 "" H 3650 2250 50  0001 C CNN
+F 3 "" H 3650 2250 50  0001 C CNN
+	1    3650 2250
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR01
+U 1 1 5F78F35C
+P 3650 2150
+F 0 "#PWR01" H 3650 1900 50  0001 C CNN
+F 1 "GND" V 3655 2022 50  0000 R CNN
+F 2 "" H 3650 2150 50  0001 C CNN
+F 3 "" H 3650 2150 50  0001 C CNN
+	1    3650 2150
+	0    1    1    0   
+$EndComp
+$Sheet
+S 1000 800  800  750 
+U 5F799278
+F0 "LCD" 50
+F1 "LCD.sch" 50
+$EndSheet
+Wire Wire Line
+	4950 5250 4600 5250
+Wire Wire Line
+	4950 5150 4600 5150
+Wire Wire Line
+	4950 5050 4600 5050
+Wire Wire Line
+	4950 4850 4600 4850
+Wire Wire Line
+	4950 4750 4600 4750
+Wire Wire Line
+	4950 4650 4600 4650
+Wire Wire Line
+	4950 4550 4600 4550
+Wire Wire Line
+	3300 5250 3650 5250
+Wire Wire Line
+	3300 5150 3650 5150
+Wire Wire Line
+	3300 5050 3650 5050
+Wire Wire Line
+	4800 2950 4600 2950
+Entry Wire Line
+	4950 5250 5050 5150
+Entry Wire Line
+	4950 5150 5050 5050
+Entry Wire Line
+	4950 5050 5050 4950
+Entry Wire Line
+	4950 4950 5050 4850
+Entry Wire Line
+	4950 4850 5050 4750
+Entry Wire Line
+	4950 4750 5050 4650
+Entry Wire Line
+	4950 4650 5050 4550
+Text Label 4750 5250 0    50   ~ 0
+D0
+Text Label 4750 5150 0    50   ~ 0
+D1
+Text Label 4750 5050 0    50   ~ 0
+D2
+Text Label 4750 4950 0    50   ~ 0
+D3
+Text Label 4750 4850 0    50   ~ 0
+D4
+Text Label 4750 4750 0    50   ~ 0
+D5
+Text Label 4750 4650 0    50   ~ 0
+D6
+Text Label 4750 4550 0    50   ~ 0
+D7
+Text GLabel 4800 2950 2    50   Output ~ 0
+~WR
+Wire Bus Line
+	5050 4400 5200 4400
+Text GLabel 5200 4400 2    50   Output ~ 0
+D[0..7]
+Entry Wire Line
+	3300 5150 3200 5050
+Entry Wire Line
+	3300 5250 3200 5150
+Wire Bus Line
+	3200 4900 3050 4900
+Text GLabel 3050 4900 0    50   Output ~ 0
+A[0..2]
+Text Label 3400 5250 0    50   ~ 0
+A0
+Text Label 3400 5150 0    50   ~ 0
+A1
+Text Label 3400 5050 0    50   ~ 0
+A2
+NoConn ~ 3650 2950
+NoConn ~ 3650 2850
+NoConn ~ 3650 2750
+NoConn ~ 3650 2550
+NoConn ~ 3650 2450
+NoConn ~ 3650 2350
+NoConn ~ 4600 2350
+NoConn ~ 3650 3150
+NoConn ~ 3650 3250
+$Comp
+L power:GND #PWR06
+U 1 1 5F78D273
+P 3650 5650
+F 0 "#PWR06" H 3650 5400 50  0001 C CNN
+F 1 "GND" V 3655 5522 50  0000 R CNN
+F 2 "" H 3650 5650 50  0001 C CNN
+F 3 "" H 3650 5650 50  0001 C CNN
+	1    3650 5650
+	0    1    1    0   
+$EndComp
+$Comp
+L Mini8086:Edge72 X1
+U 1 1 5F982738
+P 4100 3850
+F 0 "X1" H 4125 5815 50  0000 C CNN
+F 1 "Edge72" H 4125 5724 50  0000 C CNN
+F 2 "Mini8086:BUS_72" H 4650 3850 50  0001 C CNN
+F 3 "" H 4650 3850 50  0001 C CNN
+	1    4100 3850
+	1    0    0    -1  
+$EndComp
+NoConn ~ 4600 3650
+NoConn ~ 4600 3550
+NoConn ~ 4600 3450
+NoConn ~ 4600 3350
+NoConn ~ 4600 3250
+NoConn ~ 4600 3150
+NoConn ~ 3650 3050
+Wire Wire Line
+	3650 2650 3400 2650
+Text GLabel 3400 2650 0    50   Output ~ 0
+~IO_DBG
+Wire Wire Line
+	4600 3050 5150 3050
+Text GLabel 5150 3050 2    50   Output ~ 0
+~RD
+Wire Wire Line
+	4600 2850 5150 2850
+Wire Wire Line
+	4600 2650 5150 2650
+Wire Wire Line
+	4600 2550 4800 2550
+Text GLabel 5150 2850 2    50   Output ~ 0
+~IO
+Text GLabel 5150 2650 2    50   Output ~ 0
+~MEMRD
+Text GLabel 4800 2550 2    50   Output ~ 0
+~MEMWR
+Wire Wire Line
+	4800 2750 4600 2750
+Text GLabel 4800 2750 2    50   Output ~ 0
+~BHE
+Entry Wire Line
+	4950 4550 5050 4450
+Entry Wire Line
+	3300 5050 3200 4950
+NoConn ~ 4600 3750
+NoConn ~ 4600 3850
+NoConn ~ 4600 3950
+NoConn ~ 4600 4050
+NoConn ~ 4600 4150
+NoConn ~ 4600 4250
+NoConn ~ 4600 4350
+NoConn ~ 4600 4450
+NoConn ~ 3650 4950
+NoConn ~ 3650 4850
+NoConn ~ 3650 4750
+NoConn ~ 3650 4650
+NoConn ~ 3650 4550
+NoConn ~ 3650 4450
+NoConn ~ 3650 4350
+NoConn ~ 3650 4250
+NoConn ~ 3650 4150
+NoConn ~ 3650 4050
+NoConn ~ 3650 3950
+NoConn ~ 3650 3850
+NoConn ~ 3650 3750
+NoConn ~ 3650 3650
+NoConn ~ 3650 3550
+NoConn ~ 3650 3450
+NoConn ~ 3650 3350
+Wire Wire Line
+	4600 4950 4950 4950
+Wire Wire Line
+	5150 2450 4600 2450
+Text GLabel 5150 2450 2    50   Output ~ 0
+RESET
+Wire Bus Line
+	3200 4900 3200 5150
+Wire Bus Line
+	5050 4400 5050 5150
+$EndSCHEMATC

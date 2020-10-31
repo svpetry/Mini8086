@@ -1,3 +1,8 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP PCA9564D
+D I2C Bus Controller, SOIC-20
+K I2C
+$ENDCMP
+#
 #End Doc Library

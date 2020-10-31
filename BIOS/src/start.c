@@ -4,9 +4,13 @@
 
 #define RESULT_COL 20
 
+extern unsigned char ticks;
+
+char cfg_sddrive;
+ 
 void error() {
     putstr(" ERROR!");
-//    asm("hlt");
+    while (1) ;
 }
 
 void check_cpu(int row) {
@@ -14,7 +18,8 @@ void check_cpu(int row) {
     putstr("CPU");
 
     setcursor(RESULT_COL, row);
-    putstr("Intel 8086 or compatible");
+    putstr("--.- MHz");
+    putstr(", Intel 8086 or compatible");
 }
 
 void check_memory(int row) {
@@ -35,12 +40,12 @@ void check_memory(int row) {
         if (*memptr != 0xAA) error();
         *memptr = 0x55;
         if (*memptr != 0x55) error();
-        if (count < 64) {
+        if (count < 0x100) {
             memptr++;
             count++;
         } else {
-            memptr += 64;
-            count += 64;
+            memptr += 0x100;
+            count += 0x100;
         }
     }
 
@@ -64,12 +69,12 @@ void check_memory(int row) {
             if (*memptr != 0xAA) error();
             *memptr = 0x55;
             if (*memptr != 0x55) error();
-            if (count < 64) {
+            if (count < 0x100) {
                 memptr++;
                 count++;
             } else {
-                memptr += 64;
-                count += 64;
+                memptr += 0x100;
+                count += 0x100;
             }
         }
 
@@ -81,33 +86,75 @@ void check_memory(int row) {
 
 void check_timer(int row) {
     setcursor(4, row);
-    putstr("TIMER");
+    putstr("Timer");
+ 
+    int i;
+    unsigned int count = 10000;
+    unsigned char t = ticks;
+    while (t == ticks && count > 0) {
+        for (i = 0; i < 10; i++) ;
+        count--;
+    }
+    if (count == 0) {
+        error();
+        return;
+    }
 
+    count = 0;
+    for (i = 0; i < 4; i++) {
+        t = ticks;
+        while (t == ticks)
+            count++;
+    }
+    
+    count /= 297;
+    setcursor(RESULT_COL, 2);
+    i = count / 100;
+    if (i == 0)
+        putch(' ');
+    else
+        putch('0' + i);
+    count -= i * 100;
+    i = count / 10;
+    putch('0' + i);
+    putch('.');
+    count -= i * 10;
+    putch('0' + count);
+  
     setcursor(RESULT_COL, row);
     putstr("OK");
 }
 
+void check_keyboard(int row) {
+    setcursor(4, row);
+    putstr("Keyboard");
+    setcursor(RESULT_COL, row);
+
+    putstr("N/A");
+}
+
 void check_serial(int row) {
     setcursor(4, row);
-    putstr("SERIAL PORTS");
-
+    putstr("Serial ports");
     setcursor(RESULT_COL, row);
+
     putstr("N/A");
 }
 
 void check_sd_drive(int row) {
     setcursor(4, row);
-    putstr("SD DRIVE");
-
+    putstr("SD drive");
     setcursor(RESULT_COL, row);
+
     putstr("N/A");
+    cfg_sddrive = 0;
 }
 
 void check_sound(int row) {
     setcursor(4, row);
-    putstr("SOUND");
-
+    putstr("Sound");
     setcursor(RESULT_COL, row);
+
     putstr("N/A");
 }
 
@@ -126,7 +173,11 @@ void startup() {
     check_cpu(i++);
     check_memory(i++);
     check_timer(i++);
+    check_keyboard(i++);
     check_serial(i++);
     check_sd_drive(i++);
     check_sound(i++);
+
+    lcd_putstr(0, 0, "Mini8086     0.1");
+    lcd_putstr(0, 1, "System ready!   ");
 }

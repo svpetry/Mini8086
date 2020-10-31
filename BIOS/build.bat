@@ -1,13 +1,26 @@
+@echo off
+
+del *.bin
 nasm -f bin src\resetvector.asm -o resetvector.bin
 
-copy src\*.h dosbox\local /b /v /y
-copy src\*.c dosbox\local /b /v /y
-copy src\*.S dosbox\local /b /v /y
-copy src\*.LD dosbox\local /b /v /y
+md bios
+del bios\*.* /q
+copy src\*.h bios /b /v /y
+copy src\*.c bios /b /v /y
+copy src\*.S bios /b /v /y
+copy src\*.LD bios /b /v /y
+copy src\*.sh bios /b /v /y
 
-DOSBox.exe dosbox\setup.bat
-copy dosbox\local\b.bin . /b /v /y
+cd bios
+REM c:\windows\sysnative\wsl ./build.sh
+wsl ./build.sh
+cd ..
 
-del ROM?.bin
+copy bios\*.bin . /b /v /y
+
+REM del b.asm
+REM disasm b.bin > b.asm
+
 BiosBuilder
-@if not exist ROM0.bin pause
+REM if not exist ROM0.bin pause
+pause

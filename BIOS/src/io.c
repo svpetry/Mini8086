@@ -1,5 +1,10 @@
 #include "io.h"
 #include "utils.h"
+#include "lowlevel.h"
+
+#define LCD_PORT 0x10
+#define LCD_RS 0b00010000
+#define LCD_E 0b00100000
 
 unsigned char cursor_col;
 unsigned char cursor_row;
@@ -8,8 +13,8 @@ unsigned char __far (*screen)[4000];
 //unsigned char __far *screen;
 
 void init_screen() {
-    outp(0x28, 0b00000000); // activate text mode
-    outp(0x2A, 0b01000000); // background color: dark blue
+    outp(0x50, 0b00000000); // activate text mode
+    outp(0x51, 0b01000000); // background color: dark blue
 
     screen = (void __far *)0xC0000000;
     cursor_col = 0;
@@ -58,58 +63,118 @@ void putstr_inv(char *str) {
         putch(*(str++) + 0x80);
 }
 
-void DisplayNumber(unsigned char x) {
+void lcd_delay_long() {
+    int i;
+    for (i = 0; i < 1000; i++) ;
+}
+
+void lcd_delay_short() {
+    int i;
+    for (i = 0; i < 10; i++) ;
+}
+
+void lcd_cmd(unsigned char cmd) {
+    unsigned char a;
+
+    outp(LCD_PORT, 0x00);
+
+    // higher nibble
+    a = cmd >> 4;
+    a |= LCD_E;
+    outp(LCD_PORT, a);
+    a &= ~LCD_E;
+    outp(LCD_PORT, a);
+
+    // lower nibble
+    a = cmd & 0x0F;
+    a |= LCD_E;
+    outp(LCD_PORT, a);
+    a &= ~LCD_E;
+    outp(LCD_PORT, a);
+
+    lcd_delay_short();
+}
+
+void lcd_clear() {
+    lcd_cmd(0b00000001);
+    lcd_delay_long();
+}
+
+void lcd_init() {
     unsigned char a;
     
-    switch (x) {
-        case 0x00:
-            a = 0x3F;
-            break;
-        case 0x01:
-            a = 0x06;
-            break;
-        case 0x02:
-            a = 0x5B;
-            break;
-        case 0x03:
-            a = 0x4F;
-            break;
-        case 0x04:
-            a = 0x66;
-            break;
-        case 0x05:
-            a = 0x6D;
-            break;
-        case 0x06:
-            a = 0x7D;
-            break;
-        case 0x07:
-            a = 0x07;
-            break;
-        case 0x08:
-            a = 0x7F;
-            break;
-        case 0x09:
-            a = 0x6F;
-            break;
-        case 0x0A:
-            a = 0x77;
-            break;
-        case 0x0B:
-            a = 0x7C;
-            break;
-        case 0x0C:
-            a = 0x39;
-            break;
-        case 0x0D:
-            a = 0x5E;
-            break;
-        case 0x0E:
-            a = 0x79;
-            break;
-        case 0x0F:
-            a = 0x71;
-            break;
+    outp(LCD_PORT, 0x00);
+
+    // init
+    a = 0b00000011;
+
+    a |= LCD_E;
+    outp(LCD_PORT, a);
+    a &= ~LCD_E;
+    outp(LCD_PORT, a);
+    lcd_delay_long();
+
+    a |= LCD_E;
+    outp(LCD_PORT, a);
+    a &= ~LCD_E;
+    outp(LCD_PORT, a);
+    lcd_delay_long();
+
+    a |= LCD_E;
+    outp(LCD_PORT, a);
+    a &= ~LCD_E;
+    outp(LCD_PORT, a);
+    lcd_delay_long();
+    
+    // init 4 bit mode
+    a = 0b00000010;
+    a |= LCD_E;
+    outp(LCD_PORT, a);
+    a &= ~LCD_E;
+    outp(LCD_PORT, a);
+
+    // clear screen, cursor to pos 0
+    lcd_clear();
+
+    // cursor direction right, shift off
+    lcd_cmd(0b00000110);
+    lcd_delay_long();
+
+    // display on, cursor off
+    lcd_cmd(0b00001100);
+
+    // 4 bit interface, two rows 
+    lcd_cmd(0b00101000);
+}
+
+void lcd_putstr(int col, int row, char *str) {
+    unsigned char cmd;
+    
+    // set cursor position
+    if (row == 0)
+        cmd = 0x00;
+    else
+        cmd = 0x40;
+    cmd = (cmd + col) | 0b10000000;
+    lcd_cmd(cmd);
+
+    // write characters
+    outp(LCD_PORT, LCD_RS);
+    while (*str) {
+        cmd = *str >> 4;
+        cmd |= LCD_RS | LCD_E;
+        outp(LCD_PORT, cmd);
+        cmd &= ~LCD_E;
+        outp(LCD_PORT, cmd);
+
+        cmd = *str & 0x0F;
+        cmd |= LCD_RS | LCD_E;
+        outp(LCD_PORT, cmd);
+        cmd &= ~LCD_E;
+        outp(LCD_PORT, cmd);
+
+        lcd_delay_short();
+
+        str++;
     }
-    outp(0x10, ~a);
 }

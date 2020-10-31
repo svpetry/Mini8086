@@ -36,3 +36,4 @@ BIOS/DOSBOX/LOCAL/*.S
 BIOS/DOSBOX/LOCAL/*.I
 *.bak
 BIOS/*.exe
+BIOS/bios/

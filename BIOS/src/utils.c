@@ -1,14 +1,5 @@
 #include "utils.h"
 
-void outp(unsigned int port, unsigned char value) {
-    asm(
-        "movb %1, %%al\n"
-        "movw %0, %%dx\n"
-        "outb %%al, %%dx"
-        : : "g" (port), "g" (value)
-    );
-}
-
 int strlen(char *str) {
     const char *s;
     for (s = str; *s; ++s) ;
@@ -72,4 +63,8 @@ void ltoa(long i, char* buf) {
 	if (sign)
 		*--s = '-';
     strcpy(buf, s);
+}
+
+void delay_ms(int ms) {
+
 }

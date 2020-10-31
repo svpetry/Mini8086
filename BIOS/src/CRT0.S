@@ -9,32 +9,30 @@
 .global int08
 .global int09
 
-.set PIC_CMD, 0x08
-.set PIC_DATA, 0x0A
-.set TMR_CH0, 0x00
-.set TMR_CH1, 0x02
-.set TMR_CH2, 0x04
-.set TMR_CMD, 0x06
-.set PPI_PORTA, 0x10
-.set PPI_PORTB, 0x12
-.set PPI_PORTC, 0x14
-.set PPI_CTRL, 0x16
+.set PIC_CMD, 0x20
+.set PIC_DATA, 0x21
+.set TMR_CH0, 0x40
+.set TMR_CH1, 0x41
+.set TMR_CH2, 0x42
+.set TMR_CMD, 0x43
+// .set PPI_PORTA, 0x10
+// .set PPI_PORTB, 0x11
+// .set PPI_PORTC, 0x12
+// .set PPI_CTRL, 0x13
 
 // PIC initialization command words
 .set ICW1, 0b00010111
 .set ICW2, 0x08 // interrupt offset
-.set ICW4, 0b00001011
+.set ICW4, 0b00000001 // 8086 mode, normal EOI, unbuffered mode
 .set OCW1, 0b11111100 // enable interrupts 0 and 1
 
 _start:
-	cli // no interrupts
-
 	// set segments
 	movw $0x0000, %dx
 	movw %dx, %ds
 	movw %dx, %es
 	movw %dx, %ss
-	movw $0x05FE, %sp
+	movw $0x2FFE, %sp
 
 	// copy .data segment to ram
 	movw %cs, %ax
@@ -50,15 +48,15 @@ _start:
 	xor %al, %al
 	rep stosb
 
-	// write to PPI control port
-	movb $0x80, %al
-	outb %al, $PPI_CTRL
+	// // write to PPI control port
+	// movb $0x80, %al
+	// outb %al, $PPI_CTRL
 
-	// set all port bits to 0
-	xorb %al, %al
-	outb %al, $PPI_PORTA
-	outb %al, $PPI_PORTB
-	outb %al, $PPI_PORTC
+	// // set all port bits to 0
+	// xorb %al, %al
+	// outb %al, $PPI_PORTA
+	// outb %al, $PPI_PORTB
+	// outb %al, $PPI_PORTC
 
 	// set all interrupt vectors to int_empty
 	movw %cs, %bx
@@ -96,7 +94,7 @@ clr_loop:
 	movw $int10-_start, (%di)
 
 	// initialize timer 8254
-	movb $0x1B, %al // channel 0, access lobyte/hibyte, mode 3 (square wave generator)
+	movb $0x36, %al // channel 0, access lobyte/hibyte, mode 3 (square wave generator)
 	out %al, $TMR_CMD
 	movb $0x50, %al // lobyte of 50000
 	out %al, $TMR_CH0
@@ -113,13 +111,16 @@ clr_loop:
 	movb $OCW1, %al
 	out %al, $PIC_DATA
 
-	// run main
+	// enable interrupts
 	sti
+
+	// run main
 	call main
 	hlt
 
 	// interrupt handlers
 int_empty:
+	sti
 	iret
 	
 	// CPU interrupts
@@ -135,14 +136,64 @@ int04:
 	
 	// hardware interrupts
 int08:
+	push %ax
+	push %bx
+	push %cx
+	push %dx
+	push %si
+	push %di
+	push %bp
+	push %ds
+	push %es
+	push %ss
+	pop %ds
 	call int_timer
+	pop %es
+	pop %ds
+	pop %bp
+	pop %di
+	pop %si
+	pop %dx
+	pop %cx
+	pop %bx
+	mov $0x20, %al
+	out %al, $PIC_CMD // send EOI
+	pop %ax
+	sti
 	iret
 int09:
+	iret
+
+	push %ax
+	push %bx
+	push %cx
+	push %dx
+	push %si
+	push %di
+	push %bp
+	push %ds
+	push %es
+	push %ss
+	pop %ds
 	call int_keyboard
+	pop %es
+	pop %ds
+	pop %bp
+	pop %di
+	pop %si
+	pop %dx
+	pop %cx
+	pop %bx
+	mov $0x20, %al
+	out %al, $PIC_CMD // send EOI
+	pop %ax
+	sti
 	iret
 
 	// software interrupts
 int10:
+	iret
+
 	call int_bios
 	iret
 

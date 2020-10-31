@@ -1,4 +1,4 @@
-#include "b0.h"
+#include "bios.h"
 #include "io.h"
 #include "utils.h"
 #include "boot.h"
@@ -7,7 +7,7 @@
 unsigned char hours;
 unsigned char minutes;
 unsigned char seconds;
-unsigned char ticks;
+unsigned char ticks; // 20 ticks/sec.
 
 // interrupt handler
 void int_div_by_zero() {
@@ -56,15 +56,14 @@ void int_bios() {
 }
 
 int main() {
-    // unsigned int i, j;
+    hours = 0;
+    minutes = 0;
+    seconds = 0;
+    ticks = 0;
 
-    // while (1) {
-    //     for (i = 0; i < 16; i++) {
-    //         DisplayNumber(i);
-    //         for (j = 0; j < 10000; j++) ;
-    //     }
-    // }
+    unsigned int i, j;
 
+    lcd_init();
     init_screen();
 
     // show startup screen, system test

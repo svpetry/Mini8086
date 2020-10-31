@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.IO;
+using System.Linq.Expressions;
 
 namespace DecoderBuilder
 {
@@ -8,8 +9,8 @@ namespace DecoderBuilder
         MEMRD = 1,
         MEMWR = 2,
         ROMRD = 4,
-        IO0 = 8,
-        IO1 = 16,
+        IO_TIMER = 8,
+        IO_PIC = 16,
         IO_DBG = 32,
         VGA_MEM = 64,
         VGA_IO = 128
@@ -70,22 +71,22 @@ namespace DecoderBuilder
             {
                 // I/O access
                 var ioAddr = (addr & 0xFF) << 3;
-                if (ioAddr >= 0x000 && ioAddr <= 0x007)
+                if (ioAddr >= 0x040 && ioAddr <= 0x047)
                 {
-                    // IO0
-                    SetSignal(ref data, Signal.IO0);
+                    // IO_TIMER
+                    SetSignal(ref data, Signal.IO_TIMER);
                 }
-                if (ioAddr >= 0x008 && ioAddr <= 0x00F)
+                if (ioAddr >= 0x020 && ioAddr <= 0x027)
                 {
-                    // IO1
-                    SetSignal(ref data, Signal.IO1);
+                    // IO_PIC
+                    SetSignal(ref data, Signal.IO_PIC);
                 }
                 if (ioAddr >= 0x010 && ioAddr <= 0x017)
                 {
                     // IO_DBG
                     SetSignal(ref data, Signal.IO_DBG);
                 }
-                if (ioAddr >= 0x028 && ioAddr <= 0x02F)
+                if (ioAddr >= 0x050 && ioAddr <= 0x057)
                 {
                     // VGA_IO
                     SetSignal(ref data, Signal.VGA_IO);

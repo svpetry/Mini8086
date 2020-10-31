@@ -32,7 +32,7 @@ namespace Emulator.CPU
     }
 
     /// <summary>
-    /// 80186 CPU
+    ///     80186 CPU
     /// </summary>
     public sealed class Cpu8086 : IInterrupt, IEventTimer
     {
@@ -2949,13 +2949,7 @@ namespace Emulator.CPU
             // 02: NMI
             // 03: 1-byte INT/breakpoint
             // 04: overflow
-            // 08: timer
-            // 09: keyboard
-            // 0B: communications
-            // 0C: serial interface
-            // 0D: harddisk
-            // 0E: diskette
-            // 0F: printer
+            // 08-0F: IRQ0-IRQ7
 
             int interrupt;
             if (_softInterrupt != null)

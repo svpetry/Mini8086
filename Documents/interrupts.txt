@@ -3,7 +3,7 @@ Hardware interrupts
 IRQ0	8254 Timer 0
 IRQ1	keyboard
 IRQ2	8254 Timer 1
-IRQ3	Serial port 2
+IRQ3	(Serial port 2)
 IRQ4	Serial port 1
 IRQ5	VGA retrace
 IRQ6	SD controller

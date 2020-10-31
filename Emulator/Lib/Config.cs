@@ -8,17 +8,17 @@ namespace Emulator.Lib
 {
     static class Config
     {
-        public static int TimerBasePort => 0x00;
+        public static int TimerBasePort => 0x40;
 
-        public static int PicBasePort => 0x08;
+        public static int PicBasePort => 0x20;
 
         public static int PpiBasePort => 0x10;
 
-        public static int KeybControllerBasePort => 0x28;
+        public static int KeybControllerBasePort => 0x60;
 
-        public static int UartBasePort => 0x020;
+        public static int UartBasePort => 0x03F8;
 
-        public static int VgaBasePort => 0x28;
+        public static int VgaBasePort => 0x50;
 
         public static int VgaMemAddress => 0xC0000;
 

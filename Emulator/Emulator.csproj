@@ -57,7 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="Lib\Components\GraphicsAdapter.cs" />
     <Compile Include="Lib\Components\KeybController.cs" />
-    <Compile Include="Lib\Components\Pic.cs" />
+    <Compile Include="Lib\Components\InterruptController.cs" />
     <Compile Include="Lib\Components\Timer.cs" />
     <Compile Include="Lib\Config.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />

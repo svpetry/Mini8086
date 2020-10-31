@@ -1,7 +1,7 @@
 ﻿using Emulator.Utils;
 using System.Runtime.CompilerServices;
 
-namespace Emulator.Components
+namespace Emulator.Lib.Components
 {
     /// <summary>
     /// RAM

@@ -1,5 +1,4 @@
-﻿using Emulator.Components;
-using Emulator.Utils;
+﻿using Emulator.Utils;
 using System;
 using System.Reflection;
 
@@ -42,19 +41,19 @@ namespace Emulator.Lib.Components
                     break;
 
                 // port B
-                case 0x02:
+                case 0x01:
                     _portB = (byte)value;
                     PortChanged?.Invoke();
                     break;
 
                 // port C
-                case 0x04:
+                case 0x02:
                     _portC = (byte)value;
                     PortChanged?.Invoke();
                     break;
 
                 // control port
-                case 0x06:
+                case 0x03:
                     break;
             }
         }

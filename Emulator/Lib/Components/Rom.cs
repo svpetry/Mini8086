@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using Emulator.Utils;
 
-namespace Emulator.Components
+namespace Emulator.Lib.Components
 {
     internal sealed class Rom : BaseComponent, IMemoryProvider
     {

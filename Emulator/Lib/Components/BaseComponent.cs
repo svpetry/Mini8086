@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Emulator.Components
+namespace Emulator.Lib.Components
 {
     public abstract class BaseComponent : IComponent
     {

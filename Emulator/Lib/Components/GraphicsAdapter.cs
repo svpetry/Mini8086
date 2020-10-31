@@ -1,5 +1,4 @@
-﻿using Emulator.Components;
-using Emulator.Utils;
+﻿using Emulator.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,8 +34,7 @@ namespace Emulator.Lib.Components
         private const int CharWidth = 8;
         private const int CharHeight = 16;
 
-
-        private IInterrupt _cpu;
+        private readonly InterruptController _pic;
         private readonly int _basePort;
         private readonly int _baseMemAddress;
         private readonly WriteableBitmap _screen;
@@ -50,11 +48,11 @@ namespace Emulator.Lib.Components
         private byte _backgroundColor;
         private bool _enableRetraceInterrupt;
 
-        public GraphicsAdapter(IInterrupt cpu, int basePort, int baseMemAddress, string characterRomPath)
+        public GraphicsAdapter(int basePort, int baseMemAddress, InterruptController pic, string characterRomPath)
         {
-            _cpu = cpu;
             _basePort = basePort;
             _baseMemAddress = baseMemAddress;
+            _pic = pic;
 
             _screen = new WriteableBitmap(ScreenWidth, ScreenHeight, 96, 96, PixelFormats.Bgr32, null);
             _bytesPerPixel = _screen.Format.BitsPerPixel / 8;
@@ -89,14 +87,9 @@ namespace Emulator.Lib.Components
                     return value;
 
                 // background color
-                case 0x02:
+                case 0x01:
                     return _backgroundColor;
 
-                case 0x04:
-                    return 0x00;
-
-                case 0x06:
-                    return 0x00;
             }
             return 0x00;
         }
@@ -113,14 +106,8 @@ namespace Emulator.Lib.Components
                     break;
 
                 // background color
-                case 0x02:
+                case 0x01:
                     _backgroundColor = (byte)value;
-                    break;
-
-                case 0x04:
-                    break;
-
-                case 0x06:
                     break;
             }
         }

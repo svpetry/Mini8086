@@ -1,5 +1,4 @@
-﻿using Emulator.Components;
-using Emulator.Utils;
+﻿using Emulator.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +7,12 @@ using System.Threading.Tasks;
 
 namespace Emulator.Lib.Components
 {
+    /// <summary>
+    ///     8042 keyboard controller
+    /// </summary>
     public class KeybController : BaseComponent, IPortProvider
     {
-        int _basePort;
+        private int _basePort;
 
         public KeybController(int basePort)
         {

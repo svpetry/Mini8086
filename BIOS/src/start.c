@@ -7,6 +7,7 @@
 extern volatile unsigned char ticks;
 
 char cfg_sddrive;
+char freq_str[5];
  
 void error() {
     putstr(" ERROR!");
@@ -109,19 +110,22 @@ void check_timer(int row) {
             count++;
     }
     
-    count /= 423;
-    setcursor(RESULT_COL, 2);
+    count /= 475;
     i = count / 100;
     if (i == 0)
-        putch(' ');
+        freq_str[0] = ' ';
     else
-        putch('0' + i);
+        freq_str[0] = '0' + i;
     count -= i * 100;
     i = count / 10;
-    putch('0' + i);
-    putch('.');
+    freq_str[1] = '0' + i;
+    freq_str[2] = '.';
     count -= i * 10;
-    putch('0' + count);
+    freq_str[3] = '0' + count;
+    freq_str[4] = 0;
+
+    setcursor(RESULT_COL, 2);
+    putstr(freq_str);
   
     setcursor(RESULT_COL, row);
     putstr("OK");
@@ -181,5 +185,6 @@ void startup() {
     check_sound(i++);
 
     lcd_putstr(0, 0, "Mini8086     0.1");
-    lcd_putstr(0, 1, "System ready!   ");
+    lcd_putstr(0, 1, freq_str);
+    lcd_putstr(5, 1, "MHz");
 }

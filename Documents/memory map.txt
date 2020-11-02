@@ -21,7 +21,7 @@ F0000-FFFFF	ROM
 --------------------------------------------------------------------------------
 
 00000-003FF	8086 interrupt vectors
-00400-02FFF	BIOS data area + common stack
-03000-0FFFF	OS kernel code + data
+00400-006FF	BIOS data area + stack
+00700-0FFFF	OS kernel code + data
 10000-1FFFF	application code
 20000-xxxxx	application data

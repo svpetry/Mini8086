@@ -9,6 +9,8 @@
 .global int08
 .global int09
 
+.set BIOS_STACK_START, 0x06FE
+
 .set PIC_CMD, 0x20
 .set PIC_DATA, 0x21
 .set TMR_CH0, 0x40
@@ -32,7 +34,7 @@ _start:
 	movw %dx, %ds
 	movw %dx, %es
 	movw %dx, %ss
-	movw $0x2FFE, %sp
+	movw $BIOS_STACK_START, %sp
 
 	// copy .data segment to ram
 	movw %cs, %ax
@@ -145,9 +147,26 @@ int08:
 	push %bp
 	push %ds
 	push %es
-	push %ss
-	pop %ds
+	
+	// change data segment and stack
+	xorw %bx, %bx
+	movw %bx, %ds
+	movw %ss, %ax
+	movw %ax, ss_save
+	movw %sp, sp_save
+	andw %ax, %ax
+	jz no_stack_chg_08
+	movw %bx, %ss
+	movw $BIOS_STACK_START, %sp
+no_stack_chg_08:
+
 	call int_timer
+
+	// restore stack
+	movw ss_save, %ax
+	movw %ax, %ss
+	movw sp_save, %sp
+
 	pop %es
 	pop %ds
 	pop %bp
@@ -161,9 +180,8 @@ int08:
 	pop %ax
 	sti
 	iret
+	
 int09:
-	iret
-
 	push %ax
 	push %bx
 	push %cx
@@ -173,9 +191,26 @@ int09:
 	push %bp
 	push %ds
 	push %es
-	push %ss
-	pop %ds
+
+	// change data segment and stack
+	xorw %bx, %bx
+	movw %bx, %ds
+	movw %ss, %ax
+	movw %ax, ss_save
+	movw %sp, sp_save
+	andw %ax, %ax
+	jz no_stack_chg_09
+	movw %bx, %ss
+	movw $BIOS_STACK_START, %sp
+no_stack_chg_09:
+
 	call int_keyboard
+
+	// restore stack
+	movw ss_save, %ax
+	movw %ax, %ss
+	movw sp_save, %sp
+
 	pop %es
 	pop %ds
 	pop %bp

@@ -37,3 +37,4 @@ BIOS/DOSBOX/LOCAL/*.I
 *.bak
 BIOS/*.exe
 BIOS/bios/
+BIOS/b.asm

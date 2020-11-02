@@ -4,10 +4,13 @@
 #include "boot.h"
 #include "start.h"
 
-unsigned char hours;
-unsigned char minutes;
-unsigned char seconds;
-unsigned char ticks; // 20 ticks/sec.
+volatile unsigned int sp_save;
+volatile unsigned int ss_save;
+
+volatile unsigned char hours;
+volatile unsigned char minutes;
+volatile unsigned char seconds;
+volatile unsigned char ticks; // 20 ticks/sec.
 
 // interrupt handler
 void int_div_by_zero() {
@@ -51,10 +54,6 @@ void int_keyboard() {
 
 }
 
-void int_bios() {
-    
-}
-
 int main() {
     hours = 0;
     minutes = 0;
@@ -62,9 +61,16 @@ int main() {
     ticks = 0;
 
     unsigned int i, j;
+    char s[12];
 
-    lcd_init();
     init_screen();
+    lcd_init();
+
+    // while (1) {
+    //     itoa(seconds, s);
+    //     strcat(s, " ");
+    //     lcd_putstr(0, 0, s);
+    // }
 
     // show startup screen, system test
     startup();

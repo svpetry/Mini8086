@@ -10,7 +10,6 @@ unsigned char cursor_col;
 unsigned char cursor_row;
 unsigned char textcol;
 unsigned char __far (*screen)[4000];
-//unsigned char __far *screen;
 
 void init_screen() {
     outp(0x50, 0b00000000); // activate text mode

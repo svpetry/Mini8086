@@ -4,7 +4,7 @@
 
 #define RESULT_COL 20
 
-extern unsigned char ticks;
+extern volatile unsigned char ticks;
 
 char cfg_sddrive;
  
@@ -33,9 +33,9 @@ void check_memory(int row) {
     // test first 64 KB
     setcursor(RESULT_COL, row);
     putstr("64 KB");
-    memptr = (unsigned char __far *)0x00000600;
+    memptr = (unsigned char __far *)0x00000700;
     count = 0;
-    while (count < 0xFA00) {
+    while (count < 0xF900) {
         *memptr = 0xAA;
         if (*memptr != 0xAA) error();
         *memptr = 0x55;
@@ -92,7 +92,9 @@ void check_timer(int row) {
     unsigned int count = 10000;
     unsigned char t = ticks;
     while (t == ticks && count > 0) {
-        for (i = 0; i < 10; i++) ;
+        for (i = 0; i < 10; i++) {
+            asm("nop");
+        }
         count--;
     }
     if (count == 0) {
@@ -107,7 +109,7 @@ void check_timer(int row) {
             count++;
     }
     
-    count /= 297;
+    count /= 423;
     setcursor(RESULT_COL, 2);
     i = count / 100;
     if (i == 0)

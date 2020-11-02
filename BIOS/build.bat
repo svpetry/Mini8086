@@ -12,15 +12,17 @@ copy src\*.LD bios /b /v /y
 copy src\*.sh bios /b /v /y
 
 cd bios
-REM c:\windows\sysnative\wsl ./build.sh
-wsl ./build.sh
+if exist c:\windows\sysnative\wsl.exe (
+	c:\windows\sysnative\wsl ./build.sh
+) else (
+	wsl ./build.sh
+)
 cd ..
 
 copy bios\*.bin . /b /v /y
 
-REM del b.asm
-REM disasm b.bin > b.asm
-
-BiosBuilder
-REM if not exist ROM0.bin pause
-pause
+if exist b.bin (
+	del b.asm
+	disasm b.bin > b.asm
+	BiosBuilder
+) else ( pause )

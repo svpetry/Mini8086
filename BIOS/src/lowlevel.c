@@ -1,6 +1,6 @@
 #include "lowlevel.h"
 
-void outp(unsigned int port, unsigned char value) {
+inline void outp(unsigned int port, unsigned char value) {
     asm(
         "movb %1, %%al\n"
         "movw %0, %%dx\n"

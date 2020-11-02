@@ -2,14 +2,8 @@
 using Emulator.Lib;
 using Emulator.Lib.Components;
 using Emulator.Utils;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 
 namespace Emulator
 {
@@ -22,6 +16,7 @@ namespace Emulator
         private Timer _timer;
         private KeybController _keybController;
         private GraphicsAdapter _graphicsAdapter;
+        private Lcd44780 _lcd;
 
         private MemoryMapper _memMapper;
         private PortMapper _portMapper;
@@ -29,6 +24,8 @@ namespace Emulator
         private Disassembler _disassembler;
 
         public Ppi Ppi => _ppi;
+
+        public Lcd44780 Lcd => _lcd;
 
         public Cpu8086 Cpu => _cpu;
 
@@ -61,8 +58,11 @@ namespace Emulator
             _portMapper.Register(Config.VgaBasePort, Config.VgaBasePort + 0x07, _graphicsAdapter);
             _memMapper.Register(Config.VgaMemAddress, Config.VgaMemAddress + Config.VgaMemSize - 1, _graphicsAdapter);
 
-            components.Add(_ppi = new Ppi(Config.PpiBasePort));
-            _portMapper.Register(Config.PpiBasePort, Config.PpiBasePort + 0x07, _ppi);
+            components.Add(_lcd = new Lcd44780(Config.LcdBasePort));
+            _portMapper.Register(Config.LcdBasePort, Config.LcdBasePort + 0x07, _lcd);
+
+            //components.Add(_ppi = new Ppi(Config.PpiBasePort));
+            //_portMapper.Register(Config.PpiBasePort, Config.PpiBasePort + 0x07, _ppi);
 
             _memMapper.FinishRegistration();
             

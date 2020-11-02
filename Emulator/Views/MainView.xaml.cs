@@ -33,30 +33,8 @@ namespace Emulator
 
         private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "PortA")
-            {
-                SetSegment(SegA, 0);
-                SetSegment(SegB, 1);
-                SetSegment(SegC, 2);
-                SetSegment(SegD, 3);
-                SetSegment(SegE, 4);
-                SetSegment(SegF, 5);
-                SetSegment(SegG, 6);
-            }
-
             if (e.PropertyName == "DisassembledLines")
                 Dispatcher.Invoke(() => ScrollViewer.ScrollToBottom());
-        }
-
-        private void SetSegment(Rectangle rect, int bitNo)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                if ((_viewModel.PortA & (1 << bitNo)) == 0)
-                    rect.Fill = Brushes.Red;
-                else
-                    rect.Fill = Brushes.Black;
-            });
         }
     }
 }

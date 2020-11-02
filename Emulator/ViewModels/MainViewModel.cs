@@ -20,6 +20,9 @@ namespace Emulator.ViewModels
         private byte _portB;
         private byte _portC;
 
+        private string _lcdLine1;
+        private string _lcdLine2;
+
         private bool _doStop;
 
         private DispatcherTimer _screenTimer;
@@ -76,6 +79,28 @@ namespace Emulator.ViewModels
             {
                 if (_portC == value) return;
                 _portC = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string LcdLine1
+        {
+            get => _lcdLine1;
+            set
+            {
+                if (_lcdLine1 == value) return;
+                _lcdLine1 = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string LcdLine2
+        {
+            get => _lcdLine2;
+            set
+            {
+                if (_lcdLine2 == value) return;
+                _lcdLine2 = value;
                 OnPropertyChanged();
             }
         }
@@ -248,11 +273,18 @@ namespace Emulator.ViewModels
 
             _emulator = new Mini8086Emulator();
             _emulator.Init();
-            _emulator.Ppi.PortChanged += Ppi_PortChanged;
+            //_emulator.Ppi.PortChanged += Ppi_PortChanged;
+            _emulator.Lcd.DisplayChanged += Lcd_DisplayChanged;
 
             _disassembler = new Disassembler(_emulator.Cpu, _emulator.MemMapper);
 
             Reset(null);
+        }
+
+        private void Lcd_DisplayChanged()
+        {
+            LcdLine1 = _emulator.Lcd.Lines[0];
+            LcdLine2 = _emulator.Lcd.Lines[1];
         }
 
         private void Ppi_PortChanged()

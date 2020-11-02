@@ -14,6 +14,8 @@ namespace Emulator.Lib
 
         public static int PpiBasePort => 0x10;
 
+        public static int LcdBasePort => 0x10;
+
         public static int KeybControllerBasePort => 0x60;
 
         public static int UartBasePort => 0x03F8;

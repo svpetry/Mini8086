@@ -26,7 +26,7 @@
 .set ICW1, 0b00010111
 .set ICW2, 0x08 // interrupt offset
 .set ICW4, 0b00000001 // 8086 mode, normal EOI, unbuffered mode
-.set OCW1, 0b11111100 // enable interrupts 0 and 1
+.set OCW1, 0b11111110 // enable interrupt 0 (timer)
 
 _start:
 	// set segments
@@ -98,20 +98,27 @@ clr_loop:
 	// initialize timer 8254
 	movb $0x36, %al // channel 0, access lobyte/hibyte, mode 3 (square wave generator)
 	out %al, $TMR_CMD
+	nop
 	movb $0x50, %al // lobyte of 50000
 	out %al, $TMR_CH0
+	nop
 	movb $0xC3, %al // hibyte of 50000
 	out %al, $TMR_CH0
+	nop
 
 	// initialize PIC 8259
 	movb $ICW1, %al
 	out %al, $PIC_CMD
+	nop
 	movb $ICW2, %al
 	out %al, $PIC_DATA
+	nop
 	movb $ICW4, %al
 	out %al, $PIC_DATA
+	nop
 	movb $OCW1, %al
 	out %al, $PIC_DATA
+	nop
 
 	// enable interrupts
 	sti

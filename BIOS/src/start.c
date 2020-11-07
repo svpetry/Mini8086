@@ -8,6 +8,8 @@ extern volatile unsigned char ticks;
 
 char cfg_sddrive;
 char freq_str[5];
+int ram_kb;
+volatile unsigned char __far (*memptr);
  
 void error() {
     putstr(" ERROR!");
@@ -24,7 +26,6 @@ void check_cpu(int row) {
 }
 
 void check_memory(int row) {
-    unsigned char __far (*memptr);
     unsigned long count;
     char s[12];
 
@@ -41,12 +42,12 @@ void check_memory(int row) {
         if (*memptr != 0xAA) error();
         *memptr = 0x55;
         if (*memptr != 0x55) error();
-        if (count < 0x100) {
+        if (count < 0x400) {
             memptr++;
             count++;
         } else {
-            memptr += 0x100;
-            count += 0x100;
+            memptr += 0x10;
+            count += 0x10;
         }
     }
 
@@ -60,7 +61,8 @@ void check_memory(int row) {
         if (*memptr != 0x0F) break;
 
         setcursor(RESULT_COL, row);
-        itoa(((memstart >> 28) + 1) * 64, s);
+        ram_kb = ((memstart >> 28) + 1) * 64;
+        itoa(ram_kb, s);
         putstr(s);
         putstr(" KB");
 
@@ -70,12 +72,12 @@ void check_memory(int row) {
             if (*memptr != 0xAA) error();
             *memptr = 0x55;
             if (*memptr != 0x55) error();
-            if (count < 0x100) {
+            if (count < 0x400) {
                 memptr++;
                 count++;
             } else {
-                memptr += 0x100;
-                count += 0x100;
+                memptr += 0x10;
+                count += 0x10;
             }
         }
 
@@ -110,7 +112,7 @@ void check_timer(int row) {
             count++;
     }
     
-    count /= 475;
+    count /= 340;
     i = count / 100;
     if (i == 0)
         freq_str[0] = ' ';
@@ -173,7 +175,9 @@ void startup() {
     for (i = 0; i < 80; i++)
         putch(' ' + 128);
     setcursor(1, 0);
-    putstr_inv("Mini8086 BIOS 0.1   2020");
+    putstr_inv("Mini8086 BIOS 0.1");
+    setcursor(68, 0);
+    putstr_inv(__DATE__);
 
     i = 2;
     check_cpu(i++);
@@ -184,7 +188,11 @@ void startup() {
     check_sd_drive(i++);
     check_sound(i++);
 
+    char s[6]; 
     lcd_putstr(0, 0, "Mini8086     0.1");
     lcd_putstr(0, 1, freq_str);
     lcd_putstr(5, 1, "MHz");
+    itoa(ram_kb, s);
+    lcd_putstr(10, 1, s);
+    lcd_putstr(14, 1, "KB");
 }

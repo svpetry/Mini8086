@@ -64,12 +64,16 @@ void putstr_inv(char *str) {
 
 void lcd_delay_long() {
     int i;
-    for (i = 0; i < 1000; i++) ;
+    for (i = 0; i < 12000; i++) {
+        asm("nop");
+    }
 }
 
 void lcd_delay_short() {
     int i;
-    for (i = 0; i < 10; i++) ;
+    for (i = 0; i < 60; i++) {
+        asm("nop");
+    }
 }
 
 void lcd_cmd(unsigned char cmd) {

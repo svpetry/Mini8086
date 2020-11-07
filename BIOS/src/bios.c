@@ -1,5 +1,6 @@
 #include "bios.h"
 #include "io.h"
+#include "lowlevel.h"
 #include "utils.h"
 #include "boot.h"
 #include "start.h"
@@ -55,25 +56,62 @@ void int_keyboard() {
 }
 
 int main() {
+    unsigned int i, j, k;
+    char s[12];
+
     hours = 0;
     minutes = 0;
     seconds = 0;
     ticks = 0;
 
-    unsigned int i, j;
-    char s[12];
-
     init_screen();
     lcd_init();
 
+    // k = 0;
     // while (1) {
-    //     itoa(seconds, s);
+    //     itoa(k++, s);
     //     strcat(s, " ");
     //     lcd_putstr(0, 0, s);
+
+    //     for (i = 0; i < 200; i++) {
+    //         for (j = 0; j < 1000; j++)
+    //             asm("nop");
+    //     }
+    //     outp(0x010, 0b11000000);
+    //     for (i = 0; i < 200; i++) {
+    //         for (j = 0; j < 1000; j++)
+    //             asm("nop");
+    //     }
+    //     outp(0x010, 0b00000000);
+
+    //     if (k == 5)
+    //         asm("sti");
     // }
 
     // show startup screen, system test
     startup();
+
+    for (i = 0; i < 10000; i++)
+        for (j = 0; j < 100; j++)
+            asm("nop");
+
+    lcd_putstr(0, 0, "                ");
+    while (1) {
+        itoa(hours, s);
+        ltrim(s, 2, '0');
+        lcd_putstr(8, 0, s);
+        lcd_putstr(10, 0, ":");
+        itoa(minutes, s);
+        ltrim(s, 2, '0');
+        lcd_putstr(11, 0, s);
+        lcd_putstr(13, 0, ":");
+        itoa(seconds, s);
+        ltrim(s, 2, '0');
+        lcd_putstr(14, 0, s);
+
+        for (j = 0; j < 100; j++)
+            asm("nop");
+    }
 
     // boot from SD card
     boot();

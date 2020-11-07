@@ -3,9 +3,9 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 5 7
-Title ""
-Date ""
+Sheet 6 7
+Title "Mini8086 I/O board"
+Date "2020-11-05"
 Rev "1.0"
 Comp ""
 Comment1 ""
@@ -392,7 +392,7 @@ U 4 1 5F902496
 P 5450 1900
 F 0 "U4" H 5450 2217 50  0000 C CNN
 F 1 "74HC04" H 5450 2126 50  0000 C CNN
-F 2 "" H 5450 1900 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 5450 1900 50  0001 C CNN
 F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 5450 1900 50  0001 C CNN
 	4    5450 1900
 	1    0    0    -1  
@@ -403,7 +403,7 @@ U 5 1 5F90312F
 P 8350 2550
 F 0 "U4" H 8350 2867 50  0000 C CNN
 F 1 "74HC04" H 8350 2776 50  0000 C CNN
-F 2 "" H 8350 2550 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 8350 2550 50  0001 C CNN
 F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 8350 2550 50  0001 C CNN
 	5    8350 2550
 	1    0    0    -1  
@@ -414,7 +414,7 @@ U 6 1 5F904907
 P 8350 3050
 F 0 "U4" H 8350 3367 50  0000 C CNN
 F 1 "74HC04" H 8350 3276 50  0000 C CNN
-F 2 "" H 8350 3050 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 8350 3050 50  0001 C CNN
 F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 8350 3050 50  0001 C CNN
 	6    8350 3050
 	1    0    0    -1  
@@ -425,7 +425,7 @@ U 7 1 5F904FC3
 P 8350 4150
 F 0 "U4" H 8580 4196 50  0000 L CNN
 F 1 "74HC04" H 8580 4105 50  0000 L CNN
-F 2 "" H 8350 4150 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 8350 4150 50  0001 C CNN
 F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 8350 4150 50  0001 C CNN
 	7    8350 4150
 	1    0    0    -1  

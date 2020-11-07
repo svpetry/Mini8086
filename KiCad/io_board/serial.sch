@@ -4,8 +4,8 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 2 7
-Title ""
-Date ""
+Title "Mini8086 I/O board"
+Date "2020-11-05"
 Rev "1.0"
 Comp ""
 Comment1 ""
@@ -301,7 +301,7 @@ F 3 "" H 5250 2200 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	3150 4800 2850 4800
-Text GLabel 2850 4800 0    50   Input ~ 0
+Text GLabel 2850 4800 0    50   Output ~ 0
 IRQ4
 $Comp
 L Device:R_Small R2

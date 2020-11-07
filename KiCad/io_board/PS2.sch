@@ -4,8 +4,8 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 3 7
-Title ""
-Date ""
+Title "Mini8086 I/O board"
+Date "2020-11-05"
 Rev "1.0"
 Comp ""
 Comment1 ""
@@ -417,7 +417,7 @@ U 1 1 5F8FBE53
 P 5550 3850
 F 0 "U4" H 5550 3533 50  0000 C CNN
 F 1 "74HC04" H 5550 3624 50  0000 C CNN
-F 2 "" H 5550 3850 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 5550 3850 50  0001 C CNN
 F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 5550 3850 50  0001 C CNN
 	1    5550 3850
 	-1   0    0    1   
@@ -428,7 +428,7 @@ U 2 1 5F8FD793
 P 9200 4550
 F 0 "U4" H 9200 4233 50  0000 C CNN
 F 1 "74HC04" H 9200 4324 50  0000 C CNN
-F 2 "" H 9200 4550 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 9200 4550 50  0001 C CNN
 F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 9200 4550 50  0001 C CNN
 	2    9200 4550
 	-1   0    0    1   

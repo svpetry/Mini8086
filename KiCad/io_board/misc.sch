@@ -3,9 +3,9 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 6 7
-Title ""
-Date ""
+Sheet 7 7
+Title "Mini8086 I/O board"
+Date "2020-11-05"
 Rev "1.0"
 Comp ""
 Comment1 ""
@@ -233,7 +233,7 @@ U 1 1 5F8EE20C
 P 9600 3500
 F 0 "C16" H 9718 3546 50  0000 L CNN
 F 1 "47µ" H 9718 3455 50  0000 L CNN
-F 2 "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm" H 9638 3350 50  0001 C CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.00mm" H 9638 3350 50  0001 C CNN
 F 3 "~" H 9600 3500 50  0001 C CNN
 	1    9600 3500
 	1    0    0    -1  
@@ -339,10 +339,6 @@ Wire Wire Line
 Text GLabel 2450 3450 0    50   Input ~ 0
 ~RD
 Wire Wire Line
-	3700 2450 3800 2450
-Text GLabel 3800 2450 2    50   Output ~ 0
-~CS_DRVBUF
-Wire Wire Line
 	2800 3250 2800 3750
 Wire Wire Line
 	2700 3350 2900 3350
@@ -391,6 +387,7 @@ Wire Wire Line
 	6000 3750 6450 3750
 Connection ~ 6450 3750
 NoConn ~ 3700 2550
+NoConn ~ 3700 2450
 Wire Bus Line
 	2600 1850 2600 2650
 $EndSCHEMATC

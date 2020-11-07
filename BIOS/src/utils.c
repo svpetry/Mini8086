@@ -21,6 +21,22 @@ char *strcat(char *dest, const char *src) {
     return dest;
 }
 
+void *ltrim(char *s, int n, char c) {
+	int l = strlen(s);
+	int diff = n - l;
+	int i;
+	s[n] = '\0';
+	while (l > 0) {
+		l--;
+		s[l + diff] = s[l];
+	}
+	while (diff > 0) {
+		diff--;
+		s[diff] = c;
+	}
+	return s;
+}
+
 void reverse(char s[]) {
 	int i, j;
 	char c;
@@ -63,8 +79,4 @@ void ltoa(long i, char* buf) {
 	if (sign)
 		*--s = '-';
     strcpy(buf, s);
-}
-
-void delay_ms(int ms) {
-
 }

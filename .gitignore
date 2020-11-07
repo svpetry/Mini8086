@@ -38,3 +38,7 @@ BIOS/DOSBOX/LOCAL/*.I
 BIOS/*.exe
 BIOS/bios/
 BIOS/b.asm
+VGAreg/simulation/
+SD controller/db/
+SD controller/incremental_db/
+SD controller/output_files/

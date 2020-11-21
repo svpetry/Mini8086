@@ -1,0 +1,268 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 8 8
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Mini8086:PCA9564D U17
+U 1 1 5FAD78F1
+P 2800 3250
+F 0 "U17" H 2800 3300 50  0000 C CNN
+F 1 "PCA9564D" H 2800 3150 50  0000 C CNN
+F 2 "" H 2800 3250 50  0001 C CNN
+F 3 "" H 2800 3250 50  0001 C CNN
+	1    2800 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0108
+U 1 1 5FAD835F
+P 2800 4500
+F 0 "#PWR0108" H 2800 4250 50  0001 C CNN
+F 1 "GND" H 2805 4327 50  0000 C CNN
+F 2 "" H 2800 4500 50  0001 C CNN
+F 3 "" H 2800 4500 50  0001 C CNN
+	1    2800 4500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2050 2550 2250 2550
+Wire Wire Line
+	2050 2650 2250 2650
+Wire Wire Line
+	2050 2750 2250 2750
+Wire Wire Line
+	2050 2850 2250 2850
+Wire Wire Line
+	2050 2950 2250 2950
+Wire Wire Line
+	2050 3050 2250 3050
+Wire Wire Line
+	2050 3150 2250 3150
+Wire Wire Line
+	2050 3250 2250 3250
+Wire Wire Line
+	2250 3450 2050 3450
+Wire Wire Line
+	2050 3550 2250 3550
+Entry Wire Line
+	2050 2550 1950 2450
+Entry Wire Line
+	2050 2650 1950 2550
+Entry Wire Line
+	2050 2750 1950 2650
+Entry Wire Line
+	2050 2850 1950 2750
+Entry Wire Line
+	2050 2950 1950 2850
+Entry Wire Line
+	2050 3050 1950 2950
+Entry Wire Line
+	2050 3150 1950 3050
+Entry Wire Line
+	2050 3250 1950 3150
+Entry Wire Line
+	2050 3450 1950 3350
+Entry Wire Line
+	2050 3550 1950 3450
+Wire Bus Line
+	1950 3300 1850 3300
+Wire Bus Line
+	1950 2400 1850 2400
+Text GLabel 1850 2400 0    50   Input ~ 0
+D[0..7]
+Text GLabel 1850 3300 0    50   Input ~ 0
+A[0..19]
+Text Label 2100 2550 0    50   ~ 0
+D0
+Text Label 2100 2650 0    50   ~ 0
+D1
+Text Label 2100 2750 0    50   ~ 0
+D2
+Text Label 2100 2850 0    50   ~ 0
+D3
+Text Label 2100 2950 0    50   ~ 0
+D4
+Text Label 2100 3050 0    50   ~ 0
+D5
+Text Label 2100 3150 0    50   ~ 0
+D6
+Text Label 2100 3250 0    50   ~ 0
+D7
+Text Label 2100 3450 0    50   ~ 0
+A0
+Text Label 2100 3550 0    50   ~ 0
+A1
+Wire Wire Line
+	2150 3750 2250 3750
+Wire Wire Line
+	1950 3850 2250 3850
+Text GLabel 2150 3750 0    50   Input ~ 0
+~RD
+Text GLabel 1950 3850 0    50   Input ~ 0
+~WR
+Wire Wire Line
+	2250 4050 2150 4050
+Text GLabel 2150 4050 0    50   Input ~ 0
+~RESET
+Wire Wire Line
+	2250 4250 2150 4250
+Text GLabel 2150 4250 0    50   Input ~ 0
+~CS_I2C
+Wire Wire Line
+	2250 4150 1800 4150
+Text GLabel 1800 4150 0    50   Output ~ 0
+~INT_I2C
+Text GLabel 4200 2250 2    50   Input ~ 0
+VCC3
+$Comp
+L Connector_Generic:Conn_01x04 J5
+U 1 1 5FAE4542
+P 4350 2800
+F 0 "J5" H 4430 2792 50  0000 L CNN
+F 1 "DS1307" H 4430 2701 50  0000 L CNN
+F 2 "" H 4350 2800 50  0001 C CNN
+F 3 "~" H 4350 2800 50  0001 C CNN
+	1    4350 2800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3300 2700 3800 2700
+Wire Wire Line
+	3300 2800 3500 2800
+Wire Wire Line
+	4150 3000 4000 3000
+Wire Wire Line
+	4150 2900 4100 2900
+Wire Wire Line
+	4100 2900 4100 2250
+Wire Wire Line
+	4200 2250 4100 2250
+Wire Wire Line
+	2800 2250 2800 2300
+Connection ~ 4100 2250
+Wire Wire Line
+	4100 2250 2800 2250
+$Comp
+L power:GND #PWR0109
+U 1 1 5FAE7659
+P 4000 3950
+F 0 "#PWR0109" H 4000 3700 50  0001 C CNN
+F 1 "GND" H 4005 3777 50  0000 C CNN
+F 2 "" H 4000 3950 50  0001 C CNN
+F 3 "" H 4000 3950 50  0001 C CNN
+	1    4000 3950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x04 J6
+U 1 1 5FAE8586
+P 7350 4100
+F 0 "J6" H 7430 4092 50  0000 L CNN
+F 1 "BME280" H 7430 4001 50  0000 L CNN
+F 2 "" H 7350 4100 50  0001 C CNN
+F 3 "~" H 7350 4100 50  0001 C CNN
+	1    7350 4100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4150 3550 4100 3550
+Wire Wire Line
+	4100 3550 4100 2900
+Connection ~ 4100 2900
+Wire Wire Line
+	4150 3650 4000 3650
+Wire Wire Line
+	4000 3650 4000 3000
+Wire Wire Line
+	4000 3950 4000 3650
+Connection ~ 4000 3650
+Wire Wire Line
+	4150 3750 3900 3750
+Wire Wire Line
+	3900 3750 3900 2800
+Connection ~ 3900 2800
+Wire Wire Line
+	3900 2800 4150 2800
+Wire Wire Line
+	3800 3850 3800 2700
+Connection ~ 3800 2700
+Wire Wire Line
+	3800 2700 4150 2700
+Wire Wire Line
+	3800 3850 4150 3850
+$Comp
+L Device:R R10
+U 1 1 5FAF7F1D
+P 3500 1900
+F 0 "R10" H 3570 1946 50  0000 L CNN
+F 1 "1K8" H 3570 1855 50  0000 L CNN
+F 2 "" V 3430 1900 50  0001 C CNN
+F 3 "~" H 3500 1900 50  0001 C CNN
+	1    3500 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R11
+U 1 1 5FAF84E2
+P 3800 1900
+F 0 "R11" H 3870 1946 50  0000 L CNN
+F 1 "1K8" H 3870 1855 50  0000 L CNN
+F 2 "" V 3730 1900 50  0001 C CNN
+F 3 "~" H 3800 1900 50  0001 C CNN
+	1    3800 1900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3800 2700 3800 2050
+Wire Wire Line
+	3500 2050 3500 2800
+Connection ~ 3500 2800
+Wire Wire Line
+	3500 2800 3900 2800
+Wire Wire Line
+	3500 1750 3500 1650
+Wire Wire Line
+	3500 1650 3800 1650
+Wire Wire Line
+	3800 1750 3800 1650
+Connection ~ 3800 1650
+Wire Wire Line
+	3800 1650 3800 1550
+Wire Bus Line
+	1950 3300 1950 3450
+Wire Bus Line
+	1950 2400 1950 3150
+$Comp
+L power:VCC #PWR043
+U 1 1 5FAFF164
+P 3800 1550
+F 0 "#PWR043" H 3800 1400 50  0001 C CNN
+F 1 "VCC" H 3815 1723 50  0000 C CNN
+F 2 "" H 3800 1550 50  0001 C CNN
+F 3 "" H 3800 1550 50  0001 C CNN
+	1    3800 1550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Memory_EEPROM:M24C02-WMN U?
+U 1 1 5FAFF485
+P 7350 1950
+F 0 "U?" H 7350 2431 50  0000 C CNN
+F 1 "M24C02-WMN" H 7350 2340 50  0000 C CNN
+F 2 "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" H 7350 2300 50  0001 C CNN
+F 3 "http://www.st.com/content/ccc/resource/technical/document/datasheet/b0/d8/50/40/5a/85/49/6f/DM00071904.pdf/files/DM00071904.pdf/jcr:content/translations/en.DM00071904.pdf" H 7400 1450 50  0001 C CNN
+	1    7350 1950
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC

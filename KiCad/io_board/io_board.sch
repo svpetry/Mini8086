@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 7
+Sheet 1 8
 Title "Mini8086 I/O board"
 Date "2020-11-05"
 Rev "1.0"
@@ -42,5 +42,11 @@ S 7000 1000 1000 1000
 U 5F8C5C81
 F0 "misc" 50
 F1 "misc.sch" 50
+$EndSheet
+$Sheet
+S 8500 1000 1000 1000
+U 5FAD75B9
+F0 "I2C" 50
+F1 "I2C.sch" 50
 $EndSheet
 $EndSCHEMATC

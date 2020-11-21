@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 5 7
+Sheet 5 8
 Title "Mini8086 I/O board"
 Date "2020-11-05"
 Rev "1.0"
@@ -152,9 +152,9 @@ Text Label 3400 1900 0    50   ~ 0
 RD6
 Text Label 3400 2000 0    50   ~ 0
 RD7
-Text GLabel 3700 1150 2    50   Input ~ 0
+Text GLabel 3700 1150 2    50   BiDi ~ 0
 RD[0..7]
-Text GLabel 2000 1150 0    50   Input ~ 0
+Text GLabel 2000 1150 0    50   BiDi ~ 0
 D[0..7]
 Wire Wire Line
 	2300 2200 2350 2200
@@ -610,7 +610,7 @@ Wire Bus Line
 Wire Bus Line
 	10300 950  10400 950 
 Connection ~ 10300 950 
-Text GLabel 10400 950  2    50   Input ~ 0
+Text GLabel 10400 950  2    50   Output ~ 0
 RA[0..8]
 Text Label 8150 1650 0    50   ~ 0
 RA0

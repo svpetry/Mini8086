@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 6 7
+Sheet 6 8
 Title "Mini8086 I/O board"
 Date "2020-11-05"
 Rev "1.0"
@@ -325,7 +325,6 @@ Text GLabel 4700 2700 2    50   Input ~ 0
 IRQ6
 NoConn ~ 4500 3000
 NoConn ~ 4500 2800
-NoConn ~ 4500 2600
 Wire Wire Line
 	3550 2200 3350 2200
 Text GLabel 3350 2200 0    50   Output ~ 0
@@ -391,7 +390,7 @@ L 74xx:74HC04 U4
 U 4 1 5F902496
 P 5450 1900
 F 0 "U4" H 5450 2217 50  0000 C CNN
-F 1 "74HC04" H 5450 2126 50  0000 C CNN
+F 1 "74HCT04" H 5450 2126 50  0000 C CNN
 F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 5450 1900 50  0001 C CNN
 F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 5450 1900 50  0001 C CNN
 	4    5450 1900
@@ -400,20 +399,20 @@ $EndComp
 $Comp
 L 74xx:74HC04 U4
 U 5 1 5F90312F
-P 8350 2550
-F 0 "U4" H 8350 2867 50  0000 C CNN
-F 1 "74HC04" H 8350 2776 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 8350 2550 50  0001 C CNN
-F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 8350 2550 50  0001 C CNN
-	5    8350 2550
-	1    0    0    -1  
+P 5450 2600
+F 0 "U4" H 5450 2917 50  0000 C CNN
+F 1 "74HCT04" H 5450 2826 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 5450 2600 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 5450 2600 50  0001 C CNN
+	5    5450 2600
+	-1   0    0    1   
 $EndComp
 $Comp
 L 74xx:74HC04 U4
 U 6 1 5F904907
 P 8350 3050
 F 0 "U4" H 8350 3367 50  0000 C CNN
-F 1 "74HC04" H 8350 3276 50  0000 C CNN
+F 1 "74HCT04" H 8350 3276 50  0000 C CNN
 F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 8350 3050 50  0001 C CNN
 F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 8350 3050 50  0001 C CNN
 	6    8350 3050
@@ -424,7 +423,7 @@ L 74xx:74HC04 U4
 U 7 1 5F904FC3
 P 8350 4150
 F 0 "U4" H 8580 4196 50  0000 L CNN
-F 1 "74HC04" H 8580 4105 50  0000 L CNN
+F 1 "74HCT04" H 8580 4105 50  0000 L CNN
 F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 8350 4150 50  0001 C CNN
 F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 8350 4150 50  0001 C CNN
 	7    8350 4150
@@ -455,12 +454,7 @@ $EndComp
 Wire Wire Line
 	8050 3050 7900 3050
 Wire Wire Line
-	7900 3050 7900 2550
-Wire Wire Line
-	7900 2550 8050 2550
-Wire Wire Line
 	7900 3050 7900 3150
-Connection ~ 7900 3050
 $Comp
 L power:GND #PWR057
 U 1 1 5F90A6C0
@@ -473,7 +467,14 @@ F 3 "" H 7900 3150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 NoConn ~ 8650 3050
-NoConn ~ 8650 2550
+Wire Wire Line
+	5150 2600 4500 2600
+Wire Wire Line
+	5750 2600 5850 2600
+Text GLabel 5850 2600 2    50   Input ~ 0
+~INT_I2C
+Text Label 4700 2600 0    50   ~ 0
+IRQ7
 Wire Bus Line
 	4800 3850 4800 4600
 Wire Bus Line

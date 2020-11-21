@@ -1,0 +1,4 @@
+device		address
+BME280 Sensor	
+DS1307 RTC	
+M24C04 EEprom	

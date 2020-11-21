@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 6
+Sheet 1 7
 Title ""
 Date ""
 Rev ""
@@ -42,5 +42,11 @@ S 4000 1000 1000 1000
 U 5FB1662F
 F0 "connector" 50
 F1 "connector.sch" 50
+$EndSheet
+$Sheet
+S 4000 2500 1000 1000
+U 5FB0F245
+F0 "misc" 50
+F1 "misc.sch" 50
 $EndSheet
 $EndSCHEMATC

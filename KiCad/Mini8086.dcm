@@ -5,4 +5,9 @@ D I2C Bus Controller, SOIC-20
 K I2C
 $ENDCMP
 #
+$CMP ST16C550CJ44
+D ST16C550CJ44, Universal Asynchronous Receiver/Transmitter with FIFOs, PLC-44
+K 1ch UART FIFO
+$ENDCMP
+#
 #End Doc Library

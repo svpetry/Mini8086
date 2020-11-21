@@ -1,3 +1,4 @@
+#include "defs.h"
 #include "bios.h"
 #include "io.h"
 #include "lowlevel.h"
@@ -65,7 +66,9 @@ int main() {
     ticks = 0;
 
     init_screen();
+#if LCD != 0
     lcd_init();
+#endif
 
     // k = 0;
     // while (1) {
@@ -95,6 +98,7 @@ int main() {
         for (j = 0; j < 100; j++)
             asm("nop");
 
+#if LCD == 1602
     lcd_putstr(0, 0, "                ");
     while (1) {
         itoa(hours, s);
@@ -112,6 +116,25 @@ int main() {
         for (j = 0; j < 100; j++)
             asm("nop");
     }
+#endif
+#if LCD == 2004
+    while (1) {
+        itoa(hours, s);
+        ltrim(s, 2, '0');
+        lcd_putstr(0, 3, s);
+        lcd_putstr(2, 3, ":");
+        itoa(minutes, s);
+        ltrim(s, 2, '0');
+        lcd_putstr(3, 3, s);
+        lcd_putstr(5, 3, ":");
+        itoa(seconds, s);
+        ltrim(s, 2, '0');
+        lcd_putstr(6, 3, s);
+
+        for (j = 0; j < 100; j++)
+            asm("nop");
+    }
+#endif
 
     // boot from SD card
     boot();

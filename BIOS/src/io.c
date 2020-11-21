@@ -154,10 +154,20 @@ void lcd_putstr(int col, int row, char *str) {
     unsigned char cmd;
     
     // set cursor position
-    if (row == 0)
-        cmd = 0x00;
-    else
-        cmd = 0x40;
+    switch (row) {
+        case 0:
+            cmd = 0x00;
+            break;
+        case 1:
+            cmd = 0x40;
+            break;
+        case 2:
+            cmd = 0x14;
+            break;
+        case 3:
+            cmd = 0x54;
+            break;
+    }
     cmd = (cmd + col) | 0b10000000;
     lcd_cmd(cmd);
 

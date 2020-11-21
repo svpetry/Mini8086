@@ -1,3 +1,4 @@
+#include "defs.h"
 #include "start.h"
 #include "io.h"
 #include "utils.h"
@@ -112,7 +113,7 @@ void check_timer(int row) {
             count++;
     }
     
-    count /= 340;
+    count /= 341;
     i = count / 100;
     if (i == 0)
         freq_str[0] = ' ';
@@ -188,11 +189,18 @@ void startup() {
     check_sd_drive(i++);
     check_sound(i++);
 
-    char s[6]; 
+#if LCD == 1602
     lcd_putstr(0, 0, "Mini8086     0.1");
+#endif
+#if LCD == 2004
+    lcd_putstr(0, 0, "Mini8086 BIOS    0.1");
+#endif
+#if LCD != 0
+    char s[6];
     lcd_putstr(0, 1, freq_str);
     lcd_putstr(5, 1, "MHz");
     itoa(ram_kb, s);
     lcd_putstr(10, 1, s);
     lcd_putstr(14, 1, "KB");
+#endif
 }

@@ -47,3 +47,43 @@ set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR "-1"
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
 set_global_assignment -name VERILOG_FILE VGAreg.v
+set_global_assignment -name MAX7000_DEVICE_IO_STANDARD TTL
+set_location_assignment PIN_1 -to _reset
+set_location_assignment PIN_4 -to _char_bg
+set_location_assignment PIN_43 -to pclk
+set_location_assignment PIN_41 -to plane
+set_location_assignment PIN_40 -to irq
+set_location_assignment PIN_6 -to mode[1]
+set_location_assignment PIN_5 -to mode[0]
+set_location_assignment PIN_8 -to data[7]
+set_location_assignment PIN_9 -to data[6]
+set_location_assignment PIN_11 -to data[5]
+set_location_assignment PIN_12 -to data[4]
+set_location_assignment PIN_14 -to data[3]
+set_location_assignment PIN_16 -to data[2]
+set_location_assignment PIN_17 -to data[1]
+set_location_assignment PIN_18 -to data[0]
+set_location_assignment PIN_19 -to dcol[0]
+set_location_assignment PIN_20 -to dcol[1]
+set_location_assignment PIN_21 -to dcol[2]
+set_location_assignment PIN_24 -to dcol[3]
+set_location_assignment PIN_25 -to dcol[4]
+set_location_assignment PIN_26 -to dcol[5]
+set_location_assignment PIN_27 -to dcol[6]
+set_location_assignment PIN_28 -to dcol[7]
+set_location_assignment PIN_31 -to addr[0]
+set_location_assignment PIN_29 -to addr[1]
+set_location_assignment PIN_33 -to hsync
+set_location_assignment PIN_34 -to vsync
+set_location_assignment PIN_37 -to _wr
+set_location_assignment PIN_39 -to _vga_io
+set_location_assignment PIN_32 -to TCK
+set_location_assignment PIN_38 -to TDO
+set_location_assignment PIN_7 -to TDI
+set_location_assignment PIN_13 -to TMS
+set_global_assignment -name VECTOR_WAVEFORM_FILE Waveform.vwf
+set_global_assignment -name SIMULATION_MODE FUNCTIONAL
+set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (Verilog)"
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST ON -section_id eda_simulation
+set_global_assignment -name INCREMENTAL_VECTOR_INPUT_SOURCE "C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/VGAreg/Waveform.vwf"

@@ -62,286 +62,6 @@ SIGNAL("_charpixel")
 	PARENT = "";
 }
 
-SIGNAL("_rd")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = INPUT;
-	PARENT = "";
-}
-
-SIGNAL("_vga_mem")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = INPUT;
-	PARENT = "";
-}
-
-SIGNAL("_wr")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = INPUT;
-	PARENT = "";
-}
-
-SIGNAL("addr")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = BUS;
-	WIDTH = 3;
-	LSB_INDEX = 0;
-	DIRECTION = INPUT;
-	PARENT = "";
-}
-
-SIGNAL("addr[2]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = INPUT;
-	PARENT = "addr";
-}
-
-SIGNAL("addr[1]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = INPUT;
-	PARENT = "addr";
-}
-
-SIGNAL("addr[0]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = INPUT;
-	PARENT = "addr";
-}
-
-SIGNAL("_cs_ram[0]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
-SIGNAL("_cs_ram[1]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
-SIGNAL("_cs_ram[2]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
-SIGNAL("_cs_ram[3]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
-SIGNAL("_hsync")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
-SIGNAL("_latch")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
-SIGNAL("_oe_latch[0]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
-SIGNAL("_oe_latch[1]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
-SIGNAL("_oe_latch[2]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
-SIGNAL("_oe_latch[3]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
-SIGNAL("_vsync")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
-SIGNAL("pixel_clk")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
-SIGNAL("chcol")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = BUS;
-	WIDTH = 3;
-	LSB_INDEX = 0;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
-SIGNAL("chcol[2]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "chcol";
-}
-
-SIGNAL("chcol[1]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "chcol";
-}
-
-SIGNAL("chcol[0]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "chcol";
-}
-
-SIGNAL("chrow")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = BUS;
-	WIDTH = 4;
-	LSB_INDEX = 0;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
-SIGNAL("chrow[3]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "chrow";
-}
-
-SIGNAL("chrow[2]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "chrow";
-}
-
-SIGNAL("chrow[1]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "chrow";
-}
-
-SIGNAL("chrow[0]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "chrow";
-}
-
 SIGNAL("ram_addr")
 {
 	VALUE_TYPE = NINE_LEVEL_BIT;
@@ -502,76 +222,6 @@ SIGNAL("ram_addr[0]")
 	PARENT = "ram_addr";
 }
 
-SIGNAL("busy")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
-SIGNAL("_cpu_ram")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = BUS;
-	WIDTH = 4;
-	LSB_INDEX = 0;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
-SIGNAL("_cpu_ram[3]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "_cpu_ram";
-}
-
-SIGNAL("_cpu_ram[2]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "_cpu_ram";
-}
-
-SIGNAL("_cpu_ram[1]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "_cpu_ram";
-}
-
-SIGNAL("_cpu_ram[0]")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "_cpu_ram";
-}
-
-SIGNAL("_cpu_ram_addr")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = OUTPUT;
-	PARENT = "";
-}
-
 SIGNAL("mode")
 {
 	VALUE_TYPE = NINE_LEVEL_BIT;
@@ -602,7 +252,7 @@ SIGNAL("mode[0]")
 	PARENT = "mode";
 }
 
-SIGNAL("_chr_to_col")
+SIGNAL("px_clk")
 {
 	VALUE_TYPE = NINE_LEVEL_BIT;
 	SIGNAL_TYPE = SINGLE_BIT;
@@ -610,6 +260,226 @@ SIGNAL("_chr_to_col")
 	LSB_INDEX = -1;
 	DIRECTION = OUTPUT;
 	PARENT = "";
+}
+
+SIGNAL("hcount")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = BUS;
+	WIDTH = 10;
+	LSB_INDEX = 0;
+	DIRECTION = BURIED;
+	PARENT = "";
+}
+
+SIGNAL("hcount[9]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "hcount";
+}
+
+SIGNAL("hcount[8]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "hcount";
+}
+
+SIGNAL("hcount[7]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "hcount";
+}
+
+SIGNAL("hcount[6]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "hcount";
+}
+
+SIGNAL("hcount[5]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "hcount";
+}
+
+SIGNAL("hcount[4]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "hcount";
+}
+
+SIGNAL("hcount[3]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "hcount";
+}
+
+SIGNAL("hcount[2]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "hcount";
+}
+
+SIGNAL("hcount[1]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "hcount";
+}
+
+SIGNAL("hcount[0]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "hcount";
+}
+
+SIGNAL("vcount")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = BUS;
+	WIDTH = 10;
+	LSB_INDEX = 0;
+	DIRECTION = BURIED;
+	PARENT = "";
+}
+
+SIGNAL("vcount[9]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "vcount";
+}
+
+SIGNAL("vcount[8]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "vcount";
+}
+
+SIGNAL("vcount[7]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "vcount";
+}
+
+SIGNAL("vcount[6]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "vcount";
+}
+
+SIGNAL("vcount[5]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "vcount";
+}
+
+SIGNAL("vcount[4]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "vcount";
+}
+
+SIGNAL("vcount[3]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "vcount";
+}
+
+SIGNAL("vcount[2]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "vcount";
+}
+
+SIGNAL("vcount[1]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "vcount";
+}
+
+SIGNAL("vcount[0]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = BURIED;
+	PARENT = "vcount";
 }
 
 TRANSITION_LIST("clock")
@@ -641,231 +511,6 @@ TRANSITION_LIST("_charpixel")
 	{
 		REPEAT = 1;
 		LEVEL 0 FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_rd")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL 1 FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_vga_mem")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL 1 FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_wr")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL 1 FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("addr[2]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL 0 FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("addr[1]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL 0 FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("addr[0]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL 0 FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_cs_ram[0]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_cs_ram[1]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_cs_ram[2]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_cs_ram[3]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_hsync")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_latch")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_oe_latch[0]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_oe_latch[1]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_oe_latch[2]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_oe_latch[3]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_vsync")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("pixel_clk")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("chcol[2]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("chcol[1]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("chcol[0]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("chrow[3]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("chrow[2]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("chrow[1]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("chrow[0]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
 	}
 }
 
@@ -1004,60 +649,6 @@ TRANSITION_LIST("ram_addr[0]")
 	}
 }
 
-TRANSITION_LIST("busy")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_cpu_ram[3]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_cpu_ram[2]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_cpu_ram[1]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_cpu_ram[0]")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
-TRANSITION_LIST("_cpu_ram_addr")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 100000.0;
-	}
-}
-
 TRANSITION_LIST("mode[1]")
 {
 	NODE
@@ -1076,7 +667,187 @@ TRANSITION_LIST("mode[0]")
 	}
 }
 
-TRANSITION_LIST("_chr_to_col")
+TRANSITION_LIST("px_clk")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("hcount[9]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("hcount[8]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("hcount[7]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("hcount[6]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("hcount[5]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("hcount[4]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("hcount[3]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("hcount[2]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("hcount[1]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("hcount[0]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("vcount[9]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("vcount[8]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("vcount[7]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("vcount[6]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("vcount[5]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("vcount[4]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("vcount[3]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("vcount[2]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("vcount[1]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 100000.0;
+	}
+}
+
+TRANSITION_LIST("vcount[0]")
 {
 	NODE
 	{
@@ -1096,7 +867,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "pixel_clk";
+	CHANNEL = "px_clk";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 1;
@@ -1123,44 +894,47 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "_rd";
+	CHANNEL = "mode";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 4;
 	TREE_LEVEL = 0;
+	CHILDREN = 5, 6;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "_wr";
+	CHANNEL = "mode[1]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 5;
-	TREE_LEVEL = 0;
+	TREE_LEVEL = 1;
+	PARENT = 4;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "_vga_mem";
+	CHANNEL = "mode[0]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 6;
-	TREE_LEVEL = 0;
+	TREE_LEVEL = 1;
+	PARENT = 4;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "addr";
-	EXPAND_STATUS = COLLAPSED;
+	CHANNEL = "ram_addr";
+	EXPAND_STATUS = EXPANDED;
 	RADIX = Binary;
 	TREE_INDEX = 7;
 	TREE_LEVEL = 0;
-	CHILDREN = 8, 9, 10;
+	CHILDREN = 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "addr[2]";
+	CHANNEL = "ram_addr[14]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 8;
@@ -1170,7 +944,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "addr[1]";
+	CHANNEL = "ram_addr[13]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 9;
@@ -1180,7 +954,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "addr[0]";
+	CHANNEL = "ram_addr[12]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 10;
@@ -1190,236 +964,247 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "mode";
-	EXPAND_STATUS = EXPANDED;
+	CHANNEL = "ram_addr[11]";
+	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 11;
-	TREE_LEVEL = 0;
-	CHILDREN = 12, 13;
+	TREE_LEVEL = 1;
+	PARENT = 7;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "mode[1]";
+	CHANNEL = "ram_addr[10]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 12;
 	TREE_LEVEL = 1;
-	PARENT = 11;
+	PARENT = 7;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "mode[0]";
+	CHANNEL = "ram_addr[9]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 13;
 	TREE_LEVEL = 1;
-	PARENT = 11;
+	PARENT = 7;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "_hsync";
+	CHANNEL = "ram_addr[8]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 14;
-	TREE_LEVEL = 0;
+	TREE_LEVEL = 1;
+	PARENT = 7;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "_vsync";
+	CHANNEL = "ram_addr[7]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 15;
-	TREE_LEVEL = 0;
+	TREE_LEVEL = 1;
+	PARENT = 7;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "_cs_ram[0]";
+	CHANNEL = "ram_addr[6]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 16;
-	TREE_LEVEL = 0;
+	TREE_LEVEL = 1;
+	PARENT = 7;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "_cs_ram[1]";
+	CHANNEL = "ram_addr[5]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 17;
-	TREE_LEVEL = 0;
+	TREE_LEVEL = 1;
+	PARENT = 7;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "_cs_ram[2]";
+	CHANNEL = "ram_addr[4]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 18;
-	TREE_LEVEL = 0;
+	TREE_LEVEL = 1;
+	PARENT = 7;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "_cs_ram[3]";
+	CHANNEL = "ram_addr[3]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 19;
-	TREE_LEVEL = 0;
+	TREE_LEVEL = 1;
+	PARENT = 7;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "_latch";
+	CHANNEL = "ram_addr[2]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 20;
-	TREE_LEVEL = 0;
+	TREE_LEVEL = 1;
+	PARENT = 7;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "_oe_latch[0]";
+	CHANNEL = "ram_addr[1]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 21;
-	TREE_LEVEL = 0;
+	TREE_LEVEL = 1;
+	PARENT = 7;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "_oe_latch[1]";
+	CHANNEL = "ram_addr[0]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 22;
-	TREE_LEVEL = 0;
+	TREE_LEVEL = 1;
+	PARENT = 7;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "_oe_latch[2]";
-	EXPAND_STATUS = COLLAPSED;
+	CHANNEL = "hcount";
+	EXPAND_STATUS = EXPANDED;
 	RADIX = Binary;
 	TREE_INDEX = 23;
 	TREE_LEVEL = 0;
+	CHILDREN = 24, 25, 26, 27, 28, 29, 30, 31, 32, 33;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "_oe_latch[3]";
+	CHANNEL = "hcount[9]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 24;
-	TREE_LEVEL = 0;
+	TREE_LEVEL = 1;
+	PARENT = 23;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "chcol";
+	CHANNEL = "hcount[8]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 25;
-	TREE_LEVEL = 0;
-	CHILDREN = 26, 27, 28;
+	TREE_LEVEL = 1;
+	PARENT = 23;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "chcol[2]";
+	CHANNEL = "hcount[7]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 26;
 	TREE_LEVEL = 1;
-	PARENT = 25;
+	PARENT = 23;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "chcol[1]";
+	CHANNEL = "hcount[6]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 27;
 	TREE_LEVEL = 1;
-	PARENT = 25;
+	PARENT = 23;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "chcol[0]";
+	CHANNEL = "hcount[5]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 28;
 	TREE_LEVEL = 1;
-	PARENT = 25;
+	PARENT = 23;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "chrow";
+	CHANNEL = "hcount[4]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 29;
-	TREE_LEVEL = 0;
-	CHILDREN = 30, 31, 32, 33;
+	TREE_LEVEL = 1;
+	PARENT = 23;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "chrow[3]";
+	CHANNEL = "hcount[3]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 30;
 	TREE_LEVEL = 1;
-	PARENT = 29;
+	PARENT = 23;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "chrow[2]";
+	CHANNEL = "hcount[2]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 31;
 	TREE_LEVEL = 1;
-	PARENT = 29;
+	PARENT = 23;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "chrow[1]";
+	CHANNEL = "hcount[1]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 32;
 	TREE_LEVEL = 1;
-	PARENT = 29;
+	PARENT = 23;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "chrow[0]";
+	CHANNEL = "hcount[0]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 33;
 	TREE_LEVEL = 1;
-	PARENT = 29;
+	PARENT = 23;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "ram_addr";
-	EXPAND_STATUS = COLLAPSED;
+	CHANNEL = "vcount";
+	EXPAND_STATUS = EXPANDED;
 	RADIX = Binary;
 	TREE_INDEX = 34;
 	TREE_LEVEL = 0;
-	CHILDREN = 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49;
+	CHILDREN = 35, 36, 37, 38, 39, 40, 41, 42, 43, 44;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "ram_addr[14]";
+	CHANNEL = "vcount[9]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 35;
@@ -1429,7 +1214,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "ram_addr[13]";
+	CHANNEL = "vcount[8]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 36;
@@ -1439,7 +1224,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "ram_addr[12]";
+	CHANNEL = "vcount[7]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 37;
@@ -1449,7 +1234,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "ram_addr[11]";
+	CHANNEL = "vcount[6]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 38;
@@ -1459,7 +1244,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "ram_addr[10]";
+	CHANNEL = "vcount[5]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 39;
@@ -1469,7 +1254,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "ram_addr[9]";
+	CHANNEL = "vcount[4]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 40;
@@ -1479,7 +1264,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "ram_addr[8]";
+	CHANNEL = "vcount[3]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 41;
@@ -1489,7 +1274,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "ram_addr[7]";
+	CHANNEL = "vcount[2]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 42;
@@ -1499,7 +1284,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "ram_addr[6]";
+	CHANNEL = "vcount[1]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 43;
@@ -1509,139 +1294,12 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "ram_addr[5]";
+	CHANNEL = "vcount[0]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 44;
 	TREE_LEVEL = 1;
 	PARENT = 34;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "ram_addr[4]";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 45;
-	TREE_LEVEL = 1;
-	PARENT = 34;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "ram_addr[3]";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 46;
-	TREE_LEVEL = 1;
-	PARENT = 34;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "ram_addr[2]";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 47;
-	TREE_LEVEL = 1;
-	PARENT = 34;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "ram_addr[1]";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 48;
-	TREE_LEVEL = 1;
-	PARENT = 34;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "ram_addr[0]";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 49;
-	TREE_LEVEL = 1;
-	PARENT = 34;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "busy";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 50;
-	TREE_LEVEL = 0;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "_cpu_ram";
-	EXPAND_STATUS = EXPANDED;
-	RADIX = Binary;
-	TREE_INDEX = 51;
-	TREE_LEVEL = 0;
-	CHILDREN = 52, 53, 54, 55;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "_cpu_ram[3]";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 52;
-	TREE_LEVEL = 1;
-	PARENT = 51;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "_cpu_ram[2]";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 53;
-	TREE_LEVEL = 1;
-	PARENT = 51;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "_cpu_ram[1]";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 54;
-	TREE_LEVEL = 1;
-	PARENT = 51;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "_cpu_ram[0]";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 55;
-	TREE_LEVEL = 1;
-	PARENT = 51;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "_cpu_ram_addr";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 56;
-	TREE_LEVEL = 0;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "_chr_to_col";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 57;
-	TREE_LEVEL = 0;
 }
 
 TIME_BAR

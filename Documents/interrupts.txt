@@ -7,7 +7,7 @@ IRQ3	(Serial port 2)
 IRQ4	Serial port 1
 IRQ5	VGA retrace
 IRQ6	SD controller
-IRQ7	
+IRQ7	I2C controller
 
 All interrupts
 ------------------------------------------------------------

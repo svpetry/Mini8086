@@ -863,7 +863,7 @@ Wire Wire Line
 	9250 3500 8400 3500
 Text GLabel 7100 4500 0    50   Input ~ 0
 ~CHARMODE
-Text GLabel 10250 3600 2    50   Output ~ 0
+Text GLabel 10300 3600 2    50   Output ~ 0
 CHARPIXEL
 Wire Bus Line
 	6850 800  6250 800 
@@ -945,7 +945,7 @@ U 1 1 5F919B4C
 P 9750 2900
 F 0 "U19" H 9700 2900 50  0000 L CNN
 F 1 "74F166" H 9850 2000 50  0000 L CNN
-F 2 "Package_DIP:DIP-16_W7.62mm_LongPads" H 9750 2900 50  0001 C CNN
+F 2 "Package_DIP:DIP-16_W7.62mm_Socket_LongPads" H 9750 2900 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS166" H 9750 2900 50  0001 C CNN
 	1    9750 2900
 	1    0    0    1   
@@ -964,6 +964,8 @@ Text GLabel 8800 2400 0    50   Input ~ 0
 ~CHARMODE
 Wire Wire Line
 	9250 2400 8800 2400
+Wire Wire Line
+	10250 3600 10300 3600
 Wire Bus Line
 	6850 800  6850 3800
 Wire Bus Line

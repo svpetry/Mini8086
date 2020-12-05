@@ -39,22 +39,22 @@ Text GLabel 1350 5550 0    50   Output ~ 0
 ~OE_L2
 Text GLabel 1800 5650 0    50   Output ~ 0
 ~OE_L3
-Text GLabel 1850 5850 0    50   Output ~ 0
+Text GLabel 1800 6050 0    50   Output ~ 0
 CHROW0
-Text GLabel 1300 5950 0    50   Output ~ 0
+Text GLabel 1350 6150 0    50   Output ~ 0
 CHROW1
-Text GLabel 1850 6050 0    50   Output ~ 0
+Text GLabel 1800 6250 0    50   Output ~ 0
 CHROW2
-Text GLabel 1300 6150 0    50   Output ~ 0
+Text GLabel 1350 6350 0    50   Output ~ 0
 CHROW3
 Wire Wire Line
-	1850 5850 2100 5850
+	1800 6050 2100 6050
 Wire Wire Line
-	1300 5950 2100 5950
+	1350 6150 2100 6150
 Wire Wire Line
-	1850 6050 2100 6050
+	1800 6250 2100 6250
 Wire Wire Line
-	1300 6150 2100 6150
+	1350 6350 2100 6350
 Text GLabel 4350 5050 2    50   Output ~ 0
 ~CHARMODE
 Text GLabel 6050 1800 2    50   Input ~ 0
@@ -84,22 +84,11 @@ F 3 "" H 8400 1450 50  0001 C CNN
 	1    8400 1450
 	-1   0    0    -1  
 $EndComp
-$Comp
-L power:VCC #PWR017
-U 1 1 5F6F23A2
-P 8400 850
-F 0 "#PWR017" H 8400 700 50  0001 C CNN
-F 1 "VCC" H 8415 1023 50  0000 C CNN
-F 2 "" H 8400 850 50  0001 C CNN
-F 3 "" H 8400 850 50  0001 C CNN
-	1    8400 850 
-	-1   0    0    -1  
-$EndComp
 Text Label 6100 1300 0    50   ~ 0
 A1
 Text GLabel 6550 900  2    50   Input ~ 0
 A[0..19]
-Text GLabel 7350 4150 2    50   Output ~ 0
+Text GLabel 7200 3400 2    50   Output ~ 0
 VSYNC
 Text GLabel 4900 3850 2    50   Output ~ 0
 ~CPU_RAM2
@@ -232,7 +221,7 @@ Text Label 8450 2950 0    50   ~ 0
 MODE1
 Text GLabel 10950 3500 0    50   Input ~ 0
 A[0..19]
-Text GLabel 7350 4250 2    50   Output ~ 0
+Text GLabel 7200 3900 2    50   Output ~ 0
 HSYNC
 Wire Wire Line
 	10050 5100 10050 5550
@@ -286,18 +275,18 @@ Text Label 10050 5450 1    50   ~ 0
 DCOL7
 Text GLabel 9250 2950 1    50   Input ~ 0
 ~CHAR_BG
-Text Label 8450 2350 0    50   ~ 0
+Text Label 9550 2350 0    50   ~ 0
 PLANE
 Text GLabel 10650 3700 2    50   Input ~ 0
 ~VGA_IO
 Text GLabel 10650 3900 2    50   Input ~ 0
 ~WR
-Text GLabel 9550 3250 1    50   Input ~ 0
+Text GLabel 9550 2950 1    50   Input ~ 0
 ~RESET
 Wire Wire Line
-	9550 3300 9550 3250
+	9550 3300 9550 2950
 Text GLabel 1800 3650 0    50   Output ~ 0
-RDY1_3
+~BLOCK_CPU
 Wire Wire Line
 	4100 3950 4350 3950
 NoConn ~ 9650 3300
@@ -535,8 +524,6 @@ NoConn ~ 4100 4250
 NoConn ~ 4100 3650
 NoConn ~ 4100 3450
 NoConn ~ 4100 3350
-NoConn ~ 2100 6250
-NoConn ~ 2100 6350
 NoConn ~ 2100 6450
 Entry Wire Line
 	4800 6750 4700 6850
@@ -635,17 +622,6 @@ Entry Wire Line
 Wire Wire Line
 	4100 3550 4350 3550
 $Comp
-L CPLD_Altera:EPM240T100 U1
-U 1 1 5FB60760
-P 3100 4850
-F 0 "U1" H 3100 4950 50  0000 C CNN
-F 1 "EPM240T100" H 3100 4850 50  0000 C CNN
-F 2 "Package_QFP:LQFP-100_14x14mm_P0.5mm" H 3500 2500 50  0001 L CNN
-F 3 "https://www.altera.com/content/dam/altera-www/global/en_US/pdfs/literature/hb/max2/max2_mii5v1.pdf" H 3100 4850 50  0001 C CNN
-	1    3100 4850
-	1    0    0    -1  
-$EndComp
-$Comp
 L Logic_LevelTranslator:SN74AVC8T245PW U21
 U 1 1 5FC276B1
 P 5450 1500
@@ -716,7 +692,7 @@ F 3 "" H 4950 1100 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	9050 2950 7950 2950
+	9050 2950 8050 2950
 Text Label 4200 2750 0    50   ~ 0
 PLANE_3
 Text Label 4200 2850 0    50   ~ 0
@@ -739,10 +715,6 @@ Wire Wire Line
 	5950 1600 6350 1600
 Wire Wire Line
 	5950 1700 7900 1700
-Wire Wire Line
-	7900 1700 7900 1150
-Wire Wire Line
-	7900 1150 8100 1150
 Text Label 7450 1700 0    50   ~ 0
 CPLD_CLK
 Wire Wire Line
@@ -797,12 +769,8 @@ F 3 "~" H 1100 950 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2100 3850 750  3850
-Wire Wire Line
-	750  3850 750  2350
-Wire Wire Line
 	750  2350 1900 2350
-Text Label 1600 3850 0    50   ~ 0
+Text Label 1600 5950 0    50   ~ 0
 ~RESET_3
 $Comp
 L Device:R R16
@@ -853,7 +821,7 @@ Wire Wire Line
 Wire Wire Line
 	4100 2950 6600 2950
 Wire Wire Line
-	6300 2850 7900 2850
+	6300 2850 8000 2850
 Connection ~ 6300 2850
 Connection ~ 6600 2950
 Wire Wire Line
@@ -872,146 +840,66 @@ Connection ~ 6600 2350
 $Comp
 L Device:D_Schottky D3
 U 1 1 5FE40FEB
-P 8050 2850
-F 0 "D3" H 8050 2633 50  0000 C CNN
-F 1 "BAT43" H 8050 2724 50  0000 C CNN
-F 2 "Diode_THT:D_DO-34_SOD68_P2.54mm_Vertical_KathodeUp" H 8050 2850 50  0001 C CNN
-F 3 "~" H 8050 2850 50  0001 C CNN
-	1    8050 2850
+P 8150 2850
+F 0 "D3" H 8150 2633 50  0000 C CNN
+F 1 "BAT43" H 8150 2724 50  0000 C CNN
+F 2 "Diode_THT:D_DO-34_SOD68_P2.54mm_Vertical_KathodeUp" H 8150 2850 50  0001 C CNN
+F 3 "~" H 8150 2850 50  0001 C CNN
+	1    8150 2850
 	-1   0    0    1   
 $EndComp
 $Comp
 L Device:D_Schottky D2
 U 1 1 5FE41B73
-P 7800 2950
-F 0 "D2" H 7800 3050 50  0000 C CNN
-F 1 "BAT43" H 7800 3150 50  0000 C CNN
-F 2 "Diode_THT:D_DO-34_SOD68_P2.54mm_Vertical_KathodeUp" H 7800 2950 50  0001 C CNN
-F 3 "~" H 7800 2950 50  0001 C CNN
-	1    7800 2950
+P 7900 2950
+F 0 "D2" H 7900 3050 50  0000 C CNN
+F 1 "BAT43" H 7900 3150 50  0000 C CNN
+F 2 "Diode_THT:D_DO-34_SOD68_P2.54mm_Vertical_KathodeUp" H 7900 2950 50  0001 C CNN
+F 3 "~" H 7900 2950 50  0001 C CNN
+	1    7900 2950
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	8200 2850 9150 2850
+	8300 2850 9150 2850
 Wire Wire Line
-	6600 2950 7650 2950
+	6600 2950 7750 2950
 Wire Wire Line
 	6050 1800 5950 1800
 Wire Wire Line
 	4950 1800 4650 1800
 Text GLabel 4650 1800 0    50   Output ~ 0
 CHARPIXEL_3
-Text GLabel 4900 4950 2    50   Input ~ 0
+Text GLabel 6100 5700 2    50   Input ~ 0
 CHARPIXEL_3
-Wire Wire Line
-	4100 4950 4900 4950
-$Comp
-L Logic_LevelTranslator:SN74AVC8T245PW U22
-U 1 1 5FBC3C71
-P 6650 4350
-F 0 "U22" H 6650 4350 50  0000 C CNN
-F 1 "74LVC4245A" H 6350 3650 50  0000 C CNN
-F 2 "Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm" H 7550 3700 50  0001 C CNN
-F 3 "https://www.ti.com/lit/ds/symlink/sn74avc8t245.pdf" H 6600 4100 50  0001 C CNN
-	1    6650 4350
-	-1   0    0    -1  
-$EndComp
 Wire Bus Line
 	11050 3500 10950 3500
 $Comp
-L power:VCC #PWR010
-U 1 1 5FC4B5BE
-P 6750 3650
-F 0 "#PWR010" H 6750 3500 50  0001 C CNN
-F 1 "VCC" V 6765 3778 50  0000 L CNN
-F 2 "" H 6750 3650 50  0001 C CNN
-F 3 "" H 6750 3650 50  0001 C CNN
-	1    6750 3650
-	-1   0    0    -1  
-$EndComp
-Text GLabel 6550 3650 1    50   Input ~ 0
-VCC36
-Wire Wire Line
-	6750 3750 6750 3650
-Wire Wire Line
-	6650 3750 6650 3700
-Wire Wire Line
-	6650 3700 6550 3700
-Wire Wire Line
-	6550 3700 6550 3650
-Wire Wire Line
-	6550 3750 6550 3700
-Connection ~ 6550 3700
-$Comp
-L power:GND #PWR09
-U 1 1 5FC65F93
-P 6650 5050
-F 0 "#PWR09" H 6650 4800 50  0001 C CNN
-F 1 "GND" H 6655 4877 50  0000 C CNN
-F 2 "" H 6650 5050 50  0001 C CNN
-F 3 "" H 6650 5050 50  0001 C CNN
-	1    6650 5050
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR011
 U 1 1 5FC6646E
-P 7150 3950
-F 0 "#PWR011" H 7150 3700 50  0001 C CNN
-F 1 "GND" H 7155 3777 50  0000 C CNN
-F 2 "" H 7150 3950 50  0001 C CNN
-F 3 "" H 7150 3950 50  0001 C CNN
-	1    7150 3950
-	0    -1   -1   0   
-$EndComp
-$Comp
-L power:GND #PWR08
-U 1 1 5FC66AED
-P 6150 3950
-F 0 "#PWR08" H 6150 3700 50  0001 C CNN
-F 1 "GND" H 6155 3777 50  0000 C CNN
-F 2 "" H 6150 3950 50  0001 C CNN
-F 3 "" H 6150 3950 50  0001 C CNN
-	1    6150 3950
-	0    1    1    0   
+P 5850 7350
+F 0 "#PWR011" H 5850 7100 50  0001 C CNN
+F 1 "GND" H 5855 7177 50  0000 C CNN
+F 2 "" H 5850 7350 50  0001 C CNN
+F 3 "" H 5850 7350 50  0001 C CNN
+	1    5850 7350
+	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	6150 4150 5900 4150
+	4100 3050 6300 3050
 Wire Wire Line
-	5900 4150 5900 3050
-Wire Wire Line
-	4100 3050 5900 3050
-Wire Wire Line
-	6150 4250 5800 4250
-Wire Wire Line
-	5800 4250 5800 3150
-Wire Wire Line
-	4100 3150 5800 3150
-Wire Wire Line
-	7150 4150 7350 4150
-Wire Wire Line
-	7150 4250 7350 4250
+	4100 3150 6150 3150
 Text Label 4200 3050 0    50   ~ 0
 VSYNC_3
 Text Label 4200 3150 0    50   ~ 0
 HSYNC_3
-Text GLabel 5950 4350 0    50   Input ~ 0
-RDY1_3
-Wire Wire Line
-	5950 4350 6150 4350
-Wire Wire Line
-	7150 4350 7350 4350
-Text GLabel 7350 4350 2    50   Output ~ 0
+Text GLabel 6100 4300 0    50   Input ~ 0
+~BLOCK_CPU
+Text GLabel 7200 4400 2    50   Output ~ 0
 RDY1
 NoConn ~ 4100 3250
 Wire Wire Line
 	2100 3650 1800 3650
 NoConn ~ 9750 3300
-NoConn ~ 6150 4450
-NoConn ~ 6150 4550
-NoConn ~ 6150 4650
-NoConn ~ 6150 4750
-NoConn ~ 6150 4850
 $Comp
 L Connector_Generic:Conn_02x05_Odd_Even J2
 U 1 1 5FBEE52A
@@ -1099,7 +987,7 @@ L Device:R_Small R13
 U 1 1 5FC821AC
 P 700 7050
 F 0 "R13" H 759 7096 50  0000 L CNN
-F 1 "1K" H 759 7005 50  0000 L CNN
+F 1 "2K2" H 759 7005 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" H 700 7050 50  0001 C CNN
 F 3 "~" H 700 7050 50  0001 C CNN
 	1    700  7050
@@ -1107,8 +995,6 @@ F 3 "~" H 700 7050 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	1500 6550 1200 6550
-Wire Wire Line
-	1200 6550 1200 6950
 Connection ~ 1500 6550
 Wire Wire Line
 	1450 6650 950  6650
@@ -1121,70 +1007,43 @@ Wire Wire Line
 	700  6750 700  6950
 Connection ~ 1600 6750
 Wire Wire Line
-	700  7150 700  7300
-Wire Wire Line
-	700  7300 950  7300
-Wire Wire Line
-	1200 7300 1200 7150
+	700  7150 700  7250
 Wire Wire Line
 	950  7150 950  7300
-Connection ~ 950  7300
-Wire Wire Line
-	950  7300 1200 7300
-Wire Wire Line
-	1200 7300 1200 7400
-Connection ~ 1200 7300
 $Comp
 L power:GND #PWR01
 U 1 1 5FCE992A
-P 1200 7400
-F 0 "#PWR01" H 1200 7150 50  0001 C CNN
-F 1 "GND" H 1205 7227 50  0000 C CNN
-F 2 "" H 1200 7400 50  0001 C CNN
-F 3 "" H 1200 7400 50  0001 C CNN
-	1    1200 7400
+P 700 7250
+F 0 "#PWR01" H 700 7000 50  0001 C CNN
+F 1 "GND" H 705 7077 50  0000 C CNN
+F 2 "" H 700 7250 50  0001 C CNN
+F 3 "" H 700 7250 50  0001 C CNN
+	1    700  7250
 	1    0    0    -1  
 $EndComp
 $Comp
-L Oscillator:CXO_DIP8 X1
-U 1 1 5FBCCEF1
-P 8400 1150
-F 0 "X1" H 8250 1450 50  0000 R CNN
-F 1 "50.35 MHz" H 8300 850 50  0000 R CNN
-F 2 "Oscillator:Oscillator_DIP-8" H 8850 800 50  0001 C CNN
-F 3 "http://cdn-reichelt.de/documents/datenblatt/B400/OSZI.pdf" H 8300 1150 50  0001 C CNN
-	1    8400 1150
-	-1   0    0    -1  
-$EndComp
-NoConn ~ 8700 1150
-NoConn ~ 7150 4450
-NoConn ~ 7150 4550
-NoConn ~ 7150 4650
-NoConn ~ 7150 4750
-NoConn ~ 7150 4850
-$Comp
 L Device:D_Schottky D5
 U 1 1 5FC3781A
-P 9200 2350
-F 0 "D5" H 9200 2133 50  0000 C CNN
-F 1 "BAT43" H 9200 2224 50  0000 C CNN
-F 2 "Diode_THT:D_DO-34_SOD68_P2.54mm_Vertical_KathodeUp" H 9200 2350 50  0001 C CNN
-F 3 "~" H 9200 2350 50  0001 C CNN
-	1    9200 2350
+P 8150 2350
+F 0 "D5" H 8150 2133 50  0000 C CNN
+F 1 "BAT43" H 8150 2224 50  0000 C CNN
+F 2 "Diode_THT:D_DO-34_SOD68_P2.54mm_Vertical_KathodeUp" H 8150 2350 50  0001 C CNN
+F 3 "~" H 8150 2350 50  0001 C CNN
+	1    8150 2350
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
 	9950 2350 9950 3300
 Wire Wire Line
-	9350 2350 9950 2350
+	8300 2350 9950 2350
 Wire Wire Line
-	9050 2350 7700 2350
+	8000 2350 7700 2350
 Wire Wire Line
-	7700 2350 7700 2100
+	7700 2350 7700 2150
 Wire Wire Line
-	7700 2100 6100 2100
+	7700 2150 6100 2150
 Wire Wire Line
-	6100 2100 6100 2750
+	6100 2150 6100 2750
 Wire Wire Line
 	4100 2750 6100 2750
 $Comp
@@ -1232,6 +1091,215 @@ Text Label 6650 1200 0    50   ~ 0
 A0
 Wire Wire Line
 	5950 2000 6050 2000
+Text GLabel 6050 2000 2    50   Input ~ 0
+~BHE
+Text Label 1600 3150 0    50   ~ 0
+A0_3
+Text Label 1600 3250 0    50   ~ 0
+~BHE_3
+Text Label 1700 6550 0    50   ~ 0
+TMS
+Text Label 1700 6650 0    50   ~ 0
+TDI
+Text Label 1700 6750 0    50   ~ 0
+TCK
+Text Label 1700 6850 0    50   ~ 0
+TDO
+Text GLabel 900  7600 0    50   Input ~ 0
+VCC36
+Wire Wire Line
+	1200 6950 1200 6550
+Wire Wire Line
+	1200 7150 1200 7300
+Wire Wire Line
+	1200 7300 950  7300
+Wire Wire Line
+	900  7600 950  7600
+Wire Wire Line
+	950  7600 950  7300
+Connection ~ 950  7300
+$Comp
+L Jumper:Jumper_3_Bridged12 JP1
+U 1 1 5FBBFB87
+P 5850 5700
+F 0 "JP1" H 5850 5811 50  0000 C CNN
+F 1 "CHARPIXEL" H 5850 5902 50  0000 C CNN
+F 2 "Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm_NumberLabels" H 5850 5700 50  0001 C CNN
+F 3 "~" H 5850 5700 50  0001 C CNN
+	1    5850 5700
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	5850 5550 5850 4950
+Wire Wire Line
+	4100 4950 5850 4950
+Text GLabel 5600 5700 0    50   Input ~ 0
+CHARPIXEL
+Text Label 5100 4950 0    50   ~ 0
+CHARPIXEL_CPLD
+$Comp
+L 74xx:74LS32 U22
+U 1 1 5FD3E2A4
+P 6700 3400
+F 0 "U22" H 6900 3550 50  0000 C CNN
+F 1 "74ACT32" H 7000 3300 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6700 3400 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 6700 3400 50  0001 C CNN
+	1    6700 3400
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74LS32 U22
+U 2 1 5FD40212
+P 6700 3900
+F 0 "U22" H 6900 4050 50  0000 C CNN
+F 1 "74ACT32" H 7000 3800 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6700 3900 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 6700 3900 50  0001 C CNN
+	2    6700 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74LS32 U22
+U 3 1 5FD41A00
+P 6700 4400
+F 0 "U22" H 6900 4550 50  0000 C CNN
+F 1 "74ACT32" H 7000 4300 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6700 4400 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 6700 4400 50  0001 C CNN
+	3    6700 4400
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74LS32 U22
+U 4 1 5FD434C0
+P 6700 4900
+F 0 "U22" H 6900 5050 50  0000 C CNN
+F 1 "74ACT32" H 7000 4800 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6700 4900 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 6700 4900 50  0001 C CNN
+	4    6700 4900
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74LS32 U22
+U 5 1 5FD45838
+P 5850 6850
+F 0 "U22" H 6080 6896 50  0000 L CNN
+F 1 "74ACT32" H 6080 6805 50  0000 L CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 5850 6850 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 5850 6850 50  0001 C CNN
+	5    5850 6850
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:VCC #PWR08
+U 1 1 5FD4FB8B
+P 5850 6350
+F 0 "#PWR08" H 5850 6200 50  0001 C CNN
+F 1 "VCC" V 5865 6478 50  0000 L CNN
+F 2 "" H 5850 6350 50  0001 C CNN
+F 3 "" H 5850 6350 50  0001 C CNN
+	1    5850 6350
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	6400 3500 6300 3500
+Wire Wire Line
+	6300 3500 6300 3300
+Wire Wire Line
+	6300 3300 6400 3300
+Connection ~ 6300 3300
+Wire Wire Line
+	6300 3300 6300 3050
+Wire Wire Line
+	7200 3400 7000 3400
+Wire Wire Line
+	7000 3900 7200 3900
+Wire Wire Line
+	7000 4400 7200 4400
+Wire Wire Line
+	6400 4000 6300 4000
+Wire Wire Line
+	6300 4000 6300 3800
+Wire Wire Line
+	6400 3800 6300 3800
+Wire Wire Line
+	6150 3800 6150 3150
+Connection ~ 6300 3800
+Wire Wire Line
+	6300 3800 6150 3800
+NoConn ~ 7000 4900
+Wire Wire Line
+	6400 5000 6300 5000
+Wire Wire Line
+	6300 5000 6300 4800
+Wire Wire Line
+	6300 4800 6400 4800
+Wire Wire Line
+	6300 5000 6300 5100
+Connection ~ 6300 5000
+$Comp
+L power:GND #PWR09
+U 1 1 5FE25172
+P 6300 5100
+F 0 "#PWR09" H 6300 4850 50  0001 C CNN
+F 1 "GND" H 6305 4927 50  0000 C CNN
+F 2 "" H 6300 5100 50  0001 C CNN
+F 3 "" H 6300 5100 50  0001 C CNN
+	1    6300 5100
+	1    0    0    -1  
+$EndComp
+Text GLabel 6100 4500 0    50   Input ~ 0
+~VGA_MEM
+Wire Wire Line
+	6100 4300 6400 4300
+Wire Wire Line
+	6100 4500 6400 4500
+$Comp
+L CPLD_Altera:EPM240T100 U1
+U 1 1 5FB60760
+P 3100 4850
+F 0 "U1" H 3100 4950 50  0000 C CNN
+F 1 "EPM240T100" H 3100 4850 50  0000 C CNN
+F 2 "Package_QFP:LQFP-100_14x14mm_P0.5mm" H 3500 2500 50  0001 L CNN
+F 3 "https://www.altera.com/content/dam/altera-www/global/en_US/pdfs/literature/hb/max2/max2_mii5v1.pdf" H 3100 4850 50  0001 C CNN
+	1    3100 4850
+	1    0    0    -1  
+$EndComp
+NoConn ~ 2100 5850
+Wire Wire Line
+	2100 5950 750  5950
+Wire Wire Line
+	750  2350 750  5950
+NoConn ~ 8700 1150
+$Comp
+L Oscillator:CXO_DIP8 X1
+U 1 1 5FBCCEF1
+P 8400 1150
+F 0 "X1" H 8250 1450 50  0000 R CNN
+F 1 "50.35 MHz" H 8300 850 50  0000 R CNN
+F 2 "Oscillator:Oscillator_DIP-8" H 8850 800 50  0001 C CNN
+F 3 "http://cdn-reichelt.de/documents/datenblatt/B400/OSZI.pdf" H 8300 1150 50  0001 C CNN
+	1    8400 1150
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	7900 1150 8100 1150
+Wire Wire Line
+	7900 1700 7900 1150
+$Comp
+L power:VCC #PWR017
+U 1 1 5F6F23A2
+P 8400 850
+F 0 "#PWR017" H 8400 700 50  0001 C CNN
+F 1 "VCC" H 8415 1023 50  0000 C CNN
+F 2 "" H 8400 850 50  0001 C CNN
+F 3 "" H 8400 850 50  0001 C CNN
+	1    8400 850 
+	-1   0    0    -1  
+$EndComp
+NoConn ~ 2100 3850
 Wire Bus Line
 	6450 900  6450 1200
 Wire Bus Line
@@ -1242,10 +1310,4 @@ Wire Bus Line
 	8100 3450 8100 5450
 Wire Bus Line
 	4800 5250 4800 6750
-Text GLabel 6050 2000 2    50   Input ~ 0
-~BHE
-Text Label 1600 3150 0    50   ~ 0
-A0_3
-Text Label 1600 3250 0    50   ~ 0
-~BHE_3
 $EndSCHEMATC

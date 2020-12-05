@@ -538,28 +538,28 @@ R3D6
 Text Label 6200 4900 2    50   ~ 0
 R3D7
 Wire Wire Line
-	4500 3450 4500 2800
+	4500 3550 4500 2800
 Wire Wire Line
 	4500 2800 5000 2800
 Wire Wire Line
-	4500 3450 4500 5100
+	4500 3550 4500 5100
 Wire Wire Line
 	4500 5100 5000 5100
-Connection ~ 4500 3450
+Connection ~ 4500 3550
 Wire Wire Line
 	2500 5100 2000 5100
 Wire Wire Line
-	2000 5100 2000 3450
+	2000 5100 2000 3550
 Wire Wire Line
 	2000 2800 2500 2800
 Wire Wire Line
-	2000 3450 4500 3450
-Connection ~ 2000 3450
+	2000 3550 4500 3550
+Connection ~ 2000 3550
 Wire Wire Line
-	2000 3450 2000 2800
+	2000 3550 2000 2800
 Wire Wire Line
-	2000 3450 1850 3450
-Text GLabel 1850 3450 0    50   Input ~ 0
+	2000 3550 1850 3550
+Text GLabel 1850 3550 0    50   Input ~ 0
 CPU_RAM_DIR
 Wire Wire Line
 	5000 5200 4350 5200
@@ -737,15 +737,11 @@ D[0..15]
 Text GLabel 1850 2900 0    50   Input ~ 0
 ~CPU_RAM0
 Text GLabel 4350 2900 0    50   Input ~ 0
-~CPU_RAM1
-Text GLabel 1850 5200 0    50   Input ~ 0
 ~CPU_RAM2
+Text GLabel 1850 5200 0    50   Input ~ 0
+~CPU_RAM1
 Text GLabel 4350 5200 0    50   Input ~ 0
 ~CPU_RAM3
-Wire Bus Line
-	8050 1650 8050 1700
-Wire Bus Line
-	9700 1650 9700 1700
 $Comp
 L Device:R R12
 U 1 1 5F978CEC
@@ -910,8 +906,6 @@ F 3 "http://www.ti.com/lit/gpn/sn74HC245" H 8850 4650 50  0001 C CNN
 	1    8850 4650
 	1    0    0    -1  
 $EndComp
-Connection ~ 8050 1700
-Connection ~ 9700 1700
 Wire Bus Line
 	6300 4000 6300 4800
 Wire Bus Line

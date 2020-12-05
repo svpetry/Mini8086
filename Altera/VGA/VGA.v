@@ -34,7 +34,7 @@ module VGA(
 
 // input signals
 input clock; // 50 MHz clock
-input _reset;
+input _reset; // reset
 input _vga_mem; // CPU accesses VGA memory
 input [1:0]addr; // A0-A1 from system address bus
 input _rd; // CPU read signal
@@ -68,18 +68,22 @@ output vsync; // VGA vertical sync
 wire hsync;
 reg vsync;
 wire [1:0]mode;
-wire _reset;
-reg latch_chr;
-reg latch_col;
-reg [3:0]_cs_ram;
-wire [3:0]_we_ram;
-reg [3:0]_oe_latch;
-reg _pe_chpx;
+reg latch_chr = 0;
+reg latch_col = 0;
+reg [3:0]_cs_ram = 4'b1111;
+reg [3:0]_we_ram = 4'b1111;
+reg [3:0]_oe_latch = 4'b1111;
+reg [3:0]_cpu_ram = 4'b1111;
+reg _pe_chpx = 1;
 wire charpixel;
-reg _char_bg;
+reg _char_bg = 1;
 wire [3:0]chrow;
 wire plane;
-reg _chr_to_col;
+reg _chr_to_col = 1'b1;
+reg _cpu_ram_addr = 1'b1;
+reg cpu_ram_dir;
+reg rdy = 1'b1;
+wire _reset;
 
 // internal 
 reg pixel_clk;
@@ -89,6 +93,8 @@ reg [1:0]int_mode;
 reg int_plane;
 reg [14:0]int_ram_addr = 15'd0;
 reg [14:0]save_ram_addr;
+reg load_chr_ram;
+reg load_col_ram;
 
 wire hcount_ov;
 wire vcount_ov;
@@ -183,40 +189,93 @@ assign chrow[3:0] = vcount[3:0];
 // latches
 always @(*)
 begin
+	latch_chr <= 0;
+	latch_col <= 0;
+	_cs_ram <= 4'b1111;
+	_we_ram <= 4'b1111;
+	_cpu_ram_addr <= 1;
+	_cpu_ram <= 4'b1111;
+	_chr_to_col <= 1;
+	_pe_chpx <= 1;
+	
+	load_chr_ram = 0;
+	load_col_ram = 0;
+
 	if (vert_visible_area && 
 		(mode_text && hcount >= hvisible_begin - 1 && hcount < hvisible_end - 1
-		|| mode_gra && hcount >= hvisible_begin && hcount < hvisible_end))
+		|| mode_gra && hori_visible_area))
 	begin
 		if (mode_text)
 		begin
+			load_chr_ram = hcount[3:0] == 4'd13;
+			load_col_ram = hcount[3:0] == 4'd0;
+		/*
 			latch_chr <= hcount[3:0] == 4'd13;
 			latch_col <= hcount[3:0] == 4'd0;
 			_cs_ram[0] <= ~(hcount[3:0] == 4'd13);
 			_cs_ram[2] <= ~(hcount[3:0] == 4'd13);
 			_cs_ram[1] <= ~(hcount[3:0] == 4'd0);
 			_cs_ram[3] <= ~(hcount[3:0] == 4'd0);
-			_pe_chpx <= ~(hcount[3:0] == 4'd15);
+		*/
+			_pe_chpx <= ~(chcol == 3'd7);
 		end
 		else if (mode_320x200 || mode_320x400)
 		begin
+			load_chr_ram = hcount[2:0] == 3'b0;
+			load_col_ram = hcount[2:0] == 3'b0;
+		/*
 			latch_chr <= hcount[2:0] == 3'b0;
 			latch_col <= hcount[2:0] == 3'b0;
 			_cs_ram <= hcount[2:0] == 3'b0 ? 4'b0000 : 4'b1111;
+		*/
 			_chr_to_col <= ~(hcount[1] == 1'b0);
 		end
 		else if (mode_400x300)
 		begin
+			load_chr_ram = hcount[1:0] == 2'b0;
+			load_col_ram = hcount[1:0] == 2'b0;
+		/*
 			latch_chr <= hcount[1:0] == 2'd0;
 			latch_col <= hcount[1:0] == 2'd0;
 			_cs_ram <= hcount[1:0] == 2'd0 ? 4'b0000 : 4'b1111;
-		end;
+		*/
+		end
+		
+		if (load_chr_ram)
+		begin
+			latch_chr <= 1;
+			_cs_ram[0] <= 0;
+			_cs_ram[2] <= 0;
+		end
+		if (load_col_ram)
+		begin
+			latch_col <= 1;
+			_cs_ram[1] <= 0;
+			_cs_ram[3] <= 0;
+		end
 	end
-	else begin
-		latch_chr <= 0;
-		latch_col <= 0;
-		_cs_ram <= 4'b1111;
-		_chr_to_col <= 1'b1;
-		_pe_chpx <= 1;
+	
+	if (!load_chr_ram && !load_col_ram && _vga_mem == 0)
+	begin
+		_cpu_ram_addr <= 0;
+		cpu_ram_dir <= _rd;
+		if (addr[1] == 0)
+		begin
+			_cpu_ram[0] <= 0;
+			_cpu_ram[1] <= 0;
+			_cs_ram[0] <= addr[0];
+			_cs_ram[1] <= _bhe;
+			_we_ram[0] <= addr[0] && _wr;
+			_we_ram[1] <= _bhe && _wr;
+		end
+		else begin
+			_cpu_ram[2] <= 0;
+			_cpu_ram[3] <= 0;
+			_cs_ram[2] <= addr[0];
+			_cs_ram[3] <= _bhe;
+			_we_ram[2] <= addr[0] && _wr;
+			_we_ram[3] <= _bhe && _wr;
+		end
 	end
 end
 
@@ -251,7 +310,7 @@ begin
 			begin
 				if (vcount[0] == 1'b0)
 					int_ram_addr <= save_ram_addr;
-			end;
+			end
 		end
 		else if (hori_visible_area)
 		begin
@@ -259,7 +318,7 @@ begin
 				|| (mode_320x200 || mode_320x400) && hcount[2:0] == 3'd1
 				|| mode_400x300 && hcount[1:0] == 3'd1)
 					int_ram_addr <= int_ram_addr + 15'd1;
-		end;
+		end
 	end
 end
 
@@ -304,12 +363,11 @@ begin
 		end
 		else begin
 			_oe_latch <= 4'b1111;
-		end;
+		end
 	end
 end
 
-// TODO
-assign _we_ram = 4'b1111;
-assign ram_addr = int_ram_addr;
+// RAM address
+assign ram_addr = load_chr_ram || load_col_ram ? int_ram_addr : 15'bz; 
 
 endmodule

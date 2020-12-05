@@ -64,7 +64,7 @@ namespace DecoderBuilder
                 }
 
                 // VGA memory
-                if (memAddr >= 0xC0000 && memAddr <= 0xDFFFF)
+                if (memAddr >= 0xC0000 && memAddr <= 0xDFFFF && (_RD == 0 || _WR == 0))
                     SetSignal(ref data, Signal.VGA_MEM);
             }
             else

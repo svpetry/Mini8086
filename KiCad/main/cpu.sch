@@ -1274,20 +1274,20 @@ $EndComp
 Wire Wire Line
 	1900 1850 1900 2150
 NoConn ~ 2050 2050
-Text GLabel 9550 3950 3    50   Input ~ 0
+Text GLabel 9500 3400 1    50   Input ~ 0
 RDY2
 Text GLabel 9250 3950 3    50   Input ~ 0
 RDY1
 $Comp
 L Device:R R7
 U 1 1 5F82E30F
-P 9550 3700
-F 0 "R7" H 9480 3654 50  0000 R CNN
-F 1 "4K7" H 9480 3745 50  0000 R CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 9480 3700 50  0001 C CNN
-F 3 "~" H 9550 3700 50  0001 C CNN
-	1    9550 3700
-	1    0    0    -1  
+P 9500 3700
+F 0 "R7" H 9430 3654 50  0000 R CNN
+F 1 "4K7" H 9430 3745 50  0000 R CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 9430 3700 50  0001 C CNN
+F 3 "~" H 9500 3700 50  0001 C CNN
+	1    9500 3700
+	-1   0    0    1   
 $EndComp
 $Comp
 L Device:R R8
@@ -1301,18 +1301,9 @@ F 3 "~" H 9250 3700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	9550 3550 9550 3400
-Wire Wire Line
-	9250 3550 9250 3400
-Wire Wire Line
-	9250 3400 9550 3400
-Connection ~ 9550 3400
-Wire Wire Line
-	9550 3400 9550 3250
-Wire Wire Line
 	9250 3850 9250 3950
 Wire Wire Line
-	9550 3850 9550 3950
+	9500 3550 9500 3400
 Text Label 6250 1550 0    50   ~ 0
 ALE
 Text Label 3800 1550 0    50   ~ 0
@@ -1525,14 +1516,18 @@ $EndComp
 $Comp
 L power:VCC #PWR?
 U 1 1 5FA8AF8C
-P 9550 3250
-F 0 "#PWR?" H 9550 3100 50  0001 C CNN
-F 1 "VCC" H 9565 3423 50  0000 C CNN
-F 2 "" H 9550 3250 50  0001 C CNN
-F 3 "" H 9550 3250 50  0001 C CNN
-	1    9550 3250
+P 9250 3250
+F 0 "#PWR?" H 9250 3100 50  0001 C CNN
+F 1 "VCC" H 9265 3423 50  0000 C CNN
+F 2 "" H 9250 3250 50  0001 C CNN
+F 3 "" H 9250 3250 50  0001 C CNN
+	1    9250 3250
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	9250 3250 9250 3550
+Wire Wire Line
+	9500 3850 9500 3950
 Wire Bus Line
 	10600 1350 10600 4500
 Wire Bus Line
@@ -1551,4 +1546,15 @@ Wire Bus Line
 	6850 700  6850 4000
 Wire Bus Line
 	6100 700  6100 3750
+$Comp
+L power:GND #PWR?
+U 1 1 5FC8586F
+P 9500 3950
+F 0 "#PWR?" H 9500 3700 50  0001 C CNN
+F 1 "GND" H 9505 3777 50  0000 C CNN
+F 2 "" H 9500 3950 50  0001 C CNN
+F 3 "" H 9500 3950 50  0001 C CNN
+	1    9500 3950
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

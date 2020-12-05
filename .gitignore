@@ -1,4 +1,13 @@
 *.err
+*.suo
+*.b#?
+*.s#?
+*.sch-bak
+*.kicad_pcb-bak
+*.bck
+*.bak
+links.txt
+fp-info-cache
 BiosBuilder/bin/
 BiosBuilder/obj/
 DecoderBuilder/bin/
@@ -6,40 +15,23 @@ DecoderBuilder/obj/
 Emulator/bin/
 Emulator/obj/
 BIOS/_deprecated/
-*.suo
-*.b#?
-*.s#?
-links.txt
-BIOS/DOSBOX/APPINFO/
-BIOS/DOSBOX/DEVEL/
-BIOS/DOSBOX/DJGPP/
-BIOS/DOSBOX/LINKS/
-BIOS/DOSBOX/LOCAL/*.c
-BIOS/DOSBOX/LOCAL/*.h
-BIOS/DOSBOX/SOURCE/
 BIOS/*.BIN
-*.sch-bak
-*.kicad_pcb-bak
-*.bck
-fp-info-cache
-BIOS/DOSBOX/TMP/
-VGA/output_files/
-VGA/simulation/
-VGAreg/output_files/
-VGAreg/db/
-VGA/db/
-VGA/incremental_db/
-VGAreg/incremental_db/
-BIOS/DOSBOX/LOCAL/*.BIN
-BIOS/DOSBOX/LOCAL/*.O
-BIOS/DOSBOX/LOCAL/*.S
-BIOS/DOSBOX/LOCAL/*.I
-*.bak
 BIOS/*.exe
 BIOS/bios/
 BIOS/b.asm
 VGAreg/simulation/
-SD controller/db/
-SD controller/incremental_db/
-SD controller/output_files/
 KiCad/_deprecated/
+Altera/SD controller/db/
+Altera/SD controller/incremental_db/
+Altera/SD controller/output_files/
+Altera/VGA/db/
+Altera/VGA/incremental_db/
+Altera/VGA/output_files/
+Altera/VGA/simulation/
+Altera/VGAreg/db/
+Altera/VGAreg/incremental_db/
+Altera/VGAreg/output_files/
+Altera/VGAreg/simulation/
+Altera/VGA_graphics/
+Altera/VGA_textmode/
+Debug/

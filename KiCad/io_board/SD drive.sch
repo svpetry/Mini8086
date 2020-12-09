@@ -145,7 +145,7 @@ U 1 1 5F90DA39
 P 8450 1400
 F 0 "C18" H 8565 1446 50  0000 L CNN
 F 1 "100n" H 8565 1355 50  0000 L CNN
-F 2 "Capacitor_THT:C_Disc_D3.0mm_W2.0mm_P2.50mm" H 8488 1250 50  0001 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric" H 8488 1250 50  0001 C CNN
 F 3 "~" H 8450 1400 50  0001 C CNN
 	1    8450 1400
 	1    0    0    -1  
@@ -399,38 +399,6 @@ VCC3
 Wire Wire Line
 	5600 1600 5500 1600
 Connection ~ 5500 1600
-$Comp
-L CPLD_Altera:EPM240T100 U7
-U 1 1 5FA7828B
-P 5200 4100
-F 0 "U7" H 5200 4150 50  0000 C CNN
-F 1 "EPM240T100" H 5200 4000 50  0000 C CNN
-F 2 "Package_QFP:LQFP-100_14x14mm_P0.5mm" H 5600 1750 50  0001 L CNN
-F 3 "https://www.altera.com/content/dam/altera-www/global/en_US/pdfs/literature/hb/max2/max2_mii5v1.pdf" H 5200 4100 50  0001 C CNN
-	1    5200 4100
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5400 6500 5500 6500
-Connection ~ 5500 6500
-Wire Wire Line
-	5400 6500 5300 6500
-Connection ~ 5400 6500
-Connection ~ 4900 6500
-Wire Wire Line
-	4900 6500 4800 6500
-Connection ~ 5000 6500
-Wire Wire Line
-	5000 6500 4900 6500
-Connection ~ 5100 6500
-Wire Wire Line
-	5100 6500 5000 6500
-Connection ~ 5200 6500
-Wire Wire Line
-	5200 6500 5100 6500
-Connection ~ 5300 6500
-Wire Wire Line
-	5300 6500 5200 6500
 Entry Wire Line
 	1300 2600 1200 2500
 Text Label 1400 2600 0    50   ~ 0
@@ -744,7 +712,7 @@ U 1 1 5FD45282
 P 10050 2500
 F 0 "R6" H 10120 2546 50  0000 L CNN
 F 1 "4K7" H 10120 2455 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 9980 2500 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric" V 9980 2500 50  0001 C CNN
 F 3 "~" H 10050 2500 50  0001 C CNN
 	1    10050 2500
 	1    0    0    -1  
@@ -931,17 +899,6 @@ F 3 "" H 4450 7500 50  0001 C CNN
 	1    4450 7500
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:VCC #PWR0104
-U 1 1 5FA70A6F
-P 4600 6600
-F 0 "#PWR0104" H 4600 6450 50  0001 C CNN
-F 1 "VCC" H 4615 6773 50  0000 C CNN
-F 2 "" H 4600 6600 50  0001 C CNN
-F 3 "" H 4600 6600 50  0001 C CNN
-	1    4600 6600
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	4200 6000 3350 6000
 Wire Wire Line
@@ -980,7 +937,7 @@ U 1 1 5FAE490F
 P 3350 6350
 F 0 "R7" H 3420 6396 50  0000 L CNN
 F 1 "2K2" H 3420 6305 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 3280 6350 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric" V 3280 6350 50  0001 C CNN
 F 3 "~" H 3350 6350 50  0001 C CNN
 	1    3350 6350
 	1    0    0    -1  
@@ -991,7 +948,7 @@ U 1 1 5FAFD2DA
 P 3650 6350
 F 0 "R8" H 3720 6396 50  0000 L CNN
 F 1 "10K" H 3720 6305 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 3580 6350 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric" V 3580 6350 50  0001 C CNN
 F 3 "~" H 3650 6350 50  0001 C CNN
 	1    3650 6350
 	1    0    0    -1  
@@ -1002,7 +959,7 @@ U 1 1 5FAFD51F
 P 3950 6350
 F 0 "R9" H 4020 6396 50  0000 L CNN
 F 1 "10K" H 4020 6305 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical" V 3880 6350 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric" V 3880 6350 50  0001 C CNN
 F 3 "~" H 3950 6350 50  0001 C CNN
 	1    3950 6350
 	1    0    0    -1  
@@ -1098,9 +1055,6 @@ Wire Wire Line
 	3350 6500 3350 6600
 Wire Wire Line
 	3650 6700 3950 6700
-Connection ~ 4600 6700
-Wire Wire Line
-	4600 6700 4600 6600
 Connection ~ 3950 6700
 Wire Wire Line
 	3950 6700 4600 6700
@@ -1110,7 +1064,7 @@ U 1 1 5FC3BC7F
 P 10300 3300
 F 0 "C28" H 10415 3346 50  0000 L CNN
 F 1 "10n" H 10415 3255 50  0000 L CNN
-F 2 "Capacitor_THT:C_Disc_D4.3mm_W1.9mm_P5.00mm" H 10338 3150 50  0001 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric" H 10338 3150 50  0001 C CNN
 F 3 "~" H 10300 3300 50  0001 C CNN
 	1    10300 3300
 	1    0    0    -1  
@@ -1139,8 +1093,6 @@ F 3 "~" H 8050 2150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	8450 2400 8050 2400
-Wire Wire Line
 	8050 2400 8050 2300
 Connection ~ 8450 2400
 Wire Wire Line
@@ -1148,6 +1100,65 @@ Wire Wire Line
 Connection ~ 8050 1900
 Wire Wire Line
 	8050 1900 8450 1900
+Text GLabel 4700 6700 2    50   Input ~ 0
+VCC3
+Connection ~ 5500 6500
+Wire Wire Line
+	5400 6500 5500 6500
+Connection ~ 5400 6500
+Wire Wire Line
+	5400 6500 5300 6500
+Connection ~ 5300 6500
+Wire Wire Line
+	5300 6500 5200 6500
+Connection ~ 5200 6500
+Wire Wire Line
+	5200 6500 5100 6500
+Connection ~ 5100 6500
+Wire Wire Line
+	5100 6500 5000 6500
+Connection ~ 5000 6500
+Wire Wire Line
+	5000 6500 4900 6500
+Wire Wire Line
+	4900 6500 4800 6500
+Connection ~ 4900 6500
+$Comp
+L CPLD_Altera:EPM240T100 U7
+U 1 1 5FA7828B
+P 5200 4100
+F 0 "U7" H 5200 4150 50  0000 C CNN
+F 1 "EPM240T100" H 5200 4000 50  0000 C CNN
+F 2 "Package_QFP:LQFP-100_14x14mm_P0.5mm" H 5600 1750 50  0001 L CNN
+F 3 "https://www.altera.com/content/dam/altera-www/global/en_US/pdfs/literature/hb/max2/max2_mii5v1.pdf" H 5200 4100 50  0001 C CNN
+	1    5200 4100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4700 6700 4600 6700
+Connection ~ 4600 6700
+$Comp
+L Device:C C37
+U 1 1 5FCF4D72
+P 7500 2150
+F 0 "C37" H 7615 2196 50  0000 L CNN
+F 1 "100n" H 7615 2105 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric" H 7538 2000 50  0001 C CNN
+F 3 "~" H 7500 2150 50  0001 C CNN
+	1    7500 2150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7850 1900 7500 1900
+Wire Wire Line
+	7500 1900 7500 2000
+Wire Wire Line
+	7500 2300 7500 2400
+Wire Wire Line
+	7500 2400 8050 2400
+Connection ~ 8050 2400
+Wire Wire Line
+	8050 2400 8450 2400
 Wire Bus Line
 	1200 2350 1200 2500
 Wire Bus Line

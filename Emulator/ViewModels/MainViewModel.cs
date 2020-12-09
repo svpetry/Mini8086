@@ -287,13 +287,6 @@ namespace Emulator.ViewModels
             LcdLine2 = _emulator.Lcd.Lines[1];
         }
 
-        private void Ppi_PortChanged()
-        {
-            PortA = _emulator.Ppi.PortA;
-            PortB = _emulator.Ppi.PortB;
-            PortC = _emulator.Ppi.PortC;
-        }
-
         private void Start(object Param)
         {
             if (_screenTimer == null)
@@ -405,9 +398,9 @@ namespace Emulator.ViewModels
             _screenTimer.Start();
         }
 
-        private void UpdateScreen(object sender, EventArgs e)
+        private async void UpdateScreen(object sender, EventArgs e)
         {
-            _emulator.UpdateScreen();
+            await _emulator.UpdateScreen();
             ScreenSource = _emulator.Screen;
         }
     }

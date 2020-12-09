@@ -88,8 +88,8 @@
             </Grid>
         </StackPanel>
         <StackPanel Margin="5,10,0,0" Grid.Row="1" Grid.Column="0">
-            <TextBlock Padding="5,0,0,0" FontFamily="Consolas" FontSize="13" Text="{Binding LcdLine1}" Foreground="White" Background="Blue"/>
-            <TextBlock Padding="5,0,0,0" FontFamily="Consolas" FontSize="13" Text="{Binding LcdLine2}" Foreground="White" Background="Blue"/>
+            <TextBlock Padding="5,0,0,0" FontFamily="Consolas" FontSize="12" Text="{Binding LcdLine1}" Foreground="White" Background="Blue"/>
+            <TextBlock Padding="5,0,0,0" FontFamily="Consolas" FontSize="12" Text="{Binding LcdLine2}" Foreground="White" Background="Blue"/>
         </StackPanel>
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.ColumnDefinitions>

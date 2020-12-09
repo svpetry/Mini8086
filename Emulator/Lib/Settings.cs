@@ -10,6 +10,11 @@
         /// <summary>
         ///     Screen update rate in fps
         /// </summary>
-        public static int ScreenUpdateRate = 5;
+        public static int ScreenUpdateRate = 15;
+
+        /// <summary>
+        ///     Number of tasks to perform the screen update
+        /// </summary>
+        public static int ScreenTaskCount = 2;
     }
 }

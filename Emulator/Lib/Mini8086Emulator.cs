@@ -3,6 +3,7 @@ using Emulator.Lib;
 using Emulator.Lib.Components;
 using Emulator.Utils;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
 namespace Emulator
@@ -39,7 +40,7 @@ namespace Emulator
         {
             var components = new List<BaseComponent>();
 
-            _memMapper = new MemoryMapper(512);
+            _memMapper = new MemoryMapper(256);
             _portMapper = new PortMapper();
 
             _cpu = new Cpu8086(_memMapper, _portMapper);
@@ -91,9 +92,9 @@ namespace Emulator
             _disassembler.DoDisassemble();
         }
 
-        public void UpdateScreen()
+        public async Task UpdateScreen()
         {
-            _graphicsAdapter.UpdateScreen();
+            await _graphicsAdapter.UpdateScreen();
         }
     }
 }

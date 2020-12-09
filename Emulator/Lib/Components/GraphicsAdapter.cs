@@ -1,12 +1,8 @@
 ﻿using Emulator.Utils;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -15,14 +11,9 @@ namespace Emulator.Lib.Components
     internal enum GraphicsMode
     {
         Text = 0,
-        Graphics320x200x8 = 1
-    }
-
-    internal class WritePixelsInfo
-    {
-        public Int32Rect Rect { get; set; }
-        public byte[] Pixels { get; set; }
-        public int Stride { get; set; }
+        Graphics320x200x8 = 1,
+        Graphics320x400x8 = 2,
+        Graphics640x200x8 = 3
     }
 
     public class GraphicsAdapter : BaseComponent, IPortProvider, IMemoryProvider
@@ -33,6 +24,8 @@ namespace Emulator.Lib.Components
         private const int ColCount = 80;
         private const int CharWidth = 8;
         private const int CharHeight = 16;
+
+        private static uint[] _dataBuffer = new uint[0];
 
         private readonly InterruptController _pic;
         private readonly int _basePort;
@@ -129,109 +122,114 @@ namespace Emulator.Lib.Components
                 _memory[1][memAddr - 0x10000] = value;
         }
 
-        public void UpdateScreen()
+        private void UpdateScreenParallel(int width, int height, Func<int, int, int, Task> createTaskFunc)
         {
-            WritePixelsInfo[] writePixelsInfos = null;
-
-            switch (_mode)
+            var startLine = 0;
+            var linesPerTask = height / Settings.ScreenTaskCount;
+            var tasks = new Task[Settings.ScreenTaskCount];
+            for (var idx = 0; idx < Settings.ScreenTaskCount; idx++)
             {
-                case GraphicsMode.Text:
-                    writePixelsInfos = new WritePixelsInfo[RowCount * ColCount];
-                    Parallel.For(
-                        0,
-                        RowCount,
-                        row =>
-                        {
-                            for (var col = 0; col < ColCount; col++)
-                                writePixelsInfos[row * ColCount + col] = PrepareDrawChar(col, row);
-                        });
-                    break;
-
-                case GraphicsMode.Graphics320x200x8:
-                    writePixelsInfos = new WritePixelsInfo[RowCount];
-                    var mem = _memory[_activePlane];
-                    Parallel.For(
-                        0,
-                        RowCount,
-                        row =>
-                        {
-                            var rect = new Int32Rect(0, row * CharHeight, ScreenWidth, CharHeight);
-                            var pixels = new byte[rect.Width * rect.Height * _bytesPerPixel];
-
-                            var ramBaseAddr = (row * CharHeight / 2) * 320;
-                            for (var y = 0; y < CharHeight; y++)
-                            {
-                                for (var x = 0; x < ScreenWidth; x++)
-                                {
-                                    var data = mem[ramBaseAddr + (y / 2) * 320 + x / 2];
-                                    GetColors(data, out var red, out var green, out var blue);
-                                    var pxAddr = (y * 640 + x) * 4;
-                                    pixels[pxAddr] = blue;
-                                    pixels[pxAddr + 1] = green;
-                                    pixels[pxAddr + 2] = red;
-                                }
-                            }
-
-                            var wpi = new WritePixelsInfo
-                            {
-                                Rect = rect,
-                                Stride = rect.Width * _bytesPerPixel,
-                                Pixels = pixels
-                            };
-                            writePixelsInfos[row] = wpi;
-                        });
-                    break;
+                var taskFunc = createTaskFunc(width, startLine, idx < Settings.ScreenTaskCount - 1 ? linesPerTask : height - startLine);
+                startLine += linesPerTask;
+                tasks[idx] = taskFunc;
+                taskFunc.Start();
             }
 
-            if (writePixelsInfos != null)
-            {
-                foreach (var info in writePixelsInfos.Where(pixelInfo => pixelInfo != null))
-                    _screen.WritePixels(info.Rect, info.Pixels, info.Stride, 0);
-            }
+            Task.WaitAll(tasks);
         }
 
-        private WritePixelsInfo PrepareDrawChar(int col, int row)
+        private Task CreateUpdateTextScreenTask(int cols, int startRow, int rows)
         {
-            if (col >= ColCount || row >= RowCount) return null;
-
-            var rect = new Int32Rect(col * CharWidth, row * CharHeight, CharWidth, CharHeight);
-            var stride = rect.Width * _bytesPerPixel;
-
-            byte[] pixels;
-
-            var addr = (row * ColCount + col) * 2;
-            var chr = _memory[_activePlane][addr];
-            var color = _memory[_activePlane][addr + 1];
-            pixels = GetCharBytes(chr, color, _backgroundColor);
-            return new WritePixelsInfo { Pixels = pixels, Rect = rect, Stride = stride };
-        }
-
-        private byte[] GetCharBytes(byte charCode, byte fgColor, byte bgColor)
-        {
-            var result = new byte[CharWidth * CharHeight * 4];
-            var resultIdx = 0;
-
-            var romAddr = charCode * CharHeight;
-            for (var row = 0; row < CharHeight; row++)
+            return new Task(() =>
             {
-                var data = _charRom[romAddr];
-                for (var col = 0; col < CharWidth; col++)
+                var bgColor = GetColor32(_backgroundColor);
+                for (var row = startRow; row < startRow + rows; row++)
                 {
-                    byte red, green, blue;
-                    if ((data & (1 << col)) > 0)
-                        GetColors(fgColor, out red, out green, out blue);
-                    else
-                        GetColors(bgColor, out red, out green, out blue);
+                    for (var col = 0; col < cols; col++)
+                    {
+                        var addr = (row * ColCount + col) * 2;
+                        var charCode = _memory[_activePlane][addr];
+                        var fgColor = GetColor32(_memory[_activePlane][addr + 1]);
 
-                    result[resultIdx] = blue;
-                    result[resultIdx + 1] = green;
-                    result[resultIdx + 2] = red;
-                    resultIdx += 4;
+                        var romAddr = charCode * CharHeight;
+                        for (var charRow = 0; charRow < CharHeight; charRow++)
+                        {
+                            var bufAddr = (row * CharHeight + charRow) * ScreenWidth + col * CharWidth;
+                            var data = _charRom[romAddr];
+                            for (var charCol = 0; charCol < CharWidth; charCol++)
+                            {
+                                if ((data & (1 << charCol)) > 0)
+                                    _dataBuffer[bufAddr] = fgColor;
+                                else
+                                    _dataBuffer[bufAddr] = bgColor;
+
+                                bufAddr++;
+                            }
+                            romAddr++;
+                        }
+                    }
                 }
-                romAddr++;
-            }
+            });
+        }
 
-            return result;
+        private Task CreateUpdateScreenTask(int width, int startLine, int height, bool doubleX, bool doubleY)
+        {
+            return new Task(
+                () =>
+                {
+                    var mem = _memory[_activePlane];
+                    var dataIndex = startLine * width;
+
+                    for (var row = 0; row < height; row++)
+                    {
+                        var memIndex = (startLine + row) * width;
+                        if (doubleY)
+                            memIndex /= 2;
+
+                        for (var col = 0; col < width; col++)
+                        {
+                            _dataBuffer[dataIndex] = GetColor32(mem[memIndex]);
+                            if (!doubleX || (col & 1) > 0)
+                                memIndex++;
+                            dataIndex++;
+                        }
+                    }
+                });
+        }
+
+        public async Task UpdateScreen()
+        {
+            await Task.Run(() =>
+            {
+                var hSize = ScreenWidth * ScreenHeight;
+                if (_dataBuffer.Length != hSize)
+                    _dataBuffer = new uint[hSize];
+
+                switch (_mode)
+                {
+                    case GraphicsMode.Text:
+                        UpdateScreenParallel(ColCount, RowCount, CreateUpdateTextScreenTask);
+                        break;
+
+                    case GraphicsMode.Graphics320x200x8:
+                        UpdateScreenParallel(ScreenWidth, ScreenHeight,
+                            (width, startLine, height) => CreateUpdateScreenTask(width, startLine, height, true, true));
+                        break;
+
+                    case GraphicsMode.Graphics320x400x8:
+                        UpdateScreenParallel(ScreenWidth, ScreenHeight,
+                            (width, startLine, height) => CreateUpdateScreenTask(width, startLine, height, true, false));
+                        break;
+
+                    case GraphicsMode.Graphics640x200x8:
+                        UpdateScreenParallel(ScreenWidth, ScreenHeight,
+                            (width, startLine, height) => CreateUpdateScreenTask(width, startLine, height, false, true));
+                        break;
+                }
+            });
+
+            var stride = ScreenWidth * 4;
+            _screen.WritePixels(new Int32Rect(0, 0, ScreenWidth, ScreenHeight), _dataBuffer, stride, 0);
         }
 
         private void GetColors(byte color, out byte red, out byte green, out byte blue)
@@ -239,6 +237,12 @@ namespace Emulator.Lib.Components
             red = (byte)((color & 0b00000111) << 5);
             green = (byte)((color & 0b00111000) << 2);
             blue = (byte)(color & 0b11000000);
+        }
+
+        private uint GetColor32(byte color)
+        {
+            GetColors(color, out var red, out var green, out var blue);
+            return (uint)(blue + (green << 8) + (red << 16));
         }
     }
 }

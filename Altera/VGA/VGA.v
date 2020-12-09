@@ -1,7 +1,6 @@
 module VGA(
 		// inputs
 		clock,
-		_reset,
 		_vga_mem,
 		addr,
 		_rd,
@@ -34,7 +33,6 @@ module VGA(
 
 // input signals
 input clock; // 50 MHz clock
-input _reset; // reset
 input _vga_mem; // CPU accesses VGA memory
 input [1:0]addr; // A0-A1 from system address bus
 input _rd; // CPU read signal
@@ -82,8 +80,7 @@ wire plane;
 reg _chr_to_col = 1'b1;
 reg _cpu_ram_addr = 1'b1;
 reg cpu_ram_dir;
-reg rdy = 1'b1;
-wire _reset;
+wire rdy;
 
 // internal 
 reg pixel_clk;
@@ -95,6 +92,8 @@ reg [14:0]int_ram_addr = 15'd0;
 reg [14:0]save_ram_addr;
 reg load_chr_ram;
 reg load_col_ram;
+reg block_cpu = 0;
+reg cpu_wait = 0;
 
 wire hcount_ov;
 wire vcount_ov;
@@ -105,9 +104,20 @@ wire mode_text;
 wire mode_gra;
 wire mode_320x200;
 wire mode_320x400;
-wire mode_400x300;
+wire mode_640x200;
 
 wire [2:0]chcol;
+reg ram_addr_active = 0;
+
+reg _wr_sync = 1;
+reg _rd_sync = 1;
+reg _vga_mem_sync = 1;
+reg [1:0]addr_sync = 2'd0;
+reg _bhe_sync = 1;
+
+reg prev_wr_ram = 0;
+reg wr_ram = 0;
+reg [2:0]wr_delay = 3'd0;
 
 // constants
 parameter
@@ -132,6 +142,16 @@ begin
 end
 assign px_clk = pixel_clk;
 	
+// synchronized signals
+always @(posedge clock)
+begin
+	_rd_sync <= _rd;
+	_wr_sync <= _wr;
+	_vga_mem_sync <= _vga_mem;
+	addr_sync <= addr;
+	_bhe_sync <= _bhe;
+end
+
 // horizontal and vertical counter
 always @(posedge pixel_clk)
 begin
@@ -178,7 +198,7 @@ assign mode_text = (int_mode == 2'd0);
 assign mode_gra = (int_mode != 2'd0);
 assign mode_320x200 = (int_mode == 2'd1);
 assign mode_320x400 = (int_mode == 2'd2);
-assign mode_400x300 = (int_mode == 2'd3);
+assign mode_640x200 = (int_mode == 2'd3);
 
 assign _charmode = ~mode_text;
 
@@ -192,7 +212,6 @@ begin
 	latch_chr <= 0;
 	latch_col <= 0;
 	_cs_ram <= 4'b1111;
-	_we_ram <= 4'b1111;
 	_cpu_ram_addr <= 1;
 	_cpu_ram <= 4'b1111;
 	_chr_to_col <= 1;
@@ -201,44 +220,41 @@ begin
 	load_chr_ram = 0;
 	load_col_ram = 0;
 
+	ram_addr_active <= 0;
+	wr_ram <= 0;
+
+	block_cpu = 0;
+	cpu_wait = 0;
+
 	if (vert_visible_area && 
-		(mode_text && hcount >= hvisible_begin - 1 && hcount < hvisible_end - 1
-		|| mode_gra && hori_visible_area))
+		(mode_text && hcount >= hvisible_begin - 8 && hcount < hvisible_end
+		|| mode_gra && hcount >= hvisible_begin - 4 && hcount < hvisible_end))
 	begin
 		if (mode_text)
 		begin
+			cpu_wait = hcount[3:0] == 4'd0 || hcount[3:0] >= 4'd8;
+			block_cpu = hcount[3:0] == 4'd0 || hcount[3:0] >= 4'd12;
+			
 			load_chr_ram = hcount[3:0] == 4'd13;
 			load_col_ram = hcount[3:0] == 4'd0;
-		/*
-			latch_chr <= hcount[3:0] == 4'd13;
-			latch_col <= hcount[3:0] == 4'd0;
-			_cs_ram[0] <= ~(hcount[3:0] == 4'd13);
-			_cs_ram[2] <= ~(hcount[3:0] == 4'd13);
-			_cs_ram[1] <= ~(hcount[3:0] == 4'd0);
-			_cs_ram[3] <= ~(hcount[3:0] == 4'd0);
-		*/
-			_pe_chpx <= ~(chcol == 3'd7);
+
+			_pe_chpx <= ~(hcount[3:0] == 4'd7 || hcount[3:0] == 4'd15);
 		end
 		else if (mode_320x200 || mode_320x400)
 		begin
-			load_chr_ram = hcount[2:0] == 3'b0;
-			load_col_ram = hcount[2:0] == 3'b0;
-		/*
-			latch_chr <= hcount[2:0] == 3'b0;
-			latch_col <= hcount[2:0] == 3'b0;
-			_cs_ram <= hcount[2:0] == 3'b0 ? 4'b0000 : 4'b1111;
-		*/
+			cpu_wait = hcount[2:0] == 3'd0 || hcount[2:0] >= 3'd4;
+			block_cpu = hcount[2:0] == 3'd0 || hcount[2:0] == 3'd7;
+			load_chr_ram = hcount[2:0] == 3'd0;
+			load_col_ram = hcount[2:0] == 3'd0;
 			_chr_to_col <= ~(hcount[1] == 1'b0);
 		end
-		else if (mode_400x300)
+		else if (mode_640x200)
 		begin
-			load_chr_ram = hcount[1:0] == 2'b0;
-			load_col_ram = hcount[1:0] == 2'b0;
-		/*
-			latch_chr <= hcount[1:0] == 2'd0;
-			latch_col <= hcount[1:0] == 2'd0;
-			_cs_ram <= hcount[1:0] == 2'd0 ? 4'b0000 : 4'b1111;
-		*/
+			cpu_wait = 1;
+			block_cpu = hori_visible_area;
+			load_chr_ram = hcount[1:0] == 2'd0;
+			load_col_ram = hcount[1:0] == 2'd0;
+			_chr_to_col <= ~(hcount[0] == 1'b0);
 		end
 		
 		if (load_chr_ram)
@@ -246,37 +262,62 @@ begin
 			latch_chr <= 1;
 			_cs_ram[0] <= 0;
 			_cs_ram[2] <= 0;
+			ram_addr_active <= 1;
 		end
 		if (load_col_ram)
 		begin
 			latch_col <= 1;
 			_cs_ram[1] <= 0;
 			_cs_ram[3] <= 0;
+			ram_addr_active <= 1;
 		end
 	end
 	
-	if (!load_chr_ram && !load_col_ram && _vga_mem == 0)
+	if (!load_chr_ram && !load_col_ram && _vga_mem_sync == 0 && !block_cpu)
 	begin
 		_cpu_ram_addr <= 0;
-		cpu_ram_dir <= _rd;
-		if (addr[1] == 0)
+		cpu_ram_dir <= _rd_sync;
+		wr_ram <= _wr_sync == 0 ? 1'b1 : 1'b0;
+		if (addr_sync[1] == 0)
 		begin
 			_cpu_ram[0] <= 0;
 			_cpu_ram[1] <= 0;
-			_cs_ram[0] <= addr[0];
-			_cs_ram[1] <= _bhe;
-			_we_ram[0] <= addr[0] && _wr;
-			_we_ram[1] <= _bhe && _wr;
+			_cs_ram[0] <= addr_sync[0];
+			_cs_ram[1] <= _bhe_sync;
 		end
 		else begin
 			_cpu_ram[2] <= 0;
 			_cpu_ram[3] <= 0;
-			_cs_ram[2] <= addr[0];
-			_cs_ram[3] <= _bhe;
-			_we_ram[2] <= addr[0] && _wr;
-			_we_ram[3] <= _bhe && _wr;
+			_cs_ram[2] <= addr_sync[0];
+			_cs_ram[3] <= _bhe_sync;
 		end
 	end
+end
+
+// RAM WE signals
+always @(posedge clock)
+begin
+	_we_ram <= 4'b1111;
+	if (wr_ram && !block_cpu)
+	begin
+		wr_delay <= wr_delay << 1;
+		wr_delay[0] <= prev_wr_ram == 0 ? 1'b1 : 1'b0;
+		if (wr_delay[2])
+		begin
+			if (addr_sync[1] == 0)
+			begin
+				_we_ram[0] <= ~(addr_sync[0] == 0);
+				_we_ram[1] <= ~(_bhe_sync == 0);
+			end
+			else begin
+				_we_ram[2] <= ~(addr_sync[0] == 0);
+				_we_ram[3] <= ~(_bhe_sync == 0);
+			end
+		end
+	end
+	else
+		wr_delay <= 3'd0;
+	prev_wr_ram <= wr_ram;
 end
 
 // RAM address
@@ -316,7 +357,7 @@ begin
 		begin
 			if (mode_text && hcount[3:0] == 4'd1
 				|| (mode_320x200 || mode_320x400) && hcount[2:0] == 3'd1
-				|| mode_400x300 && hcount[1:0] == 3'd1)
+				|| mode_640x200 && hcount[1:0] == 2'd1)
 					int_ram_addr <= int_ram_addr + 15'd1;
 		end
 	end
@@ -328,26 +369,24 @@ begin
 	if (mode_text)
 	begin
 		// text mode
-		_oe_latch[0] <= 0;
-		_oe_latch[2] <= 0;
+		_oe_latch <= 4'b1111;
+		_char_bg <= 1;
 		if (hori_visible_area && vert_visible_area)
 		begin
+			_oe_latch[0] <= ~(hcount[3:0] == 4'd15 || hcount[3:0] == 4'd0);
+			_oe_latch[2] <= ~(hcount[3:0] == 4'd7 || hcount[3:0] == 4'd8);
 			_oe_latch[1] <= ~charpixel;
 			_oe_latch[3] <= ~charpixel;
 			_char_bg <= charpixel;
 		end
-		else begin
-			_oe_latch[1] <= 1;
-			_oe_latch[3] <= 1;
-			_char_bg <= 1;
-		end
 	end
 	else begin
 		// graphics mode
+		_oe_latch <= 4'b1111;
 		_char_bg <= 1;
 		if (hori_visible_area && vert_visible_area)
 		begin
-			if (mode_320x200)
+			if (mode_320x200 || mode_320x400)
 			begin
 				_oe_latch[0] <= ~(hcount[2:1] == 2'd0);
 				_oe_latch[1] <= ~(hcount[2:1] == 2'd1);
@@ -361,13 +400,11 @@ begin
 				_oe_latch[3] <= ~(hcount[1:0] == 2'd3);
 			end
 		end
-		else begin
-			_oe_latch <= 4'b1111;
-		end
 	end
 end
 
 // RAM address
-assign ram_addr = load_chr_ram || load_col_ram ? int_ram_addr : 15'bz; 
+assign ram_addr = ram_addr_active ? int_ram_addr : 15'bz; 
+assign rdy = ~cpu_wait;
 
 endmodule

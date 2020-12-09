@@ -88,10 +88,10 @@ set_location_assignment PIN_38 -to _oe_latch[0]
 set_location_assignment PIN_39 -to _oe_latch[1]
 set_location_assignment PIN_40 -to _oe_latch[2]
 set_location_assignment PIN_41 -to _oe_latch[3]
-set_location_assignment PIN_43 -to chrow[0]
-set_location_assignment PIN_44 -to chrow[1]
-set_location_assignment PIN_47 -to chrow[2]
-set_location_assignment PIN_48 -to chrow[3]
+set_location_assignment PIN_47 -to chrow[0]
+set_location_assignment PIN_48 -to chrow[1]
+set_location_assignment PIN_49 -to chrow[2]
+set_location_assignment PIN_50 -to chrow[3]
 set_location_assignment PIN_52 -to mode[0]
 set_location_assignment PIN_53 -to mode[1]
 set_location_assignment PIN_54 -to vsync
@@ -130,6 +130,6 @@ set_global_assignment -name FITTER_EFFORT "STANDARD FIT"
 set_global_assignment -name IOBANK_VCCIO 3.3V -section_id 2
 set_global_assignment -name IOBANK_VCCIO 3.3V -section_id 1
 set_global_assignment -name AUTO_RESTART_CONFIGURATION OFF
-set_global_assignment -name ENABLE_DEVICE_WIDE_RESET OFF
+set_global_assignment -name ENABLE_DEVICE_WIDE_RESET ON
 set_global_assignment -name USE_CONFIGURATION_DEVICE ON
 set_global_assignment -name RESERVE_ALL_UNUSED_PINS "AS INPUT TRI-STATED WITH WEAK PULL-UP"

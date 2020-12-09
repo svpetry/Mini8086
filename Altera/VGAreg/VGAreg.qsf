@@ -50,7 +50,6 @@ set_global_assignment -name VERILOG_FILE VGAreg.v
 set_global_assignment -name MAX7000_DEVICE_IO_STANDARD TTL
 set_location_assignment PIN_1 -to _reset
 set_location_assignment PIN_4 -to _char_bg
-set_location_assignment PIN_43 -to pclk
 set_location_assignment PIN_41 -to plane
 set_location_assignment PIN_40 -to irq
 set_location_assignment PIN_6 -to mode[1]
@@ -77,10 +76,6 @@ set_location_assignment PIN_33 -to hsync
 set_location_assignment PIN_34 -to vsync
 set_location_assignment PIN_37 -to _wr
 set_location_assignment PIN_39 -to _vga_io
-set_location_assignment PIN_32 -to TCK
-set_location_assignment PIN_38 -to TDO
-set_location_assignment PIN_7 -to TDI
-set_location_assignment PIN_13 -to TMS
 set_global_assignment -name VECTOR_WAVEFORM_FILE Waveform.vwf
 set_global_assignment -name SIMULATION_MODE FUNCTIONAL
 set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (Verilog)"

@@ -256,7 +256,7 @@ L Connector:Mini-DIN-6 J2
 U 1 1 5F96756C
 P 2250 4350
 F 0 "J2" H 2250 4717 50  0000 C CNN
-F 1 "Mini-DIN-6" H 2250 4626 50  0000 C CNN
+F 1 "Keyboard" H 2250 4626 50  0000 C CNN
 F 2 "Mini8086:Mini_din6" H 2250 4350 50  0001 C CNN
 F 3 "http://service.powerdynamics.com/ec/Catalog17/Section%2011.pdf" H 2250 4350 50  0001 C CNN
 	1    2250 4350

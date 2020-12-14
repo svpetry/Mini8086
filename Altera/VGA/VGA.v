@@ -272,7 +272,8 @@ begin
 			ram_addr_active <= 1;
 		end
 	end
-	
+
+	// CPU writes RAM
 	if (!load_chr_ram && !load_col_ram && _vga_mem_sync == 0 && !block_cpu)
 	begin
 		_cpu_ram_addr <= 0;
@@ -292,6 +293,7 @@ begin
 			_cs_ram[3] <= _bhe_sync;
 		end
 	end
+
 end
 
 // RAM WE signals
@@ -306,12 +308,12 @@ begin
 		begin
 			if (addr_sync[1] == 0)
 			begin
-				_we_ram[0] <= ~(addr_sync[0] == 0);
-				_we_ram[1] <= ~(_bhe_sync == 0);
+				_we_ram[0] <= addr_sync[0];
+				_we_ram[1] <= _bhe_sync;
 			end
 			else begin
-				_we_ram[2] <= ~(addr_sync[0] == 0);
-				_we_ram[3] <= ~(_bhe_sync == 0);
+				_we_ram[2] <= addr_sync[0];
+				_we_ram[3] <= _bhe_sync;
 			end
 		end
 	end
@@ -340,14 +342,14 @@ begin
 		begin
 			save_ram_addr <= int_ram_addr;
 		end
-		else if (hcount == hvisible_end)
+		else if (hcount == hvisible_end + 8)
 		begin
 			if (mode_text)
 			begin
 				if (chrow != 4'b1111)
 					int_ram_addr <= save_ram_addr;
 			end
-			else if (mode_320x200)
+			else if (mode_320x200 || mode_640x200)
 			begin
 				if (vcount[0] == 1'b0)
 					int_ram_addr <= save_ram_addr;
@@ -355,7 +357,7 @@ begin
 		end
 		else if (hori_visible_area)
 		begin
-			if (mode_text && hcount[3:0] == 4'd1
+			if (mode_text && hcount[3:0] == 8'd1
 				|| (mode_320x200 || mode_320x400) && hcount[2:0] == 3'd1
 				|| mode_640x200 && hcount[1:0] == 2'd1)
 					int_ram_addr <= int_ram_addr + 15'd1;
@@ -371,13 +373,19 @@ begin
 		// text mode
 		_oe_latch <= 4'b1111;
 		_char_bg <= 1;
-		if (hori_visible_area && vert_visible_area)
+		if (vert_visible_area)
 		begin
-			_oe_latch[0] <= ~(hcount[3:0] == 4'd15 || hcount[3:0] == 4'd0);
-			_oe_latch[2] <= ~(hcount[3:0] == 4'd7 || hcount[3:0] == 4'd8);
-			_oe_latch[1] <= ~charpixel;
-			_oe_latch[3] <= ~charpixel;
-			_char_bg <= charpixel;
+			if (hcount >= hvisible_begin - 4 && hcount < hvisible_end)
+			begin
+				_oe_latch[0] <= ~(hcount[3:0] == 4'd14 || hcount[3:0] == 4'd15);
+				_oe_latch[2] <= ~(hcount[3:0] == 4'd6 || hcount[3:0] == 4'd7);
+			end
+			if (hori_visible_area)
+			begin
+				_oe_latch[1] <= ~(hcount[3] == 1'b0 && charpixel);
+				_oe_latch[3] <= ~(hcount[3] == 1'b1 && charpixel);
+				_char_bg <= charpixel;
+			end
 		end
 	end
 	else begin

@@ -60,7 +60,6 @@ set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST ON -section_id eda_s
 set_global_assignment -name MAX7000_DEVICE_IO_STANDARD TTL
 set_global_assignment -name POWER_USE_PVA OFF
 set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
-set_global_assignment -name INCREMENTAL_VECTOR_INPUT_SOURCE "C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/VGA/test.vwf"
 set_global_assignment -name TIMEQUEST_MULTICORNER_ANALYSIS OFF
 set_global_assignment -name PHYSICAL_SYNTHESIS_EFFORT EXTRA
 set_global_assignment -name POWER_EXT_SUPPLY_VOLTAGE_TO_REGULATOR 3.3V
@@ -133,3 +132,4 @@ set_global_assignment -name AUTO_RESTART_CONFIGURATION OFF
 set_global_assignment -name ENABLE_DEVICE_WIDE_RESET ON
 set_global_assignment -name USE_CONFIGURATION_DEVICE ON
 set_global_assignment -name RESERVE_ALL_UNUSED_PINS "AS INPUT TRI-STATED WITH WEAK PULL-UP"
+set_global_assignment -name INCREMENTAL_VECTOR_INPUT_SOURCE "C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/VGA/test.vwf"

@@ -117,7 +117,7 @@ reg _bhe_sync = 1;
 
 reg prev_wr_ram = 0;
 reg wr_ram = 0;
-reg [2:0]wr_delay = 3'd0;
+reg [3:0]wr_delay = 4'd0;
 
 // constants
 parameter
@@ -232,7 +232,7 @@ begin
 	begin
 		if (mode_text)
 		begin
-			cpu_wait = hcount[3:0] == 4'd0 || hcount[3:0] >= 4'd8;
+			cpu_wait = hcount[3:0] >= 4'd8;
 			block_cpu = hcount[3:0] == 4'd0 || hcount[3:0] >= 4'd12;
 			
 			load_chr_ram = hcount[3:0] == 4'd13;
@@ -304,7 +304,7 @@ begin
 	begin
 		wr_delay <= wr_delay << 1;
 		wr_delay[0] <= prev_wr_ram == 0 ? 1'b1 : 1'b0;
-		if (wr_delay[2])
+		if (wr_delay[1])
 		begin
 			if (addr_sync[1] == 0)
 			begin
@@ -318,7 +318,7 @@ begin
 		end
 	end
 	else
-		wr_delay <= 3'd0;
+		wr_delay <= 4'd0;
 	prev_wr_ram <= wr_ram;
 end
 

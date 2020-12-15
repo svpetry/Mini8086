@@ -1,3 +1,4 @@
+void set_textcol(unsigned char col);
 void init_screen();
 void clrscr();
 void scrolldown();

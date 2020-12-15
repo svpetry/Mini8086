@@ -11,6 +11,10 @@ unsigned char cursor_row;
 unsigned char textcol;
 unsigned char __far (*screen)[4000];
 
+void set_textcol(unsigned char col) {
+    textcol = col;
+}
+
 void init_screen() {
     outp(0x50, 0b00000000); // activate text mode
     outp(0x51, 0b01000000); // background color: dark blue

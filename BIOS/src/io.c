@@ -1,5 +1,5 @@
 #include "io.h"
-#include "utils.h"
+#include "strutils.h"
 #include "lowlevel.h"
 
 #define LCD_PORT 0x10

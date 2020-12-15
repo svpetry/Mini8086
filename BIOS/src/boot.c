@@ -1,6 +1,6 @@
 #include "boot.h"
 #include "io.h"
-#include "utils.h"
+#include "strutils.h"
 #include "start.h"
 
 void boot() {

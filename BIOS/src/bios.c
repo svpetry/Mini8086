@@ -2,7 +2,7 @@
 #include "bios.h"
 #include "io.h"
 #include "lowlevel.h"
-#include "utils.h"
+#include "strutils.h"
 #include "boot.h"
 #include "start.h"
 
@@ -56,6 +56,12 @@ void int_keyboard() {
 
 }
 
+void demo() {
+    while (1) {
+
+    }
+}
+
 int main() {
     unsigned int i, j, k;
     char s[12];
@@ -70,33 +76,14 @@ int main() {
     lcd_init();
 #endif
 
-    // k = 0;
-    // while (1) {
-    //     itoa(k++, s);
-    //     strcat(s, " ");
-    //     lcd_putstr(0, 0, s);
-
-    //     for (i = 0; i < 200; i++) {
-    //         for (j = 0; j < 1000; j++)
-    //             asm("nop");
-    //     }
-    //     outp(0x010, 0b11000000);
-    //     for (i = 0; i < 200; i++) {
-    //         for (j = 0; j < 1000; j++)
-    //             asm("nop");
-    //     }
-    //     outp(0x010, 0b00000000);
-
-    //     if (k == 5)
-    //         asm("sti");
-    // }
-
     // show startup screen, system test
     startup();
 
-    for (i = 0; i < 10000; i++)
+    for (i = 0; i < 1000; i++)
         for (j = 0; j < 100; j++)
             asm("nop");
+
+    demo();
 
 #if LCD == 1602
     lcd_putstr(0, 0, "                ");
@@ -113,7 +100,7 @@ int main() {
         ltrim(s, 2, '0');
         lcd_putstr(14, 0, s);
 
-        for (j = 0; j < 100; j++)
+        for (j = 0; j < 1000; j++)
             asm("nop");
     }
 #endif
@@ -131,7 +118,7 @@ int main() {
         ltrim(s, 2, '0');
         lcd_putstr(6, 3, s);
 
-        for (j = 0; j < 100; j++)
+        for (j = 0; j < 1000; j++)
             asm("nop");
     }
 #endif

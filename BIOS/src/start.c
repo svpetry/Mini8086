@@ -1,7 +1,7 @@
 #include "defs.h"
 #include "start.h"
 #include "io.h"
-#include "utils.h"
+#include "strutils.h"
 
 #define RESULT_COL 20
 

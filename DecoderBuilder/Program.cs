@@ -42,54 +42,58 @@ namespace DecoderBuilder
             var _RD = (addr & (1 << 14)) > 0 ? 1 : 0;
             var _WR = (addr & (1 << 15)) > 0 ? 1 : 0;
 
-            if (M_IO == 1)
+            if (_RD == 0 || _WR == 0)
             {
-                // memory access
-                var memAddr = (addr & 0b0001111000000000) << 7;
 
-                // RAM
-                if (memAddr >= 0 && memAddr <= 0x7FFFF)
+                if (M_IO == 1)
                 {
-                    if (_RD == 0)
-                        SetSignal(ref data, Signal.MEMRD);
-                    if (_WR == 0)
-                        SetSignal(ref data, Signal.MEMWR);
-                }
+                    // memory access
+                    var memAddr = (addr & 0b0001111000000000) << 7;
 
-                // ROM
-                if (memAddr >= 0xE0000 && memAddr <= 0xFFFFF)
-                {
-                    if (_RD == 0)
-                        SetSignal(ref data, Signal.ROMRD);
-                }
+                    // RAM
+                    if (memAddr >= 0 && memAddr <= 0x7FFFF)
+                    {
+                        if (_RD == 0)
+                            SetSignal(ref data, Signal.MEMRD);
+                        if (_WR == 0)
+                            SetSignal(ref data, Signal.MEMWR);
+                    }
 
-                // VGA memory
-                if (memAddr >= 0xC0000 && memAddr <= 0xDFFFF && (_RD == 0 || _WR == 0))
-                    SetSignal(ref data, Signal.VGA_MEM);
-            }
-            else
-            {
-                // I/O access
-                var ioAddr = (addr & 0xFF) << 3;
-                if (ioAddr >= 0x040 && ioAddr <= 0x047)
-                {
-                    // IO_TIMER
-                    SetSignal(ref data, Signal.IO_TIMER);
+                    // ROM
+                    if (memAddr >= 0xE0000 && memAddr <= 0xFFFFF)
+                    {
+                        if (_RD == 0)
+                            SetSignal(ref data, Signal.ROMRD);
+                    }
+
+                    // VGA memory
+                    if (memAddr >= 0xC0000 && memAddr <= 0xDFFFF)
+                        SetSignal(ref data, Signal.VGA_MEM);
                 }
-                if (ioAddr >= 0x020 && ioAddr <= 0x027)
+                else
                 {
-                    // IO_PIC
-                    SetSignal(ref data, Signal.IO_PIC);
-                }
-                if (ioAddr >= 0x010 && ioAddr <= 0x017)
-                {
-                    // IO_DBG
-                    SetSignal(ref data, Signal.IO_DBG);
-                }
-                if (ioAddr >= 0x050 && ioAddr <= 0x057)
-                {
-                    // VGA_IO
-                    SetSignal(ref data, Signal.VGA_IO);
+                    // I/O access
+                    var ioAddr = (addr & 0xFF) << 3;
+                    if (ioAddr >= 0x040 && ioAddr <= 0x047)
+                    {
+                        // IO_TIMER
+                        SetSignal(ref data, Signal.IO_TIMER);
+                    }
+                    if (ioAddr >= 0x020 && ioAddr <= 0x027)
+                    {
+                        // IO_PIC
+                        SetSignal(ref data, Signal.IO_PIC);
+                    }
+                    if (ioAddr >= 0x010 && ioAddr <= 0x017)
+                    {
+                        // IO_DBG
+                        SetSignal(ref data, Signal.IO_DBG);
+                    }
+                    if (ioAddr >= 0x050 && ioAddr <= 0x057)
+                    {
+                        // VGA_IO
+                        SetSignal(ref data, Signal.VGA_IO);
+                    }
                 }
             }
 

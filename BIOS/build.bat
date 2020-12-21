@@ -1,6 +1,8 @@
 @echo off
 
-del *.bin
+del b.bin
+del BIOS0.bin
+del BIOS1.bin
 nasm -f bin src\resetvector.asm -o resetvector.bin
 
 md bios
@@ -20,6 +22,8 @@ if exist c:\windows\sysnative\wsl.exe (
 cd ..
 
 copy bios\*.bin . /b /v /y
+
+REM pause
 
 if exist b.bin (
 	del b.asm

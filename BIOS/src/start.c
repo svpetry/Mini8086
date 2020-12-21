@@ -1,16 +1,18 @@
 #include "defs.h"
 #include "start.h"
-#include "io.h"
+#include "screen.h"
+#include "lcd.h"
 #include "strutils.h"
+#include "types.h"
 
 #define RESULT_COL 20
 
-extern volatile unsigned char ticks;
+extern volatile byte ticks;
 
 char cfg_sddrive;
 char freq_str[5];
 int ram_kb;
-volatile unsigned char __far (*memptr);
+volatile byte __far (*memptr);
  
 void error() {
     putstr(" ERROR!");
@@ -55,7 +57,7 @@ void check_memory(int row) {
     // test rest of memory
     unsigned long memstart = 0x10000000;
     while (memstart < 0xC0000000) {
-        memptr = (unsigned char __far *)memstart;
+        memptr = (byte __far *)memstart;
 
         // check if memory block present
         *memptr = 0x0F;
@@ -91,10 +93,10 @@ void check_memory(int row) {
 void check_timer(int row) {
     setcursor(4, row);
     putstr("Timer");
- 
+
     int i;
-    unsigned int count = 10000;
-    unsigned char t = ticks;
+    word count = 10000;
+    byte t = ticks;
     while (t == ticks && count > 0) {
         for (i = 0; i < 10; i++) {
             asm("nop");
@@ -167,6 +169,14 @@ void check_sound(int row) {
     putstr("N/A");
 }
 
+void check_rtc(int row) {
+    setcursor(4, row);
+    putstr("RTC");
+    setcursor(RESULT_COL, row);
+
+    putstr("N/A");
+}
+
 void startup() {
     int i;
     setcursor(0, 0);
@@ -181,6 +191,12 @@ void startup() {
     putstr_inv(__DATE__);
 
     i = 2;
+    // setcursor(1, 0);
+    // putstr("012345678901234567890123456789");
+    // setcursor(12, 6);
+    // putch('o');
+    // while (1) ;
+
     check_cpu(i++);
     check_memory(i++);
     check_timer(i++);
@@ -188,6 +204,7 @@ void startup() {
     check_serial(i++);
     check_sd_drive(i++);
     check_sound(i++);
+    check_rtc(i++);
 
 #if LCD == 1602
     lcd_putstr(0, 0, "Mini8086     0.1");

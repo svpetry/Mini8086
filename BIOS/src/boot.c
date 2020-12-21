@@ -1,5 +1,5 @@
 #include "boot.h"
-#include "io.h"
+#include "screen.h"
 #include "strutils.h"
 #include "start.h"
 

@@ -1,8 +1,10 @@
 #include "defs.h"
 #include "bios.h"
-#include "io.h"
+#include "screen.h"
+#include "lcd.h"
 #include "lowlevel.h"
 #include "strutils.h"
+#include "utils.h"
 #include "boot.h"
 #include "start.h"
 
@@ -56,9 +58,50 @@ void int_keyboard() {
 
 }
 
-void demo() {
-    while (1) {
+void demo1() {
+    outp(0x50, 0b00000010); // 320 x 200 x 256
+    
+    unsigned char r, g, b;
 
+    unsigned int x, y;
+    unsigned char __far *screen = (void __far *)0xC0000000;
+    for (y = 0; y < 200; y++) {
+        for (x = 0; x < 320; x++) {
+            
+            r = (x % 80) / 10;
+            g = y / 25;
+            b = x / 80;
+            *(screen++) = (b << 6) + (g << 3) + (r << 0);
+        }
+    }
+    screen = (void __far *)0xCFA00000;
+    for (y = 0; y < 200; y++) {
+        for (x = 0; x < 320; x++) {
+            
+            r = (x % 80) / 10;
+            g = y / 25;
+            b = x / 80;
+            *(screen++) = (b << 6) + (g << 3) + (r << 0);
+        }
+    }
+
+    while (1) ;
+}
+
+void demo2() {
+    outp(0x50, 0b00000001); // 320 x 200 x 256
+    unsigned char __far *screen = (void __far *)0xC0000000;
+    unsigned char __far *picture = (void __far *)0xE0000000;
+    memcpy1(screen, picture, 64000);
+}
+
+void demo() {
+    unsigned int i, j;
+
+    clrscr();
+    while (1) {
+        set_textcol(rand());
+        putstr("ABCDEFGHIJKLMNOPQRSTXYZ");
     }
 }
 
@@ -83,7 +126,7 @@ int main() {
         for (j = 0; j < 100; j++)
             asm("nop");
 
-    demo();
+    demo2();
 
 #if LCD == 1602
     lcd_putstr(0, 0, "                ");

@@ -234,7 +234,6 @@ no_stack_chg_09:
 
 	// software interrupts
 int10:
-	iret
 
 	call int_bios
 	iret

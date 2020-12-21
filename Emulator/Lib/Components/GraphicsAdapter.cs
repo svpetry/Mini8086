@@ -34,7 +34,7 @@ namespace Emulator.Lib.Components
         private readonly int _bytesPerPixel;
         private GraphicsMode _mode = GraphicsMode.Text;
 
-        private byte[][] _memory;
+        private byte[] _memory;
         private byte[] _charRom;
 
         private int _activePlane;
@@ -51,13 +51,10 @@ namespace Emulator.Lib.Components
             _bytesPerPixel = _screen.Format.BitsPerPixel / 8;
 
             // two planes with 64k bytes each
-            _memory = new byte[2][];
-            _memory[0] = new byte[0x10000];
-            _memory[1] = new byte[0x10000];
+            _memory = new byte[0x20000];
 
             _charRom = File.ReadAllBytes(characterRomPath);
-            foreach (var mem in _memory)
-                MemUtils.RandomFill(mem);
+            MemUtils.RandomFill(_memory);
         }
 
         public WriteableBitmap Screen => _screen;
@@ -108,18 +105,13 @@ namespace Emulator.Lib.Components
         public byte Peek(int addr)
         {
             var memAddr = addr - _baseMemAddress;
-            if (memAddr < 0x10000)
-                return _memory[0][memAddr];
-            return _memory[1][memAddr - 0x10000];
+            return _memory[memAddr];
         }
 
         public void Poke(int addr, byte value)
         {
             var memAddr = addr - _baseMemAddress;
-            if (memAddr < 0x10000)
-                _memory[0][memAddr] = value;
-            else
-                _memory[1][memAddr - 0x10000] = value;
+           _memory[memAddr] = value;
         }
 
         private void UpdateScreenParallel(int width, int height, Func<int, int, int, Task> createTaskFunc)
@@ -140,16 +132,17 @@ namespace Emulator.Lib.Components
 
         private Task CreateUpdateTextScreenTask(int cols, int startRow, int rows)
         {
+            var baseAddr = _activePlane == 1 ? 0 : 0x10000;
             return new Task(() =>
             {
-                var bgColor = GetColor32(_backgroundColor);
+                var bgColor = GetColor32(_backgroundColor, 56);
                 for (var row = startRow; row < startRow + rows; row++)
                 {
                     for (var col = 0; col < cols; col++)
                     {
                         var addr = (row * ColCount + col) * 2;
-                        var charCode = _memory[_activePlane][addr];
-                        var fgColor = GetColor32(_memory[_activePlane][addr + 1]);
+                        var charCode = _memory[addr];
+                        var fgColor = GetColor32(_memory[addr + 1]);
 
                         var romAddr = charCode * CharHeight;
                         for (var charRow = 0; charRow < CharHeight; charRow++)
@@ -177,18 +170,18 @@ namespace Emulator.Lib.Components
             return new Task(
                 () =>
                 {
-                    var mem = _memory[_activePlane];
                     var dataIndex = startLine * width;
 
                     for (var row = 0; row < height; row++)
                     {
-                        var memIndex = (startLine + row) * width;
+                        var y = startLine + row;
                         if (doubleY)
-                            memIndex /= 2;
+                            y /= 2;
+                        var memIndex = y * (doubleX ? width / 2 : width);
 
                         for (var col = 0; col < width; col++)
                         {
-                            _dataBuffer[dataIndex] = GetColor32(mem[memIndex]);
+                            _dataBuffer[dataIndex] = GetColor32(_memory[memIndex]);
                             if (!doubleX || (col & 1) > 0)
                                 memIndex++;
                             dataIndex++;
@@ -232,16 +225,22 @@ namespace Emulator.Lib.Components
             _screen.WritePixels(new Int32Rect(0, 0, ScreenWidth, ScreenHeight), _dataBuffer, stride, 0);
         }
 
-        private void GetColors(byte color, out byte red, out byte green, out byte blue)
+        private void GetColors(byte color, out byte red, out byte green, out byte blue, int factor = 64)
         {
             red = (byte)((color & 0b00000111) << 5);
             green = (byte)((color & 0b00111000) << 2);
             blue = (byte)(color & 0b11000000);
+            if (factor != 64)
+            {
+                red = (byte)(red * factor / 64);
+                green = (byte)(green * factor / 64);
+                blue = (byte)(blue * factor / 64);
+            }
         }
 
-        private uint GetColor32(byte color)
+        private uint GetColor32(byte color, int factor = 64)
         {
-            GetColors(color, out var red, out var green, out var blue);
+            GetColors(color, out var red, out var green, out var blue, factor);
             return (uint)(blue + (green << 8) + (red << 16));
         }
     }

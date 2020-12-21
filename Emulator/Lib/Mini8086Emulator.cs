@@ -36,6 +36,8 @@ namespace Emulator
 
         public WriteableBitmap Screen => _graphicsAdapter.Screen;
 
+        public bool EnableDisassembler { get; set; }
+
         public Mini8086Emulator()
         {
             var components = new List<BaseComponent>();
@@ -83,13 +85,15 @@ namespace Emulator
         {
             _cpu.Reset();
             _cpu.ExecNextInstruction();
-            _disassembler.DoDisassemble();
+            if (EnableDisassembler)
+                _disassembler.DoDisassemble();
         }
 
         public void Step()
         {
             _cpu.ExecNextInstruction();
-            _disassembler.DoDisassemble();
+            if (EnableDisassembler)
+                _disassembler.DoDisassemble();
         }
 
         public async Task UpdateScreen()

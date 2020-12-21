@@ -251,6 +251,17 @@ namespace Emulator.ViewModels
 
         public ActionCommand ResetCommand { get; }
 
+        public bool EnableDisassembler
+        {
+            get => _emulator.EnableDisassembler;
+            set
+            {
+                if (_emulator.EnableDisassembler == value) return;
+                _emulator.EnableDisassembler = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ImageSource ScreenSource
         {
             get
@@ -316,9 +327,12 @@ namespace Emulator.ViewModels
                     while (_emulator.Cpu.ClockCount < endCount && !_doStop)
                     {
                         _emulator.Step();
-                        lines.Enqueue(_emulator.DisassembledLine);
-                        if (lines.Count > 1000)
-                            lines.Dequeue();
+                        if (_emulator.EnableDisassembler)
+                        {
+                            lines.Enqueue(_emulator.DisassembledLine);
+                            if (lines.Count > 1000)
+                                lines.Dequeue();
+                        }
                     }
                     stopWatch.Stop();
 
@@ -357,7 +371,8 @@ namespace Emulator.ViewModels
         private void Step(object Param)
         {
             _emulator.Step();
-            DisassembledLines.Add(_emulator.DisassembledLine);
+            if (_emulator.EnableDisassembler)
+                DisassembledLines.Add(_emulator.DisassembledLine);
             OnPropertyChanged(nameof(DisassembledLines));
             UpdateRegisters();
         }
@@ -366,9 +381,12 @@ namespace Emulator.ViewModels
         {
             DisassembledLines.Clear();
             _emulator.Reset();
-            DisassembledLines.Add(_emulator.DisassembledLine);
-            if (DisassembledLines.Count > 1000)
-                DisassembledLines.RemoveAt(0);
+            if (_emulator.EnableDisassembler)
+            {
+                DisassembledLines.Add(_emulator.DisassembledLine);
+                if (DisassembledLines.Count > 1000)
+                    DisassembledLines.RemoveAt(0);
+            }
             OnPropertyChanged(nameof(DisassembledLines));
             UpdateRegisters();
         }

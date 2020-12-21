@@ -28,10 +28,12 @@
             <Button Height="25" Margin="5" Command="{Binding StopCommand}">Stop</Button>
             <Button Height="25" Margin="5" Command="{Binding StepCommand}">Step</Button>
             <Button Height="25" Margin="5" Command="{Binding ResetCommand}">Reset</Button>
+            <CheckBox Margin="5" Content="Disassembler" IsChecked="{Binding EnableDisassembler}"/>
             <Grid Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="20"/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="14*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -48,30 +50,30 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="AX"/>
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding AX, Converter={StaticResource HexConverter}}"/>
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="BX"/>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding BX, Converter={StaticResource HexConverter}}"/>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="CX"/>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CX, Converter={StaticResource HexConverter}}"/>
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="DX"/>
-                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding DX, Converter={StaticResource HexConverter}}"/>
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="SI"/>
-                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding SI, Converter={StaticResource HexConverter}}"/>
-                <TextBlock Grid.Row="5" Grid.Column="0" Text="DI"/>
-                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding DI, Converter={StaticResource HexConverter}}"/>
-                <TextBlock Grid.Row="6" Grid.Column="0" Text="SP"/>
-                <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding SP, Converter={StaticResource HexConverter}}"/>
-                <TextBlock Grid.Row="7" Grid.Column="0" Text="BP"/>
-                <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding BP, Converter={StaticResource HexConverter}}"/>
-                <TextBlock Grid.Row="8" Grid.Column="0" Text="CS"/>
-                <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding CS, Converter={StaticResource HexConverter}}"/>
-                <TextBlock Grid.Row="9" Grid.Column="0" Text="DS"/>
-                <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding DS, Converter={StaticResource HexConverter}}"/>
-                <TextBlock Grid.Row="10" Grid.Column="0" Text="ES"/>
-                <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding ES, Converter={StaticResource HexConverter}}"/>
-                <TextBlock Grid.Row="11" Grid.Column="0" Text="SS"/>
-                <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding SS, Converter={StaticResource HexConverter}}"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="AX" Margin="0,3,0,2"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding AX, Converter={StaticResource HexConverter}}" Grid.ColumnSpan="2"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="BX" Margin="0,3,0,2"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding BX, Converter={StaticResource HexConverter}}" Grid.ColumnSpan="2"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="CX" Margin="0,3,0,2"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CX, Converter={StaticResource HexConverter}}" Grid.ColumnSpan="2"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="DX" Margin="0,3,0,2"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding DX, Converter={StaticResource HexConverter}}" Grid.ColumnSpan="2"/>
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="SI" Margin="0,3,0,2"/>
+                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding SI, Converter={StaticResource HexConverter}}" Grid.ColumnSpan="2"/>
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="DI" Margin="0,3,0,2"/>
+                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding DI, Converter={StaticResource HexConverter}}" Grid.ColumnSpan="2"/>
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="SP" Margin="0,3,0,2"/>
+                <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding SP, Converter={StaticResource HexConverter}}" Grid.ColumnSpan="2"/>
+                <TextBlock Grid.Row="7" Grid.Column="0" Text="BP" Margin="0,3,0,2"/>
+                <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding BP, Converter={StaticResource HexConverter}}" Grid.ColumnSpan="2"/>
+                <TextBlock Grid.Row="8" Grid.Column="0" Text="CS" Margin="0,3,0,2"/>
+                <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding CS, Converter={StaticResource HexConverter}}" Grid.ColumnSpan="2"/>
+                <TextBlock Grid.Row="9" Grid.Column="0" Text="DS" Margin="0,3,0,2"/>
+                <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding DS, Converter={StaticResource HexConverter}}" Grid.ColumnSpan="2"/>
+                <TextBlock Grid.Row="10" Grid.Column="0" Text="ES" Margin="0,3,0,2"/>
+                <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding ES, Converter={StaticResource HexConverter}}" Grid.ColumnSpan="2"/>
+                <TextBlock Grid.Row="11" Grid.Column="0" Text="SS" Margin="0,3,0,2"/>
+                <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding SS, Converter={StaticResource HexConverter}}" Grid.ColumnSpan="2"/>
                 <Grid.Resources>
                     <Style TargetType="TextBlock">
                         <Setter Property="FontFamily" Value="Consolas" />

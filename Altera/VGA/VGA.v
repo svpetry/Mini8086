@@ -232,7 +232,7 @@ begin
 	begin
 		if (mode_text)
 		begin
-			cpu_wait = hcount[3:0] >= 4'd8;
+			cpu_wait = hcount[3:0] >= 4'd10;
 			block_cpu = hcount[3:0] == 4'd0 || hcount[3:0] >= 4'd12;
 			
 			load_chr_ram = hcount[3:0] == 4'd13;
@@ -357,7 +357,7 @@ begin
 		end
 		else if (hori_visible_area)
 		begin
-			if (mode_text && hcount[3:0] == 8'd1
+			if (mode_text && hcount[3:0] == 4'd1
 				|| (mode_320x200 || mode_320x400) && hcount[2:0] == 3'd1
 				|| mode_640x200 && hcount[1:0] == 2'd1)
 					int_ram_addr <= int_ram_addr + 15'd1;

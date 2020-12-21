@@ -14,6 +14,7 @@ namespace BiosBuilder
             Add(bios, "resetvector.bin", 0xFFFF0);
             //var initializerSize = Add(bios, "initializer.bin", 0xF0000);
             Add(bios, "b.bin", 0xF0000);
+            Add(bios, "picture.bin", 0xE0000);
 
             SplitBiosAndSave(bios);
         }

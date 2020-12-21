@@ -16,15 +16,13 @@ void set_textcol(byte col) {
 
 void init_screen() {
     outp(0x50, 0b00000000); // activate text mode
-    //outp(0x51, 0b01000000); // background color: dark blue
-    outp(0x51, 0xFF); // white
+    outp(0x51, 0b01000000); // background color: dark blue
 
     screen = (void __far *)0xC0000000;
     scrbuf = (void __far *)0x20000000;
     cursor_col = 0;
     cursor_row = 0;
-    //textcol = 0b11100100; // light blue
-    textcol = 0; // black
+    textcol = 0b11100100; // light blue
 
     clrscr();
 }
@@ -82,6 +80,13 @@ void putch(char c) {
             scrollup();
         cursor_row++;
     }
+}
+
+void setchar(word col, word row, char c) {
+    word index = row * 80 + col;
+    word data = c + (textcol << 8);
+    (*screen)[index] = data;
+    (*scrbuf)[index] = data;
 }
 
 void putstr(char *str) {

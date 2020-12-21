@@ -179,24 +179,22 @@ void check_rtc(int row) {
 
 void startup() {
     int i;
-    setcursor(0, 0);
-    for (i = 0; i < 80; i++)
-        putch(' ' + 128);
-    setcursor(0, 24);
-    for (i = 0; i < 80; i++)
-        putch(' ' + 128);
+    for (i = 0; i < 80; i++) {
+        setchar(i, 0, ' ' + 128);
+        setchar(i, 24, ' ' + 128);
+    }
     setcursor(1, 0);
     putstr_inv("Mini8086 BIOS 0.1");
     setcursor(68, 0);
     putstr_inv(__DATE__);
 
-    i = 2;
     // setcursor(1, 0);
     // putstr("012345678901234567890123456789");
     // setcursor(12, 6);
     // putch('o');
     // while (1) ;
 
+    i = 2;
     check_cpu(i++);
     check_memory(i++);
     check_timer(i++);

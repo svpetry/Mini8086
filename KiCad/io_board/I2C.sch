@@ -403,6 +403,48 @@ F 3 "" H 4500 2950 50  0001 C CNN
 	1    4500 2950
 	1    0    0    -1  
 $EndComp
+$Comp
+L Connector_Generic:Conn_01x04 J7
+U 1 1 5FDA3AF8
+P 9250 4050
+F 0 "J7" H 9330 4042 50  0000 L CNN
+F 1 "I²C" H 9330 3951 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 9250 4050 50  0001 C CNN
+F 3 "~" H 9250 4050 50  0001 C CNN
+	1    9250 4050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9050 4050 8950 4050
+Wire Wire Line
+	8950 4050 8950 4350
+Wire Wire Line
+	8950 3950 9050 3950
+$Comp
+L power:GND #PWR0113
+U 1 1 5FDA3B01
+P 8950 4350
+F 0 "#PWR0113" H 8950 4100 50  0001 C CNN
+F 1 "GND" H 8955 4177 50  0000 C CNN
+F 2 "" H 8950 4350 50  0001 C CNN
+F 3 "" H 8950 4350 50  0001 C CNN
+	1    8950 4350
+	1    0    0    -1  
+$EndComp
+Text GLabel 9050 3750 2    50   Input ~ 0
+VCC3
+Wire Wire Line
+	9050 3750 8950 3750
+Wire Wire Line
+	8950 3750 8950 3950
+Wire Wire Line
+	9050 4150 8850 4150
+Wire Wire Line
+	9050 4250 8850 4250
+Text GLabel 8850 4250 0    50   Input ~ 0
+SDA
+Text GLabel 8850 4150 0    50   Input ~ 0
+SCL
 Wire Bus Line
 	3650 3250 3650 3400
 Wire Bus Line

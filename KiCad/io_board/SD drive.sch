@@ -1233,6 +1233,26 @@ F 3 "" H 7600 6250 50  0001 C CNN
 	1    7600 6250
 	1    0    0    -1  
 $EndComp
+$Comp
+L Device:C C40
+U 1 1 5FE23D90
+P 7100 2150
+F 0 "C40" H 7215 2196 50  0000 L CNN
+F 1 "100n" H 7215 2105 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric" H 7138 2000 50  0001 C CNN
+F 3 "~" H 7100 2150 50  0001 C CNN
+	1    7100 2150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7500 2400 7100 2400
+Wire Wire Line
+	7100 2400 7100 2300
+Connection ~ 7500 2400
+Wire Wire Line
+	7100 2000 7100 1900
+Wire Wire Line
+	7100 1900 7500 1900
 Wire Bus Line
 	1200 2350 1200 2500
 Wire Bus Line
@@ -1241,4 +1261,5 @@ Wire Bus Line
 	3750 3550 3750 4400
 Wire Bus Line
 	1200 4850 1200 5600
+Connection ~ 7500 1900
 $EndSCHEMATC

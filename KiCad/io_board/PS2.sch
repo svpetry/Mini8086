@@ -56,7 +56,7 @@ U 2 1 5F94362B
 P 4700 4450
 F 0 "U3" H 4700 4133 50  0000 C CNN
 F 1 "74HC07" H 4700 4224 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_LongPads" H 4700 4450 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 4700 4450 50  0001 C CNN
 F 3 "www.ti.com/lit/ds/symlink/sn74ls07.pdf" H 4700 4450 50  0001 C CNN
 	2    4700 4450
 	-1   0    0    1   
@@ -67,7 +67,7 @@ U 1 1 5F942AA1
 P 4700 3850
 F 0 "U3" H 4700 3533 50  0000 C CNN
 F 1 "74HC07" H 4700 3624 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_LongPads" H 4700 3850 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 4700 3850 50  0001 C CNN
 F 3 "www.ti.com/lit/ds/symlink/sn74ls07.pdf" H 4700 3850 50  0001 C CNN
 	1    4700 3850
 	-1   0    0    1   
@@ -439,7 +439,7 @@ U 7 1 5FABB725
 P 2200 1800
 F 0 "U3" H 2430 1846 50  0000 L CNN
 F 1 "74HC07" H 2430 1755 50  0000 L CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_LongPads" H 2200 1800 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 2200 1800 50  0001 C CNN
 F 3 "www.ti.com/lit/ds/symlink/sn74ls07.pdf" H 2200 1800 50  0001 C CNN
 	7    2200 1800
 	1    0    0    -1  

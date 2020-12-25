@@ -619,11 +619,9 @@ NoConn ~ 6200 4100
 NoConn ~ 6200 4200
 NoConn ~ 6200 4300
 NoConn ~ 6200 5400
-NoConn ~ 6200 5500
 NoConn ~ 6200 5600
 NoConn ~ 6200 5700
 NoConn ~ 6200 5800
-NoConn ~ 6200 5900
 NoConn ~ 4200 4900
 NoConn ~ 4200 4800
 NoConn ~ 4200 4700
@@ -1253,6 +1251,16 @@ Wire Wire Line
 	7100 2000 7100 1900
 Wire Wire Line
 	7100 1900 7500 1900
+Connection ~ 7500 1900
+Text GLabel 6750 5600 2    50   Output ~ 0
+SD_IRQ
+Wire Wire Line
+	6200 5900 6500 5900
+Wire Wire Line
+	6500 5900 6500 5600
+Wire Wire Line
+	6500 5600 6750 5600
+NoConn ~ 6200 5500
 Wire Bus Line
 	1200 2350 1200 2500
 Wire Bus Line
@@ -1261,5 +1269,4 @@ Wire Bus Line
 	3750 3550 3750 4400
 Wire Bus Line
 	1200 4850 1200 5600
-Connection ~ 7500 1900
 $EndSCHEMATC

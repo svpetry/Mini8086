@@ -333,7 +333,7 @@ NoConn ~ 4050 2800
 Wire Wire Line
 	4650 2500 4050 2500
 Text GLabel 4650 2500 2    50   Output ~ 0
-~CS_BUFFER
+~WR_BUFFER
 Wire Wire Line
 	3250 3600 2800 3600
 Text GLabel 2800 3600 0    50   Input ~ 0

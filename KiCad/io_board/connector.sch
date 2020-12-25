@@ -134,44 +134,6 @@ Wire Wire Line
 	3350 3900 3550 3900
 Wire Wire Line
 	3350 3800 3550 3800
-Wire Wire Line
-	3350 3700 3550 3700
-Wire Wire Line
-	3350 3600 3550 3600
-Wire Wire Line
-	3350 3500 3550 3500
-Wire Wire Line
-	3350 3400 3550 3400
-Wire Wire Line
-	3350 3300 3550 3300
-Wire Wire Line
-	3550 3200 3350 3200
-Wire Wire Line
-	3350 3100 3550 3100
-Wire Wire Line
-	3350 3000 3550 3000
-Wire Wire Line
-	3350 2900 3550 2900
-Wire Wire Line
-	3350 2800 3550 2800
-Entry Wire Line
-	3350 2800 3250 2700
-Entry Wire Line
-	3350 2900 3250 2800
-Entry Wire Line
-	3350 3000 3250 2900
-Entry Wire Line
-	3350 3100 3250 3000
-Entry Wire Line
-	3350 3200 3250 3100
-Entry Wire Line
-	3350 3300 3250 3200
-Entry Wire Line
-	3350 3400 3250 3300
-Entry Wire Line
-	3350 3500 3250 3400
-Entry Wire Line
-	3350 3600 3250 3500
 Entry Wire Line
 	3350 3700 3250 3600
 Entry Wire Line
@@ -195,8 +157,8 @@ Entry Wire Line
 Entry Wire Line
 	3350 4700 3250 4600
 Wire Bus Line
-	3250 2650 3150 2650
-Text GLabel 3150 2650 0    50   Output ~ 0
+	3250 3500 3150 3500
+Text GLabel 3150 3500 0    50   Output ~ 0
 A[0..19]
 NoConn ~ 3550 2600
 NoConn ~ 3550 2500
@@ -352,26 +314,6 @@ Text Label 3400 3900 0    50   ~ 0
 A8
 Text Label 3400 3800 0    50   ~ 0
 A9
-Text Label 3400 3700 0    50   ~ 0
-A10
-Text Label 3400 3600 0    50   ~ 0
-A11
-Text Label 3400 3500 0    50   ~ 0
-A12
-Text Label 3400 3400 0    50   ~ 0
-A13
-Text Label 3400 3300 0    50   ~ 0
-A14
-Text Label 3400 3200 0    50   ~ 0
-A15
-Text Label 3400 3100 0    50   ~ 0
-A16
-Text Label 3400 3000 0    50   ~ 0
-A17
-Text Label 3400 2900 0    50   ~ 0
-A18
-Text Label 3400 2800 0    50   ~ 0
-A19
 NoConn ~ 3550 2700
 NoConn ~ 3550 2300
 Wire Wire Line
@@ -477,8 +419,22 @@ Text GLabel 5850 2600 2    50   Input ~ 0
 ~INT_I2C
 Text Label 4700 2600 0    50   ~ 0
 IRQ7
+NoConn ~ 3550 2100
+NoConn ~ 3550 3600
+NoConn ~ 3550 3500
+NoConn ~ 3550 3400
+NoConn ~ 3550 3300
+NoConn ~ 3550 2800
+NoConn ~ 3550 3200
+NoConn ~ 3550 3100
+NoConn ~ 3550 3000
+NoConn ~ 3550 2900
+Wire Wire Line
+	3550 3700 3350 3700
 Wire Bus Line
 	4800 3850 4800 4600
 Wire Bus Line
-	3250 2650 3250 4600
+	3250 3500 3250 4600
+Text Label 3400 3700 0    50   ~ 0
+A10
 $EndSCHEMATC

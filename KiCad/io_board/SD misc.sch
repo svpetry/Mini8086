@@ -636,23 +636,10 @@ Wire Wire Line
 	5900 1750 6650 1750
 Wire Wire Line
 	6650 1750 6650 2350
-$Comp
-L 74xx:74LS32 U?
-U 4 1 5FA6D7A1
-P 5800 3500
-AR Path="/5F806563/5FA6D7A1" Ref="U?"  Part="4" 
-AR Path="/5F806563/5F9E8365/5FA6D7A1" Ref="U14"  Part="4" 
-F 0 "U14" H 5800 3825 50  0000 C CNN
-F 1 "74HCT32" H 5800 3734 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 5800 3500 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 5800 3500 50  0001 C CNN
-	4    5800 3500
-	-1   0    0    1   
-$EndComp
 Text Label 6000 1750 0    50   ~ 0
 ~ACC_BUFFER
 Text GLabel 5300 1850 0    50   Input ~ 0
-~CS_BUFFER
+~WR_BUFFER
 $Comp
 L 74xx:74LS32 U?
 U 2 1 5FA753CD
@@ -696,7 +683,6 @@ Wire Wire Line
 Wire Wire Line
 	3600 2350 6650 2350
 Connection ~ 6650 2350
-NoConn ~ 5500 3500
 NoConn ~ 5450 4150
 NoConn ~ 5450 4800
 Wire Wire Line
@@ -718,16 +704,6 @@ Wire Wire Line
 Connection ~ 6150 4250
 Wire Wire Line
 	6150 4250 6150 4700
-Wire Wire Line
-	6100 3600 6150 3600
-Wire Wire Line
-	6150 3600 6150 4050
-Connection ~ 6150 4050
-Wire Wire Line
-	6100 3400 6150 3400
-Wire Wire Line
-	6150 3400 6150 3600
-Connection ~ 6150 3600
 $Comp
 L power:GND #PWR0104
 U 1 1 5FD540A4
@@ -739,6 +715,34 @@ F 3 "" H 6150 5050 50  0001 C CNN
 	1    6150 5050
 	1    0    0    -1  
 $EndComp
+$Comp
+L 74xx:74LS32 U?
+U 4 1 5FA6D7A1
+P 5650 2950
+AR Path="/5F806563/5FA6D7A1" Ref="U?"  Part="4" 
+AR Path="/5F806563/5F9E8365/5FA6D7A1" Ref="U14"  Part="4" 
+F 0 "U14" H 5650 3275 50  0000 C CNN
+F 1 "74HCT32" H 5650 3184 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 5650 2950 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 5650 2950 50  0001 C CNN
+	4    5650 2950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5350 3050 5250 3050
+Wire Wire Line
+	5250 3050 5250 2850
+Wire Wire Line
+	5350 2850 5250 2850
+Connection ~ 5250 2850
+Wire Wire Line
+	5250 2850 5150 2850
+Text GLabel 5150 2850 0    50   Input ~ 0
+SD_IRQ
+Text GLabel 6050 2950 2    50   Output ~ 0
+IRQ6
+Wire Wire Line
+	6050 2950 5950 2950
 Wire Bus Line
 	8700 1100 8700 1750
 Wire Bus Line

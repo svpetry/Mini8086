@@ -122,7 +122,6 @@ PCLK
 NoConn ~ 6750 3750
 NoConn ~ 6750 3550
 NoConn ~ 6750 3450
-NoConn ~ 6750 3650
 NoConn ~ 6750 3350
 NoConn ~ 6750 3250
 Wire Wire Line
@@ -372,7 +371,6 @@ F 3 "" H 1800 3400 50  0001 C CNN
 	1    1800 3400
 	1    0    0    -1  
 $EndComp
-NoConn ~ 8150 3650
 $Comp
 L Device:R R4
 U 1 1 5F975524
@@ -466,6 +464,22 @@ F 3 "" H 2200 1300 50  0001 C CNN
 	1    2200 1300
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	8150 3650 8500 3650
+Wire Wire Line
+	6750 3650 6600 3650
+Text GLabel 6600 3650 0    50   Output ~ 0
+IRQ1
+Entry Wire Line
+	8500 3650 8600 3550
+Wire Bus Line
+	8600 3550 8600 3450
+Wire Bus Line
+	8600 3450 8700 3450
 Wire Bus Line
 	8650 2400 8650 3150
+Text GLabel 8700 3450 2    50   Input ~ 0
+A[0..19]
+Text Label 8300 3650 0    50   ~ 0
+A0
 $EndSCHEMATC

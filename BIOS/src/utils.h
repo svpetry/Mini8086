@@ -1,3 +1,5 @@
+#include "types.h"
+
 #define RAND_MAX 32767
 
 typedef unsigned int size_t;

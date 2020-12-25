@@ -1,1 +1,4 @@
-void outp(unsigned int port, unsigned char value);
+#include "types.h"
+
+void outp(word port, byte value);
+byte inp(word port);

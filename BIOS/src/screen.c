@@ -16,7 +16,7 @@ void set_textcol(byte col) {
 
 void init_screen() {
     outp(0x50, 0b00000000); // activate text mode
-    outp(0x51, 0b01000000); // background color: dark blue
+    outp(0x51, 0b10000000); // background color: blue
 
     screen = (void __far *)0xC0000000;
     scrbuf = (void __far *)0x20000000;

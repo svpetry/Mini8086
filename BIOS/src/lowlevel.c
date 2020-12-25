@@ -1,6 +1,6 @@
 #include "lowlevel.h"
 
-inline void outp(unsigned int port, unsigned char value) {
+inline void outp(word port, byte value) {
     asm(
         "movb %1, %%al\n"
         "movw %0, %%dx\n"
@@ -9,3 +9,13 @@ inline void outp(unsigned int port, unsigned char value) {
     );
 }
 
+inline byte inp(word port) {
+    byte value;
+    asm(
+        "movw %1, %%dx\n"
+        "inb %%dx, %%al\n"
+        "movb %%al, %0\n"
+        : "=g" (value) : "g" (port)
+    );
+    return value;
+}

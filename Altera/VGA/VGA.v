@@ -78,7 +78,8 @@ reg _char_bg = 1;
 wire [3:0]chrow;
 wire plane;
 reg _chr_to_col = 1'b1;
-reg _cpu_ram_addr = 1'b1;
+//reg _cpu_ram_addr = 1'b1;
+wire _cpu_ram_addr;
 reg cpu_ram_dir;
 wire rdy;
 
@@ -212,7 +213,7 @@ begin
 	latch_chr <= 0;
 	latch_col <= 0;
 	_cs_ram <= 4'b1111;
-	_cpu_ram_addr <= 1;
+	//_cpu_ram_addr <= 1;
 	_cpu_ram <= 4'b1111;
 	_chr_to_col <= 1;
 	_pe_chpx <= 1;
@@ -232,10 +233,12 @@ begin
 	begin
 		if (mode_text)
 		begin
-			cpu_wait = hcount[3:0] >= 4'd10;
-			block_cpu = hcount[3:0] == 4'd0 || hcount[3:0] >= 4'd12;
+			cpu_wait = hcount[3:0] >= 4'd2 && hcount[3:0] <= 4'd14;
+			block_cpu = hcount[3:0] <= 4'd1 || hcount[3:0] >= 4'd12;
+			//cpu_wait = 1;
+			//block_cpu = hcount[3:0] >= 4'd12 || hori_visible_area;
 			
-			load_chr_ram = hcount[3:0] == 4'd13;
+			load_chr_ram = hcount[3:0] == 4'd14;
 			load_col_ram = hcount[3:0] == 4'd0;
 
 			_pe_chpx <= ~(hcount[3:0] == 4'd7 || hcount[3:0] == 4'd15);
@@ -276,7 +279,7 @@ begin
 	// CPU writes RAM
 	if (!load_chr_ram && !load_col_ram && _vga_mem_sync == 0 && !block_cpu)
 	begin
-		_cpu_ram_addr <= 0;
+		//_cpu_ram_addr <= 0;
 		cpu_ram_dir <= _rd_sync;
 		wr_ram <= _wr_sync == 0 ? 1'b1 : 1'b0;
 		if (addr_sync[1] == 0)
@@ -297,14 +300,14 @@ begin
 end
 
 // RAM WE signals
-always @(posedge clock)
+always @(negedge clock)
 begin
 	_we_ram <= 4'b1111;
-	if (wr_ram && !block_cpu)
+	if (wr_ram)
 	begin
 		wr_delay <= wr_delay << 1;
 		wr_delay[0] <= prev_wr_ram == 0 ? 1'b1 : 1'b0;
-		if (wr_delay[1])
+		if (wr_delay[0])
 		begin
 			if (addr_sync[1] == 0)
 			begin
@@ -412,7 +415,8 @@ begin
 end
 
 // RAM address
-assign ram_addr = ram_addr_active ? int_ram_addr : 15'bz; 
+assign ram_addr = ram_addr_active ? int_ram_addr : 15'bz;
+assign _cpu_ram_addr = ram_addr_active;
 assign rdy = ~cpu_wait;
 
 endmodule

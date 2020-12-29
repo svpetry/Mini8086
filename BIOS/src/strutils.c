@@ -63,6 +63,27 @@ void itoa(int n, char s[]) {
 	 reverse(s);
 }
 
+void itohex(int n, char s[]) {
+	int i, sign;
+	char c;
+
+	if ((sign = n) < 0)
+		n = -n;
+	i = 0;
+	do {
+		c = n % 16;
+		if (c < 10)
+			c += '0';
+		else
+			c += 'A' - 10;
+		s[i++] = c;
+	} while ((n /= 16) > 0);
+	if (sign < 0)
+		s[i++] = '-';
+	s[i] = '\0';
+	reverse(s);
+}
+
 void ltoa(long i, char* buf) {
 	char reverse[14];
 	char* s;

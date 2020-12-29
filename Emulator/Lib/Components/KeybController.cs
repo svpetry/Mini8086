@@ -21,7 +21,7 @@ namespace Emulator.Lib.Components
 
         public ushort In(int addr)
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
         public void Out(int addr, ushort value, bool wordTransfer)

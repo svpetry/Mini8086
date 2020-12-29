@@ -67,6 +67,9 @@ namespace Emulator
             //components.Add(_ppi = new Ppi(Config.PpiBasePort));
             //_portMapper.Register(Config.PpiBasePort, Config.PpiBasePort + 0x07, _ppi);
 
+            components.Add(_keybController = new KeybController(Config.KeybControllerBasePort));
+            _portMapper.Register(Config.KeybControllerBasePort, Config.KeybControllerBasePort + 0x07, _keybController);
+
             _memMapper.FinishRegistration();
             
             components.ForEach(_ =>

@@ -1,87 +1,36 @@
 module VGA(
 		// inputs
-		clock,
-		_vga_mem,
-		addr,
-		_rd,
-		_wr,
-		_bhe,
-		charpixel,
-		plane,
-		mode,
+		input clock, // 50 MHz clock
+		input _vga_mem, // CPU accesses VGA memory
+		input [1:0]addr, // A0-A1 from system address bus
+		input _rd, // CPU read signal
+		input _wr, // CPU write signal
+		input _bhe, // BHE signal from CPU
+		input charpixel, // character pixel signal
+		input plane, // the graphics memory plane to be displayed
+		input [1:0]mode, // graphics mode (0 = text, 1 = 320x200x8, 2 = 400x300x8)
 		
 		// outputs
-		rdy,
-		_we_ram,
-		_cs_ram,
-		_cpu_ram_addr,
-		px_clk,
-		_oe_latch,
-		chrow,
-		_charmode,
-		_char_bg,
-		latch_chr,
-		latch_col,
-		_pe_chpx,
-		_chr_to_col,
-		_cpu_ram,
-		cpu_ram_dir,
-		ram_addr,
-		hsync,
-		vsync
+		output rdy, // CPU busy signal
+		output reg [3:0]_we_ram = 4'b1111, // RAM WE
+		output reg [3:0]_cs_ram = 4'b1111, // RAM CS
+		output _cpu_ram_addr, // connect CPU address bus to RAM
+		output px_clk, // pixel clock for shift register
+		output reg [3:0]_oe_latch = 4'b1111, // latch OE
+		output [3:0]chrow, // character row
+		output _charmode, // enable text mode
+		output reg _char_bg = 1, // output background color at character pixel
+		output reg latch_chr, // latch byte 0 and 2 from RAM
+		output reg latch_col, // latch byte 1 and 3 from RAM
+		output reg _pe_chpx = 1, // shift register parallel load
+		output reg _chr_to_col = 1, // connect DCHR to DCOL bus
+		output reg [3:0]_cpu_ram = 4'b1111, // CPU transceiver enable signals
+		output reg cpu_ram_dir, // CPU RAM data direction (1 = CPU to RAM, 2 = RAM to CPU)
+		output [14:0]ram_addr, // current RAM address
+		output hsync, // VGA horizontal sync
+		output reg vsync // VGA vertical sync
 );
 
-// input signals
-input clock; // 50 MHz clock
-input _vga_mem; // CPU accesses VGA memory
-input [1:0]addr; // A0-A1 from system address bus
-input _rd; // CPU read signal
-input _wr; // CPU write signal
-input _bhe; // BHE signal from CPU
-input charpixel; // character pixel signal
-input plane; // the graphics memory plane to be displayed
-input [1:0]mode; // graphics mode (0 = text, 1 = 320x200x8, 2 = 400x300x8)
-
-// output signals
-output rdy; // CPU busy signal
-output [3:0]_we_ram; // RAM WE
-output [3:0]_cs_ram; // RAM CS
-output _cpu_ram_addr; // connect CPU address bus to RAM
-output px_clk; // pixel clock for shift register
-output [3:0]_oe_latch; // latch OE
-output [3:0]chrow; // character row
-output _charmode; // enable text mode
-output _char_bg; // output background color at character pixel
-output latch_chr; // latch byte 0 and 2 from RAM
-output latch_col; // latch byte 1 and 3 from RAM
-output _pe_chpx; // shift register parallel load
-output _chr_to_col; // connect DCHR to DCOL bus
-output [3:0]_cpu_ram; // CPU transceiver enable signals
-output cpu_ram_dir; // CPU RAM data direction (1 = CPU to RAM, 2 = RAM to CPU)
-output [14:0]ram_addr; // current RAM address
-output hsync; // VGA horizontal sync
-output vsync; // VGA vertical sync
-
-// external
-wire hsync;
-reg vsync;
-wire [1:0]mode;
-reg latch_chr = 0;
-reg latch_col = 0;
-reg [3:0]_cs_ram = 4'b1111;
-reg [3:0]_we_ram = 4'b1111;
-reg [3:0]_oe_latch = 4'b1111;
-reg [3:0]_cpu_ram = 4'b1111;
-reg _pe_chpx = 1;
-wire charpixel;
-reg _char_bg = 1;
-wire [3:0]chrow;
-wire plane;
-reg _chr_to_col = 1'b1;
-//reg _cpu_ram_addr = 1'b1;
-wire _cpu_ram_addr;
-reg cpu_ram_dir;
-wire rdy;
 
 // internal 
 reg pixel_clk;
@@ -235,11 +184,11 @@ begin
 		begin
 			cpu_wait = hcount[3:0] >= 4'd2 && hcount[3:0] <= 4'd14;
 			block_cpu = hcount[3:0] <= 4'd1 || hcount[3:0] >= 4'd12;
-			//cpu_wait = 1;
-			//block_cpu = hcount[3:0] >= 4'd12 || hori_visible_area;
 			
 			load_chr_ram = hcount[3:0] == 4'd14;
 			load_col_ram = hcount[3:0] == 4'd0;
+			latch_chr <= hcount[3:0] == 4'd14;
+			latch_col <= hcount[3:0] == 4'd0;
 
 			_pe_chpx <= ~(hcount[3:0] == 4'd7 || hcount[3:0] == 4'd15);
 		end
@@ -247,8 +196,10 @@ begin
 		begin
 			cpu_wait = hcount[2:0] == 3'd0 || hcount[2:0] >= 3'd4;
 			block_cpu = hcount[2:0] == 3'd0 || hcount[2:0] == 3'd7;
-			load_chr_ram = hcount[2:0] == 3'd0;
-			load_col_ram = hcount[2:0] == 3'd0;
+			load_chr_ram = hcount[2:0] == 3'd0 || hcount[2:0] == 3'd7 && pixel_clk == 0;
+			load_col_ram = hcount[2:0] == 3'd0 || hcount[2:0] == 3'd7 && pixel_clk == 0;
+			latch_chr <= hcount[2:0] == 3'd0;
+			latch_col <= hcount[2:0] == 3'd0;
 			_chr_to_col <= ~(hcount[1] == 1'b0);
 		end
 		else if (mode_640x200)
@@ -257,19 +208,19 @@ begin
 			block_cpu = hori_visible_area;
 			load_chr_ram = hcount[1:0] == 2'd0;
 			load_col_ram = hcount[1:0] == 2'd0;
+			latch_chr <= hcount[1:0] == 2'd0 || hcount[1:0] == 2'd3 && pixel_clk == 0;
+			latch_col <= hcount[1:0] == 2'd0 || hcount[1:0] == 2'd3 && pixel_clk == 0;
 			_chr_to_col <= ~(hcount[0] == 1'b0);
 		end
 		
 		if (load_chr_ram)
 		begin
-			latch_chr <= 1;
 			_cs_ram[0] <= 0;
 			_cs_ram[2] <= 0;
 			ram_addr_active <= 1;
 		end
 		if (load_col_ram)
 		begin
-			latch_col <= 1;
 			_cs_ram[1] <= 0;
 			_cs_ram[3] <= 0;
 			ram_addr_active <= 1;

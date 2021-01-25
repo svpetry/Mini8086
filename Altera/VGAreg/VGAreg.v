@@ -1,37 +1,22 @@
 module VGAreg(
 	// inputs
-	addr,
-	_vga_io,
-	_wr,
-	_char_bg,
-	_reset,
-	vsync,
-	hsync,
+	input[1:0] addr,
+	input _vga_io,
+	input _wr,
+	input _char_bg,
+	input _reset,
+	input vsync,
+	input hsync,
 	
 	// outputs
-	dcol,
-	mode,
-	plane,
-	irq,
+	output[7:0] dcol = 8'bzzzzzzzz,
+	output[1:0] mode,
+	output plane,
+	output irq,
 	
 	// mixed
-	data
+	inout[7:0] data
 );
-
-input[1:0] addr;
-input _vga_io;
-input _wr;
-input _char_bg;
-input _reset;
-input vsync;
-input hsync;
-
-output[7:0] dcol = 8'bzzzzzzzz;
-output[1:0] mode;
-output plane;
-output irq;
-
-inout[7:0] data;
 
 reg[7:0] bgcol_reg;
 reg[7:0] dcol;

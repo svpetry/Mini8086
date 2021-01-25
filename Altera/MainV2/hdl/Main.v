@@ -28,7 +28,7 @@ module Main(
 	output reg LMEMRD = 1,
 	output reg OE_DATA = 1,
 	output reg CPU_CLK,
-	output READY,
+	output reg READY,
 	output RESET,
 	output reg PCLK,
 	output reg PIT_CLK,
@@ -143,65 +143,68 @@ begin
 	OE_DATA <= 1;
 	addr_overload_en <= 0;
 
-	if (M_IO)
+	if (~RD || ~WR)
 	begin
-		// memory access
-		if (addr_hi < 4'h8)
+		if (M_IO)
 		begin
-		   // 00000-7FFFF: 512 KB RAM
-			LMEMRD <= RD;
-			LMEMWR <= WR;
-			RAM_CE[0] <= 0;
-		end
-		else if (addr_hi < 4'hC)
-		begin
-		   // 80000-BFFFF: 256 KB banked RAM
-			LMEMRD <= RD;
-			LMEMWR <= WR;
+			// memory access
+			if (addr_hi < 4'h8)
+			begin
+				// 00000-7FFFF: 512 KB RAM
+				LMEMRD <= RD;
+				LMEMWR <= WR;
+				RAM_CE[0] <= 0;
+			end
+			else if (addr_hi < 4'hC)
+			begin
+				// 80000-BFFFF: 256 KB banked RAM
+				LMEMRD <= RD;
+				LMEMWR <= WR;
+				
+				case (ram_bank)
+					2'd0: begin
+						RAM_CE[1] <= 0;
+					end
+					2'd1: begin
+						RAM_CE[1] <= 0;
+						addr_overload_en <= 1;
+						addr_overload <= 2'b01;
+					end
+					2'd2: begin
+						MEMRD <= RD;
+						MEMWR <= WR;					
+						OE_DATA <= 0;
+					end
+					2'd3: begin
+						MEMRD <= RD;
+						MEMWR <= WR;					
+						addr_overload_en <= 1;
+						addr_overload <= 2'b01;
+						OE_DATA <= 0;
+					end
+				endcase
+			end
+			else if (addr_hi < 4'hE)
+			begin
+				// C0000-DFFFF: Video RAM
+				VGA_MEM <= 0;
+				OE_DATA <= 0;
+			end
+			else begin
+				// E0000-FFFFF: ROM
+				ROMRD <= RD;
+				OE_DATA <= 0;
+			end
 			
-			case (ram_bank)
-				2'd0: begin
-					RAM_CE[1] <= 0;
-				end
-				2'd1: begin
-					RAM_CE[1] <= 0;
-					addr_overload_en <= 1;
-					addr_overload <= 2'b01;
-				end
-				2'd2: begin
-					MEMRD <= RD;
-					MEMWR <= WR;					
-					OE_DATA <= 0;
-				end
-				2'd3: begin
-					MEMRD <= RD;
-					MEMWR <= WR;					
-					addr_overload_en <= 1;
-					addr_overload <= 2'b01;
-					OE_DATA <= 0;
-				end
-			endcase
-		end
-		else if (addr_hi < 4'hE)
-		begin
-			// C0000-DFFFF: Video RAM
-			VGA_MEM <= 0;
-			OE_DATA <= 0;
 		end
 		else begin
-			// E0000-FFFFF: ROM
-			ROMRD <= RD;
-			OE_DATA <= 0;
+			// I/O access
+			IO_TIMER <= ~(addr_io >= 10'h040 && addr_io <= 10'h047);
+			IO_PIC <= ~(addr_io >= 10'h020 && addr_io <= 10'h027);
+			IO_DBG <= ~(addr_io >= 10'h010 && addr_io <= 10'h017);
+			VGA_IO <= ~(addr_io >= 10'h050 && addr_io <= 10'h057);
+			io_chipset <= addr_io >= 10'h030 && addr_io <= 10'h037;
 		end
-		
-	end
-	else begin
-		// I/O access
-		IO_TIMER <= ~(addr_io >= 10'h040 && addr_io <= 10'h047);
-		IO_PIC <= ~(addr_io >= 10'h020 && addr_io <= 10'h027);
-		IO_DBG <= ~(addr_io >= 10'h010 && addr_io <= 10'h017);
-		VGA_IO <= ~(addr_io >= 10'h050 && addr_io <= 10'h057);
-		io_chipset <= addr_io >= 10'h030 && addr_io <= 10'h037;
 	end
 end
 
@@ -250,6 +253,15 @@ end
 
 assign DATA = data_out;
 assign LAD[15:0] = lad_out;
+
+// READY control
+always @(negedge CPU_CLK)
+begin
+	if (RDY1 || RDY2)
+		READY <= 1;
+	else
+		READY <= 0;
+end
 
 // chipset control
 assign ram_bank = command_reg[1:0];

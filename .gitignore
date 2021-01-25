@@ -43,3 +43,4 @@ Altera/MainV2/synthesis/incremental_db/
 Altera/SD controller/synthesis/output_files/
 *.do
 *.vt
+*.qws

@@ -876,7 +876,7 @@ $EndComp
 Wire Wire Line
 	4100 3050 6300 3050
 Wire Wire Line
-	4100 3150 6150 3150
+	4100 3150 6100 3150
 Text Label 4200 3050 0    50   ~ 0
 VSYNC_3
 Text Label 4200 3150 0    50   ~ 0
@@ -1214,10 +1214,10 @@ Wire Wire Line
 Wire Wire Line
 	6400 3800 6300 3800
 Wire Wire Line
-	6150 3800 6150 3150
+	6100 3800 6100 3150
 Connection ~ 6300 3800
 Wire Wire Line
-	6300 3800 6150 3800
+	6300 3800 6100 3800
 NoConn ~ 7000 4900
 Wire Wire Line
 	6400 5000 6300 5000
@@ -1289,16 +1289,6 @@ F 3 "" H 8400 850 50  0001 C CNN
 	-1   0    0    -1  
 $EndComp
 NoConn ~ 2100 3850
-Wire Bus Line
-	6450 900  6450 1200
-Wire Bus Line
-	4800 5250 4800 6750
-Wire Bus Line
-	11050 3500 11050 4600
-Wire Bus Line
-	9250 5650 10400 5650
-Wire Bus Line
-	8100 3450 8100 5450
 $Comp
 L Mini8086:EPM7064S U14
 U 1 1 5F99A602
@@ -1310,4 +1300,14 @@ F 3 "" H 9650 4050 50  0001 C CNN
 	1    9550 4200
 	1    0    0    -1  
 $EndComp
+Wire Bus Line
+	6450 900  6450 1200
+Wire Bus Line
+	11050 3500 11050 4600
+Wire Bus Line
+	9250 5650 10400 5650
+Wire Bus Line
+	8100 3450 8100 5450
+Wire Bus Line
+	4800 5250 4800 6750
 $EndSCHEMATC

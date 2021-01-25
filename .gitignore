@@ -44,3 +44,4 @@ Altera/SD controller/synthesis/output_files/
 *.do
 *.vt
 *.qws
+*.dpf

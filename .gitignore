@@ -35,3 +35,8 @@ Altera/VGAreg/simulation/
 Altera/VGA_graphics/
 Altera/VGA_textmode/
 Debug/
+Altera/SD controller/synthesis/db/
+Altera/MainV2/synthesis/db/
+Altera/MainV2/synthesis/output_files/
+Altera/SD controller/synthesis/incremental_db/
+Altera/MainV2/synthesis/incremental_db/

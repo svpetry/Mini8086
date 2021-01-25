@@ -5,16 +5,16 @@
 `timescale 10ns/1ns
 module SPI_master ( miso, mosi, sclk, ss, data_bus, CS, addr, pro_clk, WR, RD);
 
-inout [7:0] data_bus;           // 8 bit bidirectional data bus
-input pro_clk;                  // Host Processor clock
-input miso;                     // Master in slave out
-input [1:0] addr;               // A1 and A0, lower bits of address bus
-input CS;                       // Chip Select
-input WR, RD;                   // Write and read enables
+inout [7:0] data_bus;            // 8 bit bidirectional data bus
+input pro_clk;                   // Host Processor clock
+input miso;                      // Master in slave out
+input [1:0] addr;                // A1 and A0, lower bits of address bus
+input CS;                        // Chip Select
+input WR, RD;                    // Write and read enables
 
-output mosi;                    // Master out slave in
-output sclk;                    // SPI clock
-output [7:0] ss;                // 8 slave select lines
+output mosi;                     // Master out slave in
+output sclk;                     // SPI clock
+output [7:0] ss;                 // 8 slave select lines
 
 reg [7:0] shift_register;        // Shift register
 reg [7:0] txdata;                // Transmit buffer
@@ -87,7 +87,7 @@ always @ (posedge slave_cs or posedge spi_word_send) begin
   end
 end
 
-/* New SPI wrod starts when the transmit buffer is updated */
+/* New SPI word starts when the transmit buffer is updated */
 always @ (posedge pro_clk) begin
     if (spi_word_send) begin
         slave_cs <= 0;
@@ -131,18 +131,18 @@ always @ (posedge pro_clk) begin
         case (addr)
         2'b00 : if (WR) control <= data_in;
         2'b01 : if (RD) data_out <= status;   // Void
-		2'b10 : if (WR) txdata <= data_in;
-      2'b11 : if (RD) data_out <= rxdata;
+		  2'b10 : if (WR) txdata <= data_in;
+        2'b11 : if (RD) data_out <= rxdata;
         endcase
     end
 end
 
 /* Controlling the data out enable */
 always @ (RD or data_out) begin
-    if (RD)
-    data_out_en = data_out;
-    else
-    data_out_en = 8'bz;
+	if (RD)
+		data_out_en = data_out;
+	else
+		data_out_en = 8'bz;
 end
 
 assign data_bus = data_out_en;

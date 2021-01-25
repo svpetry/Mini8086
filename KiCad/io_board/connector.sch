@@ -13,19 +13,6 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-$Comp
-L io_board-rescue:Edge72-Mini8086 X1
-U 1 1 5F806705
-P 4000 3300
-AR Path="/5F806705" Ref="X1"  Part="1" 
-AR Path="/5F8065B9/5F806705" Ref="X1"  Part="1" 
-F 0 "X1" H 4025 5265 50  0000 C CNN
-F 1 "Edge72" H 4025 5174 50  0000 C CNN
-F 2 "Mini8086:BUS_72" H 4550 3300 50  0001 C CNN
-F 3 "" H 4550 3300 50  0001 C CNN
-	1    4000 3300
-	1    0    0    -1  
-$EndComp
 NoConn ~ 4500 3200
 NoConn ~ 4500 3300
 NoConn ~ 4500 3400
@@ -165,8 +152,6 @@ NoConn ~ 3550 2500
 NoConn ~ 3550 2400
 NoConn ~ 3550 1900
 NoConn ~ 3550 2000
-NoConn ~ 3550 1800
-NoConn ~ 4500 1800
 Text GLabel 5850 1450 2    50   Output ~ 0
 RESET
 NoConn ~ 4500 2000
@@ -431,10 +416,29 @@ NoConn ~ 3550 3000
 NoConn ~ 3550 2900
 Wire Wire Line
 	3550 3700 3350 3700
+Text Label 3400 3700 0    50   ~ 0
+A10
+$Comp
+L Mini8086:Edge72 X1
+U 1 1 60029863
+P 4000 3300
+F 0 "X1" H 4025 5265 50  0000 C CNN
+F 1 "Edge72" H 4025 5174 50  0000 C CNN
+F 2 "Mini8086:BUS_72" H 4550 3300 50  0001 C CNN
+F 3 "" H 4550 3300 50  0001 C CNN
+	1    4000 3300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3350 1800 3550 1800
+Wire Wire Line
+	4500 1800 4700 1800
 Wire Bus Line
 	4800 3850 4800 4600
 Wire Bus Line
 	3250 3500 3250 4600
-Text Label 3400 3700 0    50   ~ 0
-A10
+Text GLabel 3350 1800 0    50   Input ~ 0
+SCL
+Text GLabel 4700 1800 2    50   Input ~ 0
+SDA
 $EndSCHEMATC

@@ -268,11 +268,11 @@ Text GLabel 2800 3400 0    50   Input ~ 0
 Text GLabel 2800 3700 0    50   Input ~ 0
 ~RD
 Wire Wire Line
-	5100 3800 5300 3800
+	5100 3800 5650 3800
 Wire Wire Line
-	5300 3800 5300 4000
+	5650 3800 5650 4000
 Wire Wire Line
-	5300 4000 5100 4000
+	5650 4000 5100 4000
 Wire Wire Line
 	5100 1400 5200 1400
 Wire Wire Line
@@ -552,6 +552,16 @@ NoConn ~ 3950 4250
 NoConn ~ 3850 4250
 NoConn ~ 3750 4250
 NoConn ~ 3650 4250
+Text Label 5150 1700 0    50   ~ 0
+CTS_5
+Text Label 5150 2200 0    50   ~ 0
+RTS_5
+Text Label 5150 2800 0    50   ~ 0
+RX_5
+Text Label 5150 2900 0    50   ~ 0
+TX_5
+Text Label 5250 4000 0    50   ~ 0
+RCLK
 Wire Bus Line
 	2800 1950 2800 2200
 Wire Bus Line

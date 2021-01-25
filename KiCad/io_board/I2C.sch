@@ -107,8 +107,8 @@ Wire Wire Line
 Text GLabel 3850 3950 0    50   Input ~ 0
 ~CS_I2C
 Wire Wire Line
-	3950 3850 3500 3850
-Text GLabel 3500 3850 0    50   Output ~ 0
+	3950 3850 2800 3850
+Text GLabel 2400 3850 0    50   Output ~ 0
 ~INT_I2C
 $Comp
 L Connector_Generic:Conn_01x04 J5
@@ -175,12 +175,12 @@ Wire Wire Line
 $Comp
 L Memory_EEPROM:M24C02-WMN U18
 U 1 1 5FAFF485
-P 7200 1950
-F 0 "U18" H 7000 1700 50  0000 C CNN
-F 1 "24C04" H 7400 1700 50  0000 C CNN
-F 2 "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" H 7200 2300 50  0001 C CNN
-F 3 "http://www.st.com/content/ccc/resource/technical/document/datasheet/b0/d8/50/40/5a/85/49/6f/DM00071904.pdf/files/DM00071904.pdf/jcr:content/translations/en.DM00071904.pdf" H 7250 1450 50  0001 C CNN
-	1    7200 1950
+P 7200 1550
+F 0 "U18" H 7000 1300 50  0000 C CNN
+F 1 "24C04" H 7400 1300 50  0000 C CNN
+F 2 "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" H 7200 1900 50  0001 C CNN
+F 3 "http://www.st.com/content/ccc/resource/technical/document/datasheet/b0/d8/50/40/5a/85/49/6f/DM00071904.pdf/files/DM00071904.pdf/jcr:content/translations/en.DM00071904.pdf" H 7250 1050 50  0001 C CNN
+	1    7200 1550
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -217,20 +217,20 @@ SCL
 $Comp
 L power:GND #PWR0110
 U 1 1 5FB9D832
-P 7200 2250
-F 0 "#PWR0110" H 7200 2000 50  0001 C CNN
-F 1 "GND" H 7205 2077 50  0000 C CNN
-F 2 "" H 7200 2250 50  0001 C CNN
-F 3 "" H 7200 2250 50  0001 C CNN
-	1    7200 2250
+P 7200 1850
+F 0 "#PWR0110" H 7200 1600 50  0001 C CNN
+F 1 "GND" H 7205 1677 50  0000 C CNN
+F 2 "" H 7200 1850 50  0001 C CNN
+F 3 "" H 7200 1850 50  0001 C CNN
+	1    7200 1850
 	1    0    0    -1  
 $EndComp
-Text GLabel 7300 1550 2    50   Input ~ 0
+Text GLabel 7300 1150 2    50   Input ~ 0
 VCC3
 Wire Wire Line
-	7300 1550 7200 1550
+	7300 1150 7200 1150
 Wire Wire Line
-	7200 1550 7200 1650
+	7200 1150 7200 1250
 Text GLabel 6950 2850 0    50   Input ~ 0
 SCL
 Text GLabel 6950 2950 0    50   Input ~ 0
@@ -268,48 +268,48 @@ Text GLabel 5650 2400 2    50   Input ~ 0
 SCL
 Text GLabel 5650 2500 2    50   Input ~ 0
 SDA
-Text GLabel 7600 1950 2    50   Input ~ 0
+Text GLabel 7600 1550 2    50   Input ~ 0
 SCL
-Text GLabel 7600 1850 2    50   Input ~ 0
+Text GLabel 7600 1450 2    50   Input ~ 0
 SDA
 Wire Wire Line
-	7600 2050 7800 2050
+	7600 1650 7800 1650
 $Comp
 L power:GND #PWR0112
 U 1 1 5FBAB9A0
-P 7800 2250
-F 0 "#PWR0112" H 7800 2000 50  0001 C CNN
-F 1 "GND" H 7805 2077 50  0000 C CNN
-F 2 "" H 7800 2250 50  0001 C CNN
-F 3 "" H 7800 2250 50  0001 C CNN
-	1    7800 2250
+P 7800 1850
+F 0 "#PWR0112" H 7800 1600 50  0001 C CNN
+F 1 "GND" H 7805 1677 50  0000 C CNN
+F 2 "" H 7800 1850 50  0001 C CNN
+F 3 "" H 7800 1850 50  0001 C CNN
+	1    7800 1850
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7800 2250 7800 2050
+	7800 1850 7800 1650
 Wire Wire Line
-	6800 1850 6650 1850
+	6800 1450 6650 1450
 Wire Wire Line
-	6650 1850 6650 1950
+	6650 1450 6650 1550
 Wire Wire Line
-	6800 2050 6650 2050
-Connection ~ 6650 2050
+	6800 1650 6650 1650
+Connection ~ 6650 1650
 Wire Wire Line
-	6650 2050 6650 2250
+	6650 1650 6650 1850
 Wire Wire Line
-	6800 1950 6650 1950
-Connection ~ 6650 1950
+	6800 1550 6650 1550
+Connection ~ 6650 1550
 Wire Wire Line
-	6650 1950 6650 2050
+	6650 1550 6650 1650
 $Comp
 L power:GND #PWR045
 U 1 1 5FBBE950
-P 6650 2250
-F 0 "#PWR045" H 6650 2000 50  0001 C CNN
-F 1 "GND" H 6655 2077 50  0000 C CNN
-F 2 "" H 6650 2250 50  0001 C CNN
-F 3 "" H 6650 2250 50  0001 C CNN
-	1    6650 2250
+P 6650 1850
+F 0 "#PWR045" H 6650 1600 50  0001 C CNN
+F 1 "GND" H 6655 1677 50  0000 C CNN
+F 2 "" H 6650 1850 50  0001 C CNN
+F 3 "" H 6650 1850 50  0001 C CNN
+	1    6650 1850
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -445,8 +445,51 @@ Text GLabel 8850 4250 0    50   Input ~ 0
 SDA
 Text GLabel 8850 4150 0    50   Input ~ 0
 SCL
+Text Label 3300 2250 0    50   ~ 0
+I2C_D0
+Text Label 3300 2350 0    50   ~ 0
+I2C_D1
+Text Label 3300 2450 0    50   ~ 0
+I2C_D2
+Text Label 3300 2550 0    50   ~ 0
+I2C_D3
+Text Label 3300 2650 0    50   ~ 0
+I2C_D4
+Text Label 3300 2750 0    50   ~ 0
+I2C_D5
+Text Label 3300 2850 0    50   ~ 0
+I2C_D6
+Text Label 3300 2950 0    50   ~ 0
+I2C_D7
+$Comp
+L Device:R R14
+U 1 1 5FF0847A
+P 2800 3650
+F 0 "R14" H 2870 3696 50  0000 L CNN
+F 1 "1K" H 2870 3605 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric" V 2730 3650 50  0001 C CNN
+F 3 "~" H 2800 3650 50  0001 C CNN
+	1    2800 3650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:VCC #PWR061
+U 1 1 5FF08EEA
+P 2800 3500
+F 0 "#PWR061" H 2800 3350 50  0001 C CNN
+F 1 "VCC" H 2815 3673 50  0000 C CNN
+F 2 "" H 2800 3500 50  0001 C CNN
+F 3 "" H 2800 3500 50  0001 C CNN
+	1    2800 3500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2800 3800 2800 3850
 Wire Bus Line
 	3650 3250 3650 3400
 Wire Bus Line
 	1700 2100 1700 2850
+Connection ~ 2800 3850
+Wire Wire Line
+	2800 3850 2400 3850
 $EndSCHEMATC

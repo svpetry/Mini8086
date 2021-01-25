@@ -68,13 +68,15 @@ void setcursor(word col, word row) {
 }
 
 void putch(char c) {
-    word index = cursor_row * 80 + cursor_col;
-    word data = c + (textcol << 8);
-    (*screen)[index] = data;
-    (*scrbuf)[index] = data;
+    if (c != '\n') {
+        word index = cursor_row * 80 + cursor_col;
+        word data = c + (textcol << 8);
+        (*screen)[index] = data;
+        (*scrbuf)[index] = data;
+        cursor_col++;
+    }
 
-    cursor_col++;
-    if (cursor_col == 80) {
+    if (c == '\n' || cursor_col == 80) {
         cursor_col = 0;
         if (cursor_row == 24)
             scrollup();

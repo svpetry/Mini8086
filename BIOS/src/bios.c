@@ -8,13 +8,13 @@
 #include "boot.h"
 #include "start.h"
 
-volatile unsigned int sp_save;
-volatile unsigned int ss_save;
+volatile word sp_save;
+volatile word ss_save;
 
-volatile unsigned char hours;
-volatile unsigned char minutes;
-volatile unsigned char seconds;
-volatile unsigned char ticks; // 20 ticks/sec.
+volatile byte hours;
+volatile byte minutes;
+volatile byte seconds;
+volatile byte ticks; // 20 ticks/sec.
 
 // interrupt handler
 void int_div_by_zero() {
@@ -61,10 +61,10 @@ void int_keyboard() {
 void demo1() {
     outp(0x50, 0b00000010); // 320 x 200 x 256
     
-    unsigned char r, g, b;
+    byte r, g, b;
 
-    unsigned int x, y;
-    unsigned char __far *screen = (void __far *)0xC0000000;
+    word x, y;
+    byte __far *screen = (void __far *)0xC0000000;
     for (y = 0; y < 200; y++) {
         for (x = 0; x < 320; x++) {
             
@@ -90,13 +90,15 @@ void demo1() {
 
 void demo2() {
     outp(0x50, 0b00000001); // 320 x 200 x 256
-    unsigned char __far *screen = (void __far *)0xC0000000;
-    unsigned char __far *picture = (void __far *)0xE0000000;
+    byte __far *screen = (void __far *)0xC0000000;
+    byte __far *picture = (void __far *)0xE0000000;
     memcpy1(screen, picture, 64000);
+
+    while (1) ;
 }
 
 void demo() {
-    unsigned int i, j;
+    word i, j;
 
     clrscr();
     while (1) {
@@ -105,8 +107,15 @@ void demo() {
     }
 }
 
+void sd_delay() {
+    int i;
+    for (i = 0; i < 100; i++)
+        asm("nop");
+}
+
 int main() {
-    unsigned int i, j, k;
+    word i, j, k;
+    byte a;
     char s[12];
 
     hours = 0;
@@ -125,6 +134,60 @@ int main() {
     for (i = 0; i < 1000; i++)
         for (j = 0; j < 100; j++)
             asm("nop");
+
+    clrscr();
+
+
+    while (1) {
+
+        outp(0x90, 0b00001111);
+        for (i = 0; i < 10; i++) {
+            outp(0x92, 0xFF);
+            sd_delay();
+        }
+        outp(0x92, 0xFF);
+        sd_delay();
+        outp(0x90, 0b00000111);
+        outp(0x92, 0xFF);
+        sd_delay();
+
+        outp(0x92, 0x00 | 0x40);
+        sd_delay();
+
+        outp(0x92, 0x00);
+        sd_delay();
+        outp(0x92, 0x00);
+        sd_delay();
+        outp(0x92, 0x00);
+        sd_delay();
+        outp(0x92, 0x00);
+        sd_delay();
+
+        outp(0x92, 0x94 | 0x01);
+        sd_delay();
+
+        for (i = 0; i < 8; i++) {
+            outp(0x92, 0xFF);
+            a = inp(0x92);
+            itohex(a, s);
+            putstr(s);
+            putstr("\n");
+        }            
+
+        while (1);
+    }   
+
+    demo2();
+
+    a = 0;
+    while (1) {
+        outp(0x90, a);
+        a = inp(0x90);
+        itohex(a, s);
+        putstr(s);
+        putstr("\n");
+        a++;
+    }
 
     demo2();
 

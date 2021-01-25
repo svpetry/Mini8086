@@ -4,6 +4,7 @@
 #include "lcd.h"
 #include "strutils.h"
 #include "types.h"
+#include "lowlevel.h"
 
 #define RESULT_COL 20
 
@@ -137,11 +138,52 @@ void check_timer(int row) {
 }
 
 void check_keyboard(int row) {
+    int i, j;
+    byte data, status;
+
     setcursor(4, row);
     putstr("Keyboard");
     setcursor(RESULT_COL, row);
 
-    putstr("N/A");
+    outp(0x61, 0xAA);
+    data = 0;
+    for (j = 0; j < 10 && data != 0x55; j++) {
+        for (i = 0; i < 2000; i++) asm("nop");
+        data = inp(0x60);
+    }
+    if (data != 0x55) {
+        putstr("N/A");
+        return;
+    }
+
+    outp(0x61, 0xAB); // perform controller self test
+    status = 0;
+    for (j = 0; j < 10 && (status & 1) == 0; j++) {
+        for (i = 0; i < 2000; i++) asm("nop");
+        status = inp(0x61);
+    }
+    if ((status & 1) == 1) {
+        data = inp(0x60);
+        switch (data) {
+            case 0x00:
+                outp(0x61, 0xAE); // enable keyboard interface
+                putstr("OK");
+                return;
+            case 0x01:
+                putstr("ERROR: clock line is stuck low");
+                return;
+            case 0x02:
+                putstr("ERROR: clock line is stuck high");
+                return;
+            case 0x03:
+                putstr("ERROR: data line is stuck low");
+                return;
+            case 0x04:
+                putstr("ERROR: data line is stuck high");
+                return;
+        }
+    }
+    putstr("self test failed!");
 }
 
 void check_serial(int row) {

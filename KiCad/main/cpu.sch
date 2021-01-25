@@ -1330,18 +1330,18 @@ Connection ~ 1700 6700
 Wire Wire Line
 	1700 6700 1850 6700
 Wire Wire Line
-	1800 6100 2050 6100
+	1950 6100 2200 6100
 Wire Wire Line
 	1850 7550 1550 7550
 Text GLabel 1550 7550 0    50   Input ~ 0
 ~BHE
 Entry Wire Line
-	2050 6100 2150 6200
+	2200 6100 2300 6200
 Wire Bus Line
-	2150 6200 2200 6200
-Text Label 1850 6100 0    50   ~ 0
+	2300 6200 2350 6200
+Text Label 2000 6100 0    50   ~ 0
 A0
-Text GLabel 2200 6200 2    50   Input ~ 0
+Text GLabel 2350 6200 2    50   Input ~ 0
 A[0..19]
 $Comp
 L 74xx:74LS32 U13
@@ -1422,20 +1422,20 @@ Wire Wire Line
 Wire Wire Line
 	1000 6900 1000 6000
 Wire Wire Line
-	1000 6000 1200 6000
+	1000 6000 1350 6000
 Wire Wire Line
-	1800 5900 2200 5900
-Text GLabel 2200 5900 2    50   Input ~ 0
+	1950 5900 2350 5900
+Text GLabel 2350 5900 2    50   Input ~ 0
 ~INTA
 $Comp
 L 74xx:74LS08 U15
 U 1 1 5F92AC69
-P 1500 6000
-F 0 "U15" H 1500 5683 50  0000 C CNN
-F 1 "74HC08" H 1500 5774 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_LongPads" H 1500 6000 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS08" H 1500 6000 50  0001 C CNN
-	1    1500 6000
+P 1650 6000
+F 0 "U15" H 1650 5683 50  0000 C CNN
+F 1 "74HC08" H 1650 5774 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_LongPads" H 1650 6000 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS08" H 1650 6000 50  0001 C CNN
+	1    1650 6000
 	-1   0    0    1   
 $EndComp
 $Comp
@@ -1528,6 +1528,19 @@ Wire Wire Line
 	9250 3250 9250 3550
 Wire Wire Line
 	9500 3850 9500 3950
+$Comp
+L power:GND #PWR?
+U 1 1 5FC8586F
+P 9500 3950
+F 0 "#PWR?" H 9500 3700 50  0001 C CNN
+F 1 "GND" H 9505 3777 50  0000 C CNN
+F 2 "" H 9500 3950 50  0001 C CNN
+F 3 "" H 9500 3950 50  0001 C CNN
+	1    9500 3950
+	1    0    0    -1  
+$EndComp
+Text Label 5700 1650 0    50   ~ 0
+~BHE_S7
 Wire Bus Line
 	10600 1350 10600 4500
 Wire Bus Line
@@ -1546,15 +1559,4 @@ Wire Bus Line
 	6850 700  6850 4000
 Wire Bus Line
 	6100 700  6100 3750
-$Comp
-L power:GND #PWR?
-U 1 1 5FC8586F
-P 9500 3950
-F 0 "#PWR?" H 9500 3700 50  0001 C CNN
-F 1 "GND" H 9505 3777 50  0000 C CNN
-F 2 "" H 9500 3950 50  0001 C CNN
-F 3 "" H 9500 3950 50  0001 C CNN
-	1    9500 3950
-	1    0    0    -1  
-$EndComp
 $EndSCHEMATC

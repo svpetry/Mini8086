@@ -14,17 +14,6 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L Connector:USB_C_Receptacle J2
-U 1 1 5FFE7DD5
-P 1950 3200
-F 0 "J2" H 2057 4467 50  0000 C CNN
-F 1 "USB_C_Receptacle" H 2057 4376 50  0000 C CNN
-F 2 "Connector_USB:USB_C_Receptacle_Amphenol_12401548E4-2A" H 2100 3200 50  0001 C CNN
-F 3 "https://www.usb.org/sites/default/files/documents/usb_type-c.zip" H 2100 3200 50  0001 C CNN
-	1    1950 3200
-	1    0    0    -1  
-$EndComp
-$Comp
 L Connector:Barrel_Jack_Switch J1
 U 1 1 5FFEA7BB
 P 1900 5700
@@ -35,48 +24,21 @@ F 3 "~" H 1950 5660 50  0001 C CNN
 	1    1900 5700
 	1    0    0    -1  
 $EndComp
-NoConn ~ 2550 4500
-NoConn ~ 2550 4400
-NoConn ~ 2550 4200
-NoConn ~ 2550 4100
-NoConn ~ 2550 3900
-NoConn ~ 2550 3800
-NoConn ~ 2550 3600
-NoConn ~ 2550 3500
-NoConn ~ 2550 3300
-NoConn ~ 2550 3200
-NoConn ~ 2550 3000
-NoConn ~ 2550 2900
-NoConn ~ 2550 2800
-NoConn ~ 2550 2700
 $Comp
 L power:GND #PWR02
 U 1 1 5FFEB95A
-P 1950 4800
-F 0 "#PWR02" H 1950 4550 50  0001 C CNN
-F 1 "GND" H 1955 4627 50  0000 C CNN
-F 2 "" H 1950 4800 50  0001 C CNN
-F 3 "" H 1950 4800 50  0001 C CNN
-	1    1950 4800
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR01
-U 1 1 5FFEBD3F
-P 1650 4800
-F 0 "#PWR01" H 1650 4550 50  0001 C CNN
-F 1 "GND" H 1655 4627 50  0000 C CNN
-F 2 "" H 1650 4800 50  0001 C CNN
-F 3 "" H 1650 4800 50  0001 C CNN
-	1    1650 4800
+P 2250 3400
+F 0 "#PWR02" H 2250 3150 50  0001 C CNN
+F 1 "GND" H 2255 3227 50  0000 C CNN
+F 2 "" H 2250 3400 50  0001 C CNN
+F 3 "" H 2250 3400 50  0001 C CNN
+	1    2250 3400
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	2550 2500 2800 2500
 Wire Wire Line
 	2800 2500 2800 2600
-Wire Wire Line
-	2550 2400 3100 2400
 Wire Wire Line
 	3100 2400 3100 2600
 $Comp
@@ -162,8 +124,6 @@ F 3 "~" H 3600 5350 50  0001 C CNN
 	1    3600 5350
 	-1   0    0    1   
 $EndComp
-Wire Wire Line
-	2550 2200 3150 2200
 Text Label 2800 2200 0    50   ~ 0
 VBUS
 Text Label 2450 5700 0    50   ~ 0
@@ -505,4 +465,54 @@ F 3 "http://www.jaolen.com/images/pdf/QM6015D.pdf" V 4000 5500 50  0001 L CNN
 	1    4000 5500
 	0    1    1    0   
 $EndComp
+$Comp
+L Type-C:HRO-TYPE-C-31-M-12 USB1
+U 1 1 601914F2
+P 2000 2650
+F 0 "USB1" H 1833 3447 60  0000 C CNN
+F 1 "HRO-TYPE-C-31-M-12" H 1833 3341 60  0000 C CNN
+F 2 "Mini8086:HRO-TYPE-C-31-M-12" H 2000 2650 60  0001 C CNN
+F 3 "" H 2000 2650 60  0001 C CNN
+	1    2000 2650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2100 3000 2550 3000
+Wire Wire Line
+	2550 3000 2550 2500
+Wire Wire Line
+	2100 3100 2350 3100
+Wire Wire Line
+	2250 3400 2250 3300
+Wire Wire Line
+	2250 3300 2100 3300
+Wire Wire Line
+	2100 3200 2250 3200
+Wire Wire Line
+	2250 3200 2250 3300
+Connection ~ 2250 3300
+Wire Wire Line
+	2250 3200 2250 2100
+Wire Wire Line
+	2250 2100 2100 2100
+Connection ~ 2250 3200
+NoConn ~ 2100 2900
+NoConn ~ 2100 2800
+NoConn ~ 2100 2700
+NoConn ~ 2100 2600
+NoConn ~ 2100 2500
+NoConn ~ 2100 2300
+Wire Wire Line
+	2100 2400 3100 2400
+Wire Wire Line
+	2350 3100 2350 2200
+Wire Wire Line
+	2100 2200 2350 2200
+Connection ~ 2350 2200
+Wire Wire Line
+	2350 2200 3150 2200
+Text Label 2550 2400 0    50   ~ 0
+CC1
+Text Label 2550 2500 0    50   ~ 0
+CC2
 $EndSCHEMATC

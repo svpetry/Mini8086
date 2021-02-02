@@ -125,7 +125,7 @@ assign RESET = reset_cnt != 4'd0;
 // address decoder
 wire [3:0] addr_hi = ADDR[19:16]; // high address
 wire [9:0] addr_io = ADDR[9:0]; // I/O address
-always @(ADDR or M_IO or RD or WR or addr_io or addr_hi)
+always @(*)
 begin
 	LMEMRD <= 1;
 	LMEMWR <= 1;
@@ -204,6 +204,7 @@ begin
 			IO_DBG <= ~(addr_io >= 10'h010 && addr_io <= 10'h017);
 			VGA_IO <= ~(addr_io >= 10'h050 && addr_io <= 10'h057);
 			io_chipset <= addr_io >= 10'h030 && addr_io <= 10'h037;
+			OE_DATA <= ~(~IO_TIMER || ~IO_PIC || ~IO_DBG || ~VGA_IO);
 		end
 	end
 end
@@ -212,7 +213,7 @@ end
 assign DATA_DIR_NEG = ~DATA_DIR;
 
 // CPU address
-always @(ALE or LAD or BHE_S7 or addr_overload_en or addr_overload)
+always @(*)
 begin
 	if (ALE)
 	begin
@@ -228,26 +229,50 @@ end
 // CPU data
 wire data_lo = ~DEN && (~INTA || ~ADDR[0]);
 wire data_hi = ~DEN && ~BHE;
-always @(DT_R or INTA or ADDR[0] or LAD[15:0] or DATA or data_lo or data_hi)
+always @(*)
 begin
 	lad_out <= 16'bz;
 	data_out <= 16'bz;
 	DATA_DIR <= 0;
-	if (DT_R)
+	
+	if (~M_IO)
 	begin
-		// CPU -> ext
-		if (data_lo)
-			data_out[7:0] = LAD[7:0];
-		if (data_hi)
-			data_out[15:8] = LAD[15:8];
+		// I/O access
+		if (DT_R)
+		begin
+			// CPU -> ext
+			if (data_lo)
+				data_out[7:0] = LAD[7:0];
+			else if (data_hi)
+				data_out[7:0] = LAD[15:8];
+		end
+		else begin
+			// ext -> CPU
+			DATA_DIR <= data_lo || data_hi;
+			if (data_lo)
+				lad_out[7:0] <= DATA[7:0];
+			else if (data_hi)
+				lad_out[15:8] <= DATA[7:0];
+		end
 	end
 	else begin
-		// ext -> CPU
-		DATA_DIR <= data_lo || data_hi;
-		if (data_lo)
-			lad_out[7:0] = DATA[7:0];
-		if (data_hi)
-			lad_out[15:8] = DATA[15:8];
+		// memory access
+		if (DT_R)
+		begin
+			// CPU -> ext
+			if (data_lo)
+				data_out[7:0] <= LAD[7:0];
+			if (data_hi)
+				data_out[15:8] <= LAD[15:8];
+		end
+		else begin
+			// ext -> CPU
+			DATA_DIR <= data_lo || data_hi;
+			if (data_lo)
+				lad_out[7:0] <= DATA[7:0];
+			if (data_hi)
+				lad_out[15:8] <= DATA[15:8];
+		end
 	end
 end
 

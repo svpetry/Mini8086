@@ -45,3 +45,4 @@ Altera/SD controller/synthesis/output_files/
 *.vt
 *.qws
 *.dpf
+Altera/SD controller/simulation/work/

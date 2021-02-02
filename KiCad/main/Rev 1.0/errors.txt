@@ -1,0 +1,2 @@
+- R6 connected to GND and not VCC
+- CPU pin 31 connected to GND and not N/C

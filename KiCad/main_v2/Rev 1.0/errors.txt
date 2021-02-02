@@ -1,0 +1,1 @@
+- U2 pin 1 and pin 24 connect to VCC instead of GND

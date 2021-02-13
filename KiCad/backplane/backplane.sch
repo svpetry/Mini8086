@@ -267,11 +267,11 @@ $EndComp
 Wire Wire Line
 	2200 5600 3200 5600
 Wire Wire Line
-	4800 2200 4800 5600
+	4500 2200 4500 5600
 Wire Wire Line
 	5700 2200 5250 2200
 Connection ~ 5700 2200
-Connection ~ 4800 2200
+Connection ~ 4500 2200
 Wire Wire Line
 	7050 2400 7050 2200
 Wire Wire Line
@@ -438,11 +438,11 @@ Wire Wire Line
 	5250 2200 5250 2400
 Connection ~ 5250 2200
 Wire Wire Line
-	5250 2200 4800 2200
+	5250 2200 4500 2200
 Wire Wire Line
-	4200 2200 4800 2200
+	4200 2200 4500 2200
 Wire Wire Line
-	4200 5600 4800 5600
+	4200 5600 4500 5600
 $Comp
 L Transistor_FET:QM6015D Q1
 U 1 1 6002E0F7
@@ -466,7 +466,7 @@ F 3 "http://www.jaolen.com/images/pdf/QM6015D.pdf" V 4000 5500 50  0001 L CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Type-C:HRO-TYPE-C-31-M-12 USB1
+L backplane-rescue:HRO-TYPE-C-31-M-12-Type-C USB1
 U 1 1 601914F2
 P 2000 2650
 F 0 "USB1" H 1833 3447 60  0000 C CNN

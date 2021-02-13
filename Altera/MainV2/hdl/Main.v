@@ -143,7 +143,7 @@ begin
 	OE_DATA <= 1;
 	addr_overload_en <= 0;
 
-	if (~RD || ~WR)
+	if (~RD || ~WR || ~INTA)
 	begin
 		if (M_IO)
 		begin
@@ -173,14 +173,14 @@ begin
 					2'd2: begin
 						MEMRD <= RD;
 						MEMWR <= WR;					
-						OE_DATA <= 0;
+						OE_DATA <= DEN;
 					end
 					2'd3: begin
 						MEMRD <= RD;
 						MEMWR <= WR;					
 						addr_overload_en <= 1;
 						addr_overload <= 2'b01;
-						OE_DATA <= 0;
+						OE_DATA <= DEN;
 					end
 				endcase
 			end
@@ -188,12 +188,12 @@ begin
 			begin
 				// C0000-DFFFF: Video RAM
 				VGA_MEM <= 0;
-				OE_DATA <= 0;
+				OE_DATA <= DEN;
 			end
 			else begin
 				// E0000-FFFFF: ROM
 				ROMRD <= RD;
-				OE_DATA <= 0;
+				OE_DATA <= DEN;
 			end
 			
 		end
@@ -204,7 +204,7 @@ begin
 			IO_DBG <= ~(addr_io >= 10'h010 && addr_io <= 10'h017);
 			VGA_IO <= ~(addr_io >= 10'h050 && addr_io <= 10'h057);
 			io_chipset <= addr_io >= 10'h030 && addr_io <= 10'h037;
-			OE_DATA <= ~(~IO_TIMER || ~IO_PIC || ~IO_DBG || ~VGA_IO);
+			OE_DATA <= DEN;
 		end
 	end
 end
@@ -290,7 +290,7 @@ end
 
 // chipset control
 assign ram_bank = command_reg[1:0];
-always @(clk)
+always @(posedge clk)
 begin
 	if (io_chipset)
 	begin

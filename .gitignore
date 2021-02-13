@@ -46,3 +46,4 @@ Altera/SD controller/synthesis/output_files/
 *.qws
 *.dpf
 Altera/SD controller/simulation/work/
+Altera/MainV2/synthesis/.qsys_edit/

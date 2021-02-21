@@ -8,20 +8,19 @@
 50000-5FFFF	RAM (512 KB)
 60000-6FFFF	RAM (512 KB)
 70000-7FFFF	RAM (512 KB)
-80000-8FFFF	RAM (768 KB)
-90000-9FFFF	RAM (768 KB)
-A0000-AFFFF	RAM (768 KB)
-B0000-BFFFF	RAM (768 KB)
+80000-8FFFF	RAM bank switchable (768+ KB)
+90000-9FFFF	RAM bank switchable (768+ KB)
+A0000-AFFFF	RAM bank switchable (768+ KB)
+B0000-BFFFF	RAM bank switchable (768+ KB)
 C0000-CFFFF	Video RAM
 D0000-DFFFF	Video RAM
 E0000-EFFFF	ROM
 F0000-FFFFF	ROM
 
-
 --------------------------------------------------------------------------------
 
 00000-003FF	8086 interrupt vectors
-00400-006FF	BIOS data area + stack
-00700-0FFFF	OS kernel code + data
+00400-00FFF	BIOS data area
+01000-0FFFF	OS kernel code + data
 10000-1FFFF	application code
 20000-xxxxx	application data

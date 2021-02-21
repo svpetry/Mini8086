@@ -9,7 +9,7 @@
 .global int08
 .global int09
 
-.set BIOS_STACK_START, 0x06FE
+.set BIOS_STACK_START, 0x0FFE
 
 .set PIC_CMD, 0x20
 .set PIC_DATA, 0x21

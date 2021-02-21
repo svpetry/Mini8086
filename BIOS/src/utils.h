@@ -4,7 +4,14 @@
 
 typedef unsigned int size_t;
 
+/* returns a pseudo random number */
 int rand(void);
+
+/* initializes the random number generator */
 void srand(unsigned int seed);
+
+/* memory copy */
 void __far *memcpy1(void __far *dest, void __far *src, size_t bytes);
+
+/* fill memory */
 void __far *memset1(void __far *dest, unsigned char val, size_t bytes);

@@ -100,3 +100,11 @@ void putstr_inv(char *str) {
     while (*str)
         putch(*(str++) + 0x80);
 }
+
+void puthexbyte(byte value) {
+    char s[3];
+    itohex(value, s);   
+    if (value < 10)
+        putch('0');
+    putstr(s);
+}

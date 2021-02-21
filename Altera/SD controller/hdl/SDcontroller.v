@@ -1,78 +1,101 @@
 module SDcontroller(
-	input _cs_drive,
-	input _rd,
-	input _wr,
-	input _cs_buffer,
-	input [1:0] addr,
+	input M_IO,
+	input RD,
+	input WR,
+	input [1:0] ADDR,
+	input [7:0] AL,
+	input CARD_DET,
 	input clk,
-	input card_det,
 
-	output _den,
-	output sd_busy,
-	output _ram_oe,
-	output _ram_we,
-	output sd_irq,
-	output ld_gn,
-	output ld_rd,
+	output DEN,
+	output reg SD_IRQ,
+	output LD_GN,
+	output LD_RD,
+	output LD_BL,
+	output CS_UART,
+	output CS_8042,
+	output CS_I2C,
 	
-	output [8:0] ram_addr,
-	inout [7:0] data,
-	inout [7:0] ram_data,	
+	inout [7:0] DATA,
 
-	output sd_cs,
-	input miso,
-	output reg sclk,
-	output reg mosi
+	output SD_CS,
+	input MISO,
+	output reg SCLK,
+	output reg MOSI
 );
+
+/*
+	control register
+		bit	function
+		0..2	clock divider
+		3		SD_CS
+		4		LED green
+		5		LED red
+		6..7	interrupt (0 = no IRQ, 1 = IRQ on card insert, 2 = IRQ on op finished)
+		
+	status register
+		bit	function
+		0		1 = busy, 0 = idle
+		1		1 = card inserted, 0 = no card
+
+*/
 
 // internal
 reg [7:0] control = 8'b00001000;		// control register (0..2: clock divider, 3: SD_CS, 4: LED gn, 5: LED rd)
-reg [7:0] status;
+wire [7:0] status; 						// status register (0: busy)
 reg [7:0] txdata;
 reg [7:0] rxdata;
 reg [7:0] data_out;
 reg [7:0] data_out_en;
 reg [7:0] shift_register;
 reg [3:0] count;
-reg [7:0] clk_divide;
+reg [7:0] clk_divide = 0;
 reg slave_cs = 1;
 reg spi_word_send;
+reg [1:0]write_active;
 
 wire spi_clk_gen;
 wire [2:0] divide_factor = control[2:0];
 
-assign sd_cs = control[3];
-assign ld_gn = control[4];
-assign ld_rd = control[5];
-assign sd_busy = ~slave_cs;
-assign sd_irq = 0;
+wire [1:0] irq_ctrl;
+wire cs_drive;
+
+assign SD_CS = control[3];
+assign LD_GN = control[4];
+assign LD_RD = control[5];
+assign status[0] = ~slave_cs;
+assign status[1] = CARD_DET;
+assign irq_ctrl = control[7:6];
 
 // SPI clock
 assign spi_clk_gen = clk_divide[divide_factor];
 
 // clock divider for SPI clock
-always @ (negedge clk) begin
+always @ (negedge clk)
+begin
     clk_divide = clk_divide + 8'd1;
 end
+
+Decoder decoder(AL[7:0], WR, RD, M_IO, CS_UART, CS_8042, CS_I2C, cs_drive);
 
 // registers
 // 0: control (read, write)
 // 1: status (read)
-// 2: data (read, write)
+// 2: DATA (read, write)
 always @(posedge clk)
 begin
-	if (~_cs_drive)
+	if (cs_drive)
 	begin
-		if (~_wr)
+		if (~WR)
 		begin
-			case (addr)
-				2'b00: control <= data;
-				2'b10: txdata <= data;
+			case (ADDR)
+				2'b00: control <= DATA;
+				2'b10: txdata <= DATA;
 			endcase
 		end
-		else if (~_rd)
+		else if (~RD)
 		begin
-			case (addr)
+			case (ADDR)
 				2'b00: data_out <= control;
 				2'b01: data_out <= status;
 				2'b10: data_out <= rxdata;
@@ -81,66 +104,85 @@ begin
 	end
 end
 
-/* Reading the miso line and shifting */
-always @ (posedge sclk or posedge spi_word_send)
+/* Reading the MISO line and shifting */
+always @(posedge SCLK or posedge spi_word_send)
 begin
 	if (spi_word_send)
 		shift_register[7:0] = txdata;
 	else begin
 		shift_register = shift_register << 1;
-		shift_register[0] <= miso;
+		shift_register[0] <= MISO;
    end
 end
 
-/* Writing the mosi */
-always @ (negedge sclk or posedge spi_word_send)
+/* Writing the MOSI */
+always @(negedge SCLK or posedge spi_word_send)
 begin
 	if (spi_word_send)
-		mosi = txdata[7];
+		MOSI = txdata[7];
 	else
-		mosi = shift_register[7];
+		MOSI = shift_register[7];
 end
 
-/* Contolling the interrupt bit in the status bit */
-always @ (posedge slave_cs or posedge spi_word_send)
+// interrupt control
+always @(posedge clk)
 begin
-	if (spi_word_send)
-		status[0] = 0;
-	else begin
-		status[0] = 1;
-		rxdata = shift_register; // updating read buffer
-	end
+//	case (irq_ctrl)
+//		2'd1: begin
+//			
+//		end
+//	endcase
+//
+//	if (spi_word_send)
+//	begin
+//		if (irq_ctrl == 2)
+//			SD_IRQ = 0;
+//	end
+//	else begin
+//		if (irq_ctrl == 2)
+//			SD_IRQ = 1;
+//	end
+	
+//	if (irq_ctrl == 3)
+end
+
+// read buffer
+always @(posedge slave_cs)
+begin
+	rxdata = shift_register; // updating read buffer
 end
 
 /* New SPI word starts when the transmit buffer is updated */
-always @ (posedge clk)
+always @(posedge clk)
 begin
 	if (spi_word_send)
 		slave_cs = 0;
-   else if (count == 8 & ~sclk)
+   else if (count == 8 & ~SCLK)
 		slave_cs = 1;
 end
 
-/* New Spi word is intiated when transmit buffer is updated */
-always @ (posedge clk)
+/* New Spi word is intiated after transmit buffer has been updated */
+always @(posedge clk)
 begin
-	if (~_cs_drive & ~_wr & addr == 2'b10)
-		spi_word_send <= 1;
+	write_active[1] = write_active[0];
+	if (cs_drive & ~WR & ADDR == 2'b10)
+		write_active[0] = 1;
 	else
-		spi_word_send <= 0;
+		write_active[0] = 0;
+	spi_word_send <= ~write_active[0] && write_active[1];
 end
 
 /* Generating the SPI clock */
-always @ (posedge spi_clk_gen)
+always @(posedge spi_clk_gen)
 begin
 	if (~slave_cs)
-		sclk = ~sclk;
+		SCLK = ~SCLK;
    else
-		sclk = 0;
+		SCLK = 0;
 end
 
 /* Counting SPI word length */
-always @ (posedge sclk or posedge slave_cs)
+always @(posedge SCLK or posedge slave_cs)
 begin
 	if (slave_cs)
 		count = 0;
@@ -148,15 +190,15 @@ begin
 		count = count + 4'd1;
 end
 
-/* Controlling the data out enable */
-always @ (_rd or _cs_drive or data_out)
+/* Controlling the DATA out enable */
+always @(RD or cs_drive or data_out)
 begin
-	if (~_rd && ~_cs_drive)
+	if (~RD && cs_drive)
 		data_out_en <= data_out;
 	else
 		data_out_en <= 8'bz;
 end
 
-assign data = data_out_en;
+assign DATA = data_out_en;
 
 endmodule

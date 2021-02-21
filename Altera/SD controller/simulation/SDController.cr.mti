@@ -1,1 +1,18 @@
+{C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/hdl/SDcontroller.v} {1 {vlog -work work -stats=none {C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/hdl/SDcontroller.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module SDcontroller
 
+Top level modules:
+	SDcontroller
+
+} {} {}} {C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/testbenches/SDcontroller_tb.v} {2 {vlog -work work -stats=none {C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/testbenches/SDcontroller_tb.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module Sdcontroller_tb
+** Warning: C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/testbenches/SDcontroller_tb.v(86): (vlog-2283) Extra semicolon in $unit (global) scope.
+** Warning: C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/testbenches/SDcontroller_tb.v(86): (vlog-2284) Empty $unit scope found.
+-- Compiling package SDcontroller_tb_v_unit
+
+Top level modules:
+	Sdcontroller_tb
+
+} {} {}}

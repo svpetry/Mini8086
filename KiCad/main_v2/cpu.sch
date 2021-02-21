@@ -844,10 +844,6 @@ F 3 "" H 8350 3700 50  0001 C CNN
 	1    8350 3700
 	1    0    0    -1  
 $EndComp
-Text GLabel 7750 4000 0    50   Input ~ 0
-VCC36
-Text GLabel 7750 5900 0    50   Input ~ 0
-VCC36
 Text GLabel 7350 4550 0    50   Input ~ 0
 ~BHE~_S7
 Wire Wire Line
@@ -922,24 +918,37 @@ Wire Wire Line
 Connection ~ 7650 5650
 Wire Wire Line
 	7650 5650 7650 5550
-Wire Wire Line
-	7650 5750 7300 5750
-Wire Wire Line
-	7300 5750 7300 6200
 Connection ~ 7650 5750
 $Comp
 L power:GND #PWR0101
 U 1 1 5FF4B1C8
-P 7300 6200
-F 0 "#PWR0101" H 7300 5950 50  0001 C CNN
-F 1 "GND" H 7305 6027 50  0000 C CNN
-F 2 "" H 7300 6200 50  0001 C CNN
-F 3 "" H 7300 6200 50  0001 C CNN
-	1    7300 6200
+P 7650 6250
+F 0 "#PWR0101" H 7650 6000 50  0001 C CNN
+F 1 "GND" H 7655 6077 50  0000 C CNN
+F 2 "" H 7650 6250 50  0001 C CNN
+F 3 "" H 7650 6250 50  0001 C CNN
+	1    7650 6250
 	1    0    0    -1  
 $EndComp
 Text Notes 6700 3250 0    50   ~ 0
 0 = output (B -> A)\n1 = input (A -> B)\n
+Wire Wire Line
+	7750 5900 7650 5900
+Wire Wire Line
+	7650 5900 7650 5750
+$Comp
+L power:GND #PWR0110
+U 1 1 6014334C
+P 7750 4000
+F 0 "#PWR0110" H 7750 3750 50  0001 C CNN
+F 1 "GND" V 7750 3800 50  0000 C CNN
+F 2 "" H 7750 4000 50  0001 C CNN
+F 3 "" H 7750 4000 50  0001 C CNN
+	1    7750 4000
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	7650 6250 7650 5900
 Wire Bus Line
 	9750 4000 9750 4350
 Wire Bus Line
@@ -950,4 +959,5 @@ Wire Bus Line
 	7250 1100 7250 2750
 Wire Bus Line
 	3600 1900 3600 3950
+Connection ~ 7650 5900
 $EndSCHEMATC

@@ -11,7 +11,7 @@ module VGA(
 		input [1:0]mode, // graphics mode (0 = text, 1 = 320x200x8, 2 = 400x300x8)
 		
 		// outputs
-		output rdy, // CPU busy signal
+		output rdy, // CPU busy signal (wait = low)
 		output reg [3:0]_we_ram = 4'b1111, // RAM WE
 		output reg [3:0]_cs_ram = 4'b1111, // RAM CS
 		output _cpu_ram_addr, // connect CPU address bus to RAM
@@ -200,7 +200,7 @@ begin
 			load_col_ram = hcount[2:0] == 3'd0 || hcount[2:0] == 3'd7 && pixel_clk == 0;
 			latch_chr <= hcount[2:0] == 3'd0;
 			latch_col <= hcount[2:0] == 3'd0;
-			_chr_to_col <= ~(hcount[1] == 1'b0);
+			_chr_to_col <= ~(hcount[1] == 1'b0) && hori_visible_area;
 		end
 		else if (mode_640x200)
 		begin
@@ -210,7 +210,7 @@ begin
 			load_col_ram = hcount[1:0] == 2'd0;
 			latch_chr <= hcount[1:0] == 2'd0 || hcount[1:0] == 2'd3 && pixel_clk == 0;
 			latch_col <= hcount[1:0] == 2'd0 || hcount[1:0] == 2'd3 && pixel_clk == 0;
-			_chr_to_col <= ~(hcount[0] == 1'b0);
+			_chr_to_col <= ~(hcount[0] == 1'b0)  && hori_visible_area;
 		end
 		
 		if (load_chr_ram)

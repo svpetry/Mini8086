@@ -4,9 +4,9 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 6 7
-Title ""
+Title "Mini8086 VGA board"
 Date ""
-Rev ""
+Rev "1.1"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -706,7 +706,7 @@ NoConn ~ 2650 2050
 NoConn ~ 2650 1950
 NoConn ~ 3600 1950
 $Comp
-L Mini8086:Edge72 X2
+L vga-rescue:Edge72-Mini8086 X2
 U 1 1 5F84BE1E
 P 3100 3450
 F 0 "X2" H 3125 5415 50  0000 C CNN

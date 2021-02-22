@@ -233,7 +233,7 @@ F 3 "" H 3650 5650 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Mini8086:Edge72 X1
+L info_board-rescue:Edge72-Mini8086 X1
 U 1 1 5F982738
 P 4100 3850
 F 0 "X1" H 4125 5815 50  0000 C CNN

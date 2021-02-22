@@ -319,11 +319,11 @@ X D2 9 -400 -100 100 R 50 50 1 1 I
 ENDDRAW
 ENDDEF
 #
-# Mini8086_Edge72
+# info_board-rescue_Edge72-Mini8086
 #
-DEF Mini8086_Edge72 X 0 40 Y Y 1 F N
+DEF info_board-rescue_Edge72-Mini8086 X 0 40 Y Y 1 F N
 F0 "X" 100 -1950 50 H V C CNN
-F1 "Mini8086_Edge72" -150 -1950 50 H V C CNN
+F1 "info_board-rescue_Edge72-Mini8086" -150 -1950 50 H V C CNN
 F2 "" 550 0 50 H I C CNN
 F3 "" 550 0 50 H I C CNN
 DRAW

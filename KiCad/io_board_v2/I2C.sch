@@ -4,9 +4,9 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 8 8
-Title ""
+Title "Mini8086 I/O board"
 Date ""
-Rev ""
+Rev "2.0"
 Comp ""
 Comment1 ""
 Comment2 ""

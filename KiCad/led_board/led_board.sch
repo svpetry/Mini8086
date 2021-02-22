@@ -4,9 +4,9 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 4
-Title ""
+Title "Mini8086 LED board"
 Date ""
-Rev ""
+Rev "1.1"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L Mini8086:Edge72 X1
+L led_board-rescue:Edge72-Mini8086 X1
 U 1 1 5FD2F4CE
 P 3500 4000
 F 0 "X1" H 3525 5965 50  0000 C CNN

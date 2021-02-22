@@ -6,7 +6,7 @@ encoding utf-8
 Sheet 6 7
 Title "Mini8086 main system board"
 Date ""
-Rev "1.1"
+Rev "2.1"
 Comp ""
 Comment1 ""
 Comment2 ""

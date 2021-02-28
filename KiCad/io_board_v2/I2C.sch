@@ -6,7 +6,7 @@ encoding utf-8
 Sheet 8 8
 Title "Mini8086 I/O board"
 Date ""
-Rev "2.0"
+Rev "1.2"
 Comp ""
 Comment1 ""
 Comment2 ""

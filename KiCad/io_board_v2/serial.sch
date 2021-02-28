@@ -6,7 +6,7 @@ encoding utf-8
 Sheet 2 8
 Title "Mini8086 I/O board"
 Date "2020-11-05"
-Rev "2.0"
+Rev "1.2"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -559,11 +559,11 @@ Wire Wire Line
 	3100 3600 2800 3600
 Wire Wire Line
 	3100 3700 2900 3700
+Connection ~ 2900 3700
+Wire Wire Line
+	2900 3700 2900 3800
 Wire Bus Line
 	2800 1950 2800 2200
 Wire Bus Line
 	2800 1050 2800 1800
-Connection ~ 2900 3700
-Wire Wire Line
-	2900 3700 2900 3800
 $EndSCHEMATC

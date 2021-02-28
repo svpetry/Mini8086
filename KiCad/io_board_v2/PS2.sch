@@ -6,7 +6,7 @@ encoding utf-8
 Sheet 3 8
 Title "Mini8086 I/O board"
 Date "2020-11-05"
-Rev "2.0"
+Rev "1.2"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -291,14 +291,12 @@ Wire Wire Line
 	4300 5100 5950 5100
 Connection ~ 4300 4700
 Wire Wire Line
-	3600 4300 3600 4100
+	3600 4500 3600 4100
 Wire Wire Line
 	3600 4100 4300 4100
+Connection ~ 2900 4500
 Wire Wire Line
-	2900 4900 2900 4700
-Connection ~ 2900 4300
-Wire Wire Line
-	2900 4300 3600 4300
+	2900 4500 3600 4500
 Wire Wire Line
 	3300 4900 3300 4700
 Connection ~ 3300 4700
@@ -372,9 +370,7 @@ F 3 "~" H 3300 4050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3300 4200 3300 4600
-Wire Wire Line
-	2900 4200 2900 4300
+	2900 4200 2900 4500
 Wire Wire Line
 	2900 3900 2900 3800
 Wire Wire Line
@@ -464,40 +460,6 @@ Text Label 6200 4200 0    50   ~ 0
 KDATA_OUT
 Text Label 8300 4800 0    50   ~ 0
 ~PCLK
-Wire Wire Line
-	1800 5350 2250 5350
-Wire Wire Line
-	1800 3800 1800 4150
-Wire Wire Line
-	2550 4700 2900 4700
-Connection ~ 2900 4700
-Wire Wire Line
-	2900 4700 2900 4300
-Wire Wire Line
-	1950 4700 1950 4900
-Wire Wire Line
-	1950 4900 2250 4900
-Wire Wire Line
-	2250 4900 2250 5350
-Connection ~ 2250 5350
-Wire Wire Line
-	2250 5350 2900 5350
-Wire Wire Line
-	2550 4600 3300 4600
-Connection ~ 3300 4600
-Wire Wire Line
-	3300 4600 3300 4700
-Wire Wire Line
-	2550 4500 2550 4150
-Wire Wire Line
-	2550 4150 1800 4150
-Connection ~ 1800 4150
-Wire Wire Line
-	1800 4150 1800 4900
-NoConn ~ 1950 4600
-NoConn ~ 1950 4500
-Text Notes 1400 3300 0    50   ~ 0
-Attention: Mini-DIN 6 footprint pin numbers are wrong.\n
 $Comp
 L 74xx:74HC04 U3
 U 3 1 60241E6C
@@ -576,6 +538,32 @@ NoConn ~ 3850 2650
 NoConn ~ 3850 2150
 NoConn ~ 3850 1650
 NoConn ~ 3850 1150
+Wire Wire Line
+	3300 4200 3300 4700
+Wire Wire Line
+	1800 3800 1800 4600
+Wire Wire Line
+	1800 5350 2650 5350
+NoConn ~ 1950 4700
+NoConn ~ 1950 4500
+Wire Wire Line
+	1950 4600 1800 4600
+Connection ~ 1800 4600
+Wire Wire Line
+	1800 4600 1800 4900
+Wire Wire Line
+	2550 4500 2900 4500
+Wire Wire Line
+	2900 4500 2900 4900
+Wire Wire Line
+	2550 4700 3300 4700
+Wire Wire Line
+	2550 4600 2650 4600
+Wire Wire Line
+	2650 4600 2650 5350
+Connection ~ 2650 5350
+Wire Wire Line
+	2650 5350 2900 5350
 Wire Bus Line
 	8650 2650 8650 3400
 $EndSCHEMATC

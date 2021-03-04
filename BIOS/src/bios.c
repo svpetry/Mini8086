@@ -7,6 +7,7 @@
 #include "utils.h"
 #include "boot.h"
 #include "start.h"
+#include "sd.h"
 
 volatile word sp_save;
 volatile word ss_save;
@@ -59,7 +60,7 @@ void int_keyboard() {
 }
 
 void demo1() {
-    outp(0x50, 0b00000010); // 320 x 200 x 256
+    outp(0x50, 0b00000010);
     
     byte r, g, b;
 
@@ -107,12 +108,6 @@ void demo() {
     }
 }
 
-void sd_delay() {
-    int i;
-    for (i = 0; i < 100; i++)
-        asm("nop");
-}
-
 int main() {
     word i, j, k;
     byte a;
@@ -137,45 +132,10 @@ int main() {
 
     clrscr();
 
+    demo1();
 
-    while (1) {
-
-        outp(0x90, 0b00001111);
-        for (i = 0; i < 10; i++) {
-            outp(0x92, 0xFF);
-            sd_delay();
-        }
-        outp(0x92, 0xFF);
-        sd_delay();
-        outp(0x90, 0b00000111);
-        outp(0x92, 0xFF);
-        sd_delay();
-
-        outp(0x92, 0x00 | 0x40);
-        sd_delay();
-
-        outp(0x92, 0x00);
-        sd_delay();
-        outp(0x92, 0x00);
-        sd_delay();
-        outp(0x92, 0x00);
-        sd_delay();
-        outp(0x92, 0x00);
-        sd_delay();
-
-        outp(0x92, 0x94 | 0x01);
-        sd_delay();
-
-        for (i = 0; i < 8; i++) {
-            outp(0x92, 0xFF);
-            a = inp(0x92);
-            itohex(a, s);
-            putstr(s);
-            putstr("\n");
-        }            
-
-        while (1);
-    }   
+    sd_init();
+    while (1) ;
 
     demo2();
 

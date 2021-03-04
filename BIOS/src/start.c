@@ -39,9 +39,9 @@ void check_memory(int row) {
     // test first 64 KB
     setcursor(RESULT_COL, row);
     putstr("64 KB");
-    memptr = (unsigned char __far *)0x00000700;
+    memptr = (unsigned char __far *)0x00001000;
     count = 0;
-    while (count < 0xF900) {
+    while (count < 0xF000) {
         *memptr = 0xAA;
         if (*memptr != 0xAA) error();
         *memptr = 0x55;
@@ -109,6 +109,7 @@ void check_timer(int row) {
         return;
     }
 
+    // measure CPU frequency
     count = 0;
     for (i = 0; i < 4; i++) {
         t = ticks;
@@ -116,7 +117,7 @@ void check_timer(int row) {
             count++;
     }
     
-    count /= 341;
+    count /= 342;
     i = count / 100;
     if (i == 0)
         freq_str[0] = ' ';
@@ -145,7 +146,7 @@ void check_keyboard(int row) {
     putstr("Keyboard");
     setcursor(RESULT_COL, row);
 
-    outp(0x61, 0xAA);
+    outp(0x64, 0xAA);
     data = 0;
     for (j = 0; j < 10 && data != 0x55; j++) {
         for (i = 0; i < 2000; i++) asm("nop");
@@ -156,17 +157,17 @@ void check_keyboard(int row) {
         return;
     }
 
-    outp(0x61, 0xAB); // perform controller self test
+    outp(0x64, 0xAB); // perform controller self test
     status = 0;
     for (j = 0; j < 10 && (status & 1) == 0; j++) {
         for (i = 0; i < 2000; i++) asm("nop");
-        status = inp(0x61);
+        status = inp(0x64);
     }
     if ((status & 1) == 1) {
         data = inp(0x60);
         switch (data) {
             case 0x00:
-                outp(0x61, 0xAE); // enable keyboard interface
+                outp(0x64, 0xAE); // enable keyboard interface
                 putstr("OK");
                 return;
             case 0x01:
@@ -229,12 +230,6 @@ void startup() {
     putstr_inv("Mini8086 BIOS 0.1");
     setcursor(68, 0);
     putstr_inv(__DATE__);
-
-    // setcursor(1, 0);
-    // putstr("012345678901234567890123456789");
-    // setcursor(12, 6);
-    // putch('o');
-    // while (1) ;
 
     i = 2;
     check_cpu(i++);

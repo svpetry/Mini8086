@@ -3,6 +3,7 @@
 #include "lowlevel.h"
 #include "defs.h"
 #include "strutils.h"
+#include "screen.h"
 
 byte spi_send(byte value) {
     outp(0x92, value);
@@ -15,6 +16,14 @@ byte spi_send(byte value) {
 }
 
 void sd_command(byte cmd, dword arg, byte crc) {
+#if SD_DEBUG
+    char s[4];
+    itoa(cmd, s);
+    putstr("sending CMD");
+    if (cmd < 10) putch('0');
+    putstr(s);
+    putch('\n');
+#endif
     spi_send(cmd | 0x40);
     spi_send((byte)(arg >> 24));
     spi_send((byte)(arg >> 16));
@@ -40,87 +49,83 @@ void sd_deselect() {
 }
 
 byte read_r1() {
-    byte i, res;
-    i = 8;    
-    do {
-        res = spi_send(0xFF);
-    } while (i > 0 && res == 0xFF);
+    byte i, j, res;
 
+    j = 20;
+    do {    
+        i = 8;    
+        do {
+            res = spi_send(0xFF);
+        } while (--i > 0 && res == 0xFF);
+    } while (--j > 0 && (res & 0x01) == 0);
 #if SD_DEBUG
     putstr("result: ");
     puthexbyte(res);
     putch('\n');
 #endif
-
     return res;
 }
 
-void read_r3() {
+byte read_r3_r7() {
+    byte i, res, res1;
+    res = read_r1();
+    if (res != 0x01) return res; // error
 
-}
-
-void read_r7() {
-
-}
-
-bool init_cmd0() {
+    for (i = 0; i < 4; i++) {
+        res1 = spi_send(0xFF);
 #if SD_DEBUG
-    putstr("sending CMD0\n");
+        puthexbyte(res1);
+        if (i < 3)
+            putch(' ');
+        else
+            putch('\n');
 #endif
+    }
+    return res;
+}
+
+byte send_cmd0() {
     sd_command(0, 0, 0x94);
-
-    // wait for response
-    res = read_res();
-    if (res != 0x01)
-        return FALSE; // error
+    return read_r1();
 }
 
-bool init_cmd8() {
-#if SD_DEBUG
-    putstr("sending CMD8\n");
-#endif
+byte send_cmd8() {
     sd_command(8, 0x0000001AA, 0x86);
-
-    res = read_res();
-    if (res != 0x01)
-        return FALSE; // error
-
-    for (i = 0; i < 4; i++) {
-        res = spi_send(0xFF);
-#if SD_DEBUG
-        puthexbyte(res);
-        if (i < 3)
-            putch(' ');
-        else
-            putch('\n');
-#endif
-    }
+    return read_r3_r7();
 }
 
-bool init_cmd(byte cmd, dword arg, byte crc) {
-#if SD_DEBUG
-    putstr("sending CMD8\n");
-#endif
-    sd_command(8, 0x0000001AA, 0x86);
-
-    res = read_res();
-    if (res != 0x01)
-        return FALSE; // error
-
-    for (i = 0; i < 4; i++) {
-        res = spi_send(0xFF);
-#if SD_DEBUG
-        puthexbyte(res);
-        if (i < 3)
-            putch(' ');
-        else
-            putch('\n');
-#endif
-    }
+byte send_cmd58() {
+    sd_command(58, 0, 0);
+    return read_r3_r7();
 }
 
-bool init_cmd58() {
+byte send_acmd41_new() {
+    byte res;
+    sd_command(55, 0, 0);
+    res = read_r1();
+    if (res != 0x01) return res;
+    sd_command(41, 0x40000000, 0);
+    return read_r1();
+}
 
+byte send_acmd41_old() {
+    byte res;
+    sd_command(55, 0, 0);
+    res = read_r1();
+    if (res != 0x01) return res;
+    sd_command(41, 0, 0xE5);
+    return read_r1();
+}
+
+byte send_cmd1() {
+    sd_command(1, 0, 0xF9);
+    return read_r1();
+}
+
+void sd_delay() {
+    int i;
+    for (i = 0; i < 10000; i++)
+        asm("nop");
 }
 
 bool sd_init() {
@@ -136,12 +141,40 @@ bool sd_init() {
     spi_send(0xFF);
 
     // send CMD0
-    if (!init_cmd0()) return FALSE;
+    if (send_cmd0() != 0x01) return FALSE;
 
     // send CMD8
-    if (!init_cmd8()) return FALSE;
+    res = send_cmd8();
+    if (res == 0x01) {
+        // Ver 2.x or later
 
+        do {
+            // send ACMD41 until in_idle_state == 0
+            res = send_acmd41_new();
+            if (res == 0x01) sd_delay();
+        } while (res == 0x01);
+        if (res != 0x00) return FALSE;
 
+        // send CMD58
+        if (!send_cmd58()) return FALSE;
+
+    } else if (res == 0x05) {
+        // Version 1.x
+        do {
+            // send ACMD41 until in_idle_state == 0
+            res = send_acmd41_old();
+            if (res == 0x01) sd_delay();
+        } while (res == 0x01);
+        if (res == 0x05) {
+            do {
+                // send CMD1 until in_idle_state == 0
+                res = send_cmd1();
+                if (res == 0x01) sd_delay();
+            } while (res == 0x01);
+            if (res != 0x00) return FALSE;
+        }
+    } else return FALSE;
+    return TRUE;
 }
 
 bool sd_inserted() {

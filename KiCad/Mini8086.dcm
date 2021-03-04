@@ -4,6 +4,10 @@ $CMP IS61WV25616
 D 256K x 16 HIGH SPEED ASYNCHRONOUS CMOS STATIC RAM
 $ENDCMP
 #
+$CMP MT8809
+D 8x8 Analog Switch Array
+$ENDCMP
+#
 $CMP MicroSD_SPI_CD
 D MicroSD slot with card detect signal
 $ENDCMP

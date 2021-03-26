@@ -9,77 +9,101 @@ z2
 !i10f 100
 cModel Technology
 dC:/intelFPGA_lite/20.1
-vSDcontroller
-Z0 !s110 1612591321
+vDecoder
+!s110 1616044303
 !i10b 1
-!s100 0i<hF[ZT`]`e`4f<<7kJh0
-Z1 !s11b Dg1SIo80bB@j0V0VzS_@n1
-INn6``E[?mDemmlVXZSJo50
-Z2 VDg1SIo80bB@j0V0VzS_@n1
-Z3 dC:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/simulation
-w1612591096
-8C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/hdl/SDcontroller.v
-FC:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/hdl/SDcontroller.v
-!i122 63
-L0 1 181
-Z4 OV;L;2020.1;71
+!s100 d`4iDKIFihQ?Y:6BIfFPj0
+Z0 !s11b Dg1SIo80bB@j0V0VzS_@n1
+ITYT5;haf^gHMbGJPCN<_[3
+Z1 VDg1SIo80bB@j0V0VzS_@n1
+d/home/sven/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/simulation
+w1613194132
+8/home/sven/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/hdl/Decoder.v
+F/home/sven/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/hdl/Decoder.v
+!i122 86
+L0 1 29
+Z2 OV;L;2020.1;71
 r1
 !s85 0
 31
-Z5 !s108 1612591321.000000
+!s108 1616044303.000000
+!s107 /home/sven/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/hdl/SDcontroller.v|/home/sven/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/hdl/Decoder.v|
+!s90 -reportprogress|300|-work|work|/home/sven/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/hdl/Decoder.v|/home/sven/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/hdl/SDcontroller.v|
+!i113 1
+Z3 o-work work
+Z4 tCvgOpt 0
+n@decoder
+vSDcontroller
+Z5 !s110 1616090137
+!i10b 1
+!s100 eV@R<hCj6f0HR6@nQDdcC3
+R0
+I6bF131?G=FhVV_>RLmckg2
+R1
+Z6 dC:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/simulation
+w1616090134
+8C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/hdl/SDcontroller.v
+FC:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/hdl/SDcontroller.v
+!i122 101
+L0 1 236
+R2
+r1
+!s85 0
+31
+Z7 !s108 1616090137.000000
 !s107 C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/hdl/SDcontroller.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/hdl/SDcontroller.v|
 !i113 1
-Z6 o-work work
-Z7 tCvgOpt 0
+R3
+R4
 n@s@dcontroller
 vSdcontroller_tb
-R0
+R5
 !i10b 1
-!s100 G?L<T>XXe7nUEFZ49fB_L2
+!s100 Jl=hieh53SNVfK60lXfbS3
+R0
+IF_O7Rn8DTOOInE[fP4_V_3
 R1
-IFcQzme5ZJfe612?IJS3^<1
-R2
-R3
-Z8 w1612327946
-Z9 8C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/testbenches/SDcontroller_tb.v
-Z10 FC:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/testbenches/SDcontroller_tb.v
-!i122 64
+R6
+w1616086347
+8C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/testbenches/SDcontroller_tb.v
+FC:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/testbenches/SDcontroller_tb.v
+!i122 102
 L0 2 85
-R4
+R2
 r1
 !s85 0
 31
-R5
-!s107 C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/testbenches/SDcontroller_tb.v|
-Z11 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/testbenches/SDcontroller_tb.v|
-!i113 1
-R6
 R7
+!s107 C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/testbenches/SDcontroller_tb.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/testbenches/SDcontroller_tb.v|
+!i113 1
+R3
+R4
 n@sdcontroller_tb
 XSDcontroller_tb_v_unit
 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
-R0
-VdYeMiOUGNm_nSzWgHZ7Lc2
+!s110 1615981527
+V7oh:o?c>>hI@]WbV>11e]0
 r1
 !s85 0
 !i10b 1
 !s100 Mz=hZNWj;6MoPM=S6iP0M0
-IdYeMiOUGNm_nSzWgHZ7Lc2
+I7oh:o?c>>hI@]WbV>11e]0
 !i103 1
 S1
-R3
-R8
-R9
-R10
-!i122 64
-L0 86 0
-R4
-31
-R5
-Z12 !s107 C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/Altera/SD controller/testbenches/SDcontroller_tb.v|
-R11
-!i113 1
 R6
-R7
+w1615981520
+8C:\Users\svpet\Nextcloud\Elektronik\Projects\Mini8086\Altera\SD controller\testbenches\SDcontroller_tb.v
+FC:\Users\svpet\Nextcloud\Elektronik\Projects\Mini8086\Altera\SD controller\testbenches\SDcontroller_tb.v
+!i122 74
+L0 86 0
+R2
+31
+!s108 1615981526.000000
+!s107 C:\Users\svpet\Nextcloud\Elektronik\Projects\Mini8086\Altera\SD controller\testbenches\SDcontroller_tb.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:\Users\svpet\Nextcloud\Elektronik\Projects\Mini8086\Altera\SD controller\testbenches\SDcontroller_tb.v|
+!i113 1
+R3
+R4
 n@s@dcontroller_tb_v_unit

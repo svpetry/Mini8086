@@ -18,6 +18,7 @@ namespace Emulator
         private KeybController _keybController;
         private GraphicsAdapter _graphicsAdapter;
         private Lcd44780 _lcd;
+        private SdController _sdController;
 
         private MemoryMapper _memMapper;
         private PortMapper _portMapper;
@@ -69,6 +70,9 @@ namespace Emulator
 
             components.Add(_keybController = new KeybController(Config.KeybControllerBasePort));
             _portMapper.Register(Config.KeybControllerBasePort, Config.KeybControllerBasePort + 0x07, _keybController);
+
+            components.Add(_sdController = new SdController(Config.SdControllerBasePort, Config.SdImagePath));
+            _portMapper.Register(Config.SdControllerBasePort, Config.SdControllerBasePort + 0x07, _sdController);
 
             _memMapper.FinishRegistration();
             

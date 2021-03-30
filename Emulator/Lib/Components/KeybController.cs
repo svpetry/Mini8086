@@ -26,7 +26,6 @@ namespace Emulator.Lib.Components
 
         public void Out(int addr, ushort value, bool wordTransfer)
         {
-            throw new NotImplementedException();
         }
     }
 }

@@ -59,6 +59,8 @@
     <Compile Include="Lib\Components\KeybController.cs" />
     <Compile Include="Lib\Components\InterruptController.cs" />
     <Compile Include="Lib\Components\Lcd44780.cs" />
+    <Compile Include="Lib\Components\SdCard.cs" />
+    <Compile Include="Lib\Components\SdController.cs" />
     <Compile Include="Lib\Components\Timer.cs" />
     <Compile Include="Lib\Config.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />

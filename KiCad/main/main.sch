@@ -40,7 +40,7 @@ $EndSheet
 $Sheet
 S 7000 1000 1000 1000
 U 5F8BB07A
-F0 "glue logic" 50
-F1 "glue logic.sch" 50
+F0 "misc" 50
+F1 "misc.sch" 50
 $EndSheet
 $EndSCHEMATC

@@ -35,3 +35,18 @@ h	r	horizontal retrace (1 = active)
 0x80-0x87	UART (16550)
 --------------------------------------------------------------------------------
 0x90-0x97	SD controller
+0x90		control port
+0x91		status port
+0x92		data port
+
+control port:	iirgcddd
+
+ddd		clock divider
+c		SD_CS
+g		green LED
+r		red LED
+ii		interrupt (0 = no IRQ, 1 = IRQ on card insert, 2 = IRQ on op finished)
+
+status port:	------cb
+b		busy flag (1 = busy, 0 = idle)
+c		card detect (1 = card inserted, 0 = no card)

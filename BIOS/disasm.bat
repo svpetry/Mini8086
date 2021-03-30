@@ -1,1 +1,1 @@
-ndisasm -b 16 -o0000h %1
+ndisasm -b 16 -oF0000h %1

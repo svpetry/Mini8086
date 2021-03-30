@@ -47,3 +47,4 @@ Altera/SD controller/synthesis/output_files/
 *.dpf
 Altera/SD controller/simulation/work/
 Altera/MainV2/synthesis/.qsys_edit/
+BIOS/FatFS/

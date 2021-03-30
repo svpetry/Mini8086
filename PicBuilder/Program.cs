@@ -13,7 +13,7 @@ namespace PicBuilder
         static void Main(string[] args)
         {
             var data = new byte[64000];
-            var bmp = new Bitmap(@"..\..\..\VGA\kizuna-ai.bmp");
+            var bmp = new Bitmap(@"..\..\..\VGA\amber.bmp");
 
             var dataIdx = 0;
             for (var y = 0; y < 200; y++)

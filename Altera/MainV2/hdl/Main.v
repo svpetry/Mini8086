@@ -40,9 +40,9 @@ module Main(
 );
 
 reg clk2;
-reg [1:0] cpuclk_state;
+reg [2:0] cpuclk_state;
 reg [3:0] reset_cnt = 4'b1111;
-reg [3:0] tmrclk_cnt;
+reg [4:0] tmrclk_cnt;
 reg io_chipset;
 
 reg [15:0] data_out = 16'bz;
@@ -57,7 +57,9 @@ reg [1:0] addr_overload;
 reg led_blink;
 reg [24:0] blink_counter;
 
-// 30 MHz internal clock generation
+parameter TIMER_DIVIDER = 15; // divider for the timer clock. clk2 is divided by this value.
+
+// clk2 internal clock generation
 always @(posedge clk)
 begin
 	clk2 = ~clk2;
@@ -90,13 +92,13 @@ end
 // timer clock generation (1 MHz)
 always @(posedge clk2)
 begin
-	if (tmrclk_cnt == 4'd14)
+	if (tmrclk_cnt == TIMER_DIVIDER - 1)
 	begin
 		PIT_CLK = ~PIT_CLK;
-		tmrclk_cnt <= 4'd0;
+		tmrclk_cnt <= 5'd0;
 	end
 	else
-		tmrclk_cnt <= tmrclk_cnt + 4'd1;
+		tmrclk_cnt <= tmrclk_cnt + 5'd1;
 end
 
 // led

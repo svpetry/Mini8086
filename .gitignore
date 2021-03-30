@@ -48,3 +48,12 @@ Altera/SD controller/synthesis/output_files/
 Altera/SD controller/simulation/work/
 Altera/MainV2/synthesis/.qsys_edit/
 BIOS/FatFS/
+Altera/SD controller/synthesis/simulation/modelsim/
+Altera/SD controller/synthesis/.qsys_edit/
+*.rpt
+Altera/SD controller/simulation/vsim_stacktrace.vstf
+Altera/SD controller/simulation/vsim.wlf
+*.qdf
+KiCad/led_board/Rev 1.0/
+KiCad/backplane/Rev 2.0/
+KiCad/io_board_v2/Rev 1.1/

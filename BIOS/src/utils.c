@@ -50,3 +50,16 @@ void __far *memset1(void __far *dest, byte val, size_t bytes) {
     // __asm__ volatile(        "rep stosb" : : "al"(val), "c" (bytes));
     return dest;
 }
+
+inline void __far * near_to_far(void *p) {
+    dword lp;
+    word seg;
+    asm(
+        "pushw %%ds\n"
+        "popw %0"
+        : "=g" (seg) :
+    );
+    lp = (word)p;
+    lp += ((dword)seg) << 16;
+    return (void __far *)lp;
+}

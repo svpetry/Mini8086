@@ -8,6 +8,7 @@
 #include "boot.h"
 #include "start.h"
 #include "sd.h"
+#include "ff.h"
 
 volatile word sp_save;
 volatile word ss_save;
@@ -59,6 +60,10 @@ void int_keyboard() {
 
 }
 
+void int_drive() {
+    sd_reset();
+}
+
 void demo1() {
     outp(0x50, 0b00000010);
     
@@ -108,6 +113,45 @@ void demo() {
     }
 }
 
+void fatfs_test() {
+    char str[12], label[12];
+
+    FATFS fs;
+    DIR dj;
+    FILINFO fno;
+    FRESULT res;
+
+    putstr("\n\n");
+
+    res = f_mount(&fs, "", 0);
+    putstr("f_mount: ");
+    itoa(res, str);
+    putstr(str);
+    putch('\n');
+
+    res = f_getlabel("", label, 0);
+    putstr("f_getlabel: ");
+    itoa(res, str);
+    putstr(str);
+    putch('\n');
+
+    putstr("volume label: ");
+    putstr(label);
+    putch('\n');
+
+    res = f_opendir(&dj, "");
+    if (res == FR_OK) {
+        res = f_readdir(&dj, &fno) ;
+        while (res == FR_OK && fno.fname[0]) {
+            putstr(fno.fname);
+            putch('\n');
+            res = f_readdir(&dj, &fno);
+        }
+        f_closedir(&dj);
+    }
+    
+}
+
 int main() {
     word i, j, k;
     byte a;
@@ -130,26 +174,8 @@ int main() {
         for (j = 0; j < 100; j++)
             asm("nop");
 
-    clrscr();
-
-    demo1();
-
-    sd_init();
+    fatfs_test();
     while (1) ;
-
-    demo2();
-
-    a = 0;
-    while (1) {
-        outp(0x90, a);
-        a = inp(0x90);
-        itohex(a, s);
-        putstr(s);
-        putstr("\n");
-        a++;
-    }
-
-    demo2();
 
 #if LCD == 1602
     lcd_putstr(0, 0, "                ");

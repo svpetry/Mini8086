@@ -8,6 +8,7 @@
 .global int04
 .global int08
 .global int09
+.global int0E
 
 .set BIOS_STACK_START, 0x0FFE
 
@@ -91,6 +92,10 @@ clr_loop:
 	movw $0x0024, %di
 	movw $int09-_start, (%di)
 
+	// INT 0Eh
+	movw $0x0038, %di
+	movw $int0E-_start, (%di)
+
 	// INT 10h
 	movw $0x0040, %di
 	movw $int10-_start, (%di)
@@ -144,6 +149,8 @@ int04:
 	iret
 	
 	// hardware interrupts
+
+	// IRQ0: timer
 int08:
 	push %ax
 	push %bx
@@ -188,6 +195,7 @@ no_stack_chg_08:
 	sti
 	iret
 	
+	// IRQ1: keyboard
 int09:
 	push %ax
 	push %bx
@@ -212,6 +220,51 @@ int09:
 no_stack_chg_09:
 
 	call int_keyboard
+
+	// restore stack
+	movw ss_save, %ax
+	movw %ax, %ss
+	movw sp_save, %sp
+
+	pop %es
+	pop %ds
+	pop %bp
+	pop %di
+	pop %si
+	pop %dx
+	pop %cx
+	pop %bx
+	mov $0x20, %al
+	out %al, $PIC_CMD // send EOI
+	pop %ax
+	sti
+	iret
+
+	// IRQ6: sd drive
+int0E:
+	push %ax
+	push %bx
+	push %cx
+	push %dx
+	push %si
+	push %di
+	push %bp
+	push %ds
+	push %es
+
+	// change data segment and stack
+	xorw %bx, %bx
+	movw %bx, %ds
+	movw %ss, %ax
+	movw %ax, ss_save
+	movw %sp, sp_save
+	andw %ax, %ax
+	jz no_stack_chg_0E
+	movw %bx, %ss
+	movw $BIOS_STACK_START, %sp
+no_stack_chg_0E:
+
+	call int_drive
 
 	// restore stack
 	movw ss_save, %ax

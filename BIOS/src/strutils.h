@@ -13,6 +13,9 @@ void *ltrim(char *s, int n, char c);
 /* reverses a string */
 void reverse(char s[]);
 
+/* compares two strings, returns 0 if both are equal */
+int strncmp(const char *s1, const char *s2, int n);
+
 /* converts an integer to a string */
 void itoa(int n, char s[]);
 

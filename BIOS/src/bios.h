@@ -1,5 +1,10 @@
 #include "types.h"
 
+extern volatile byte hours;
+extern volatile byte minutes;
+extern volatile byte seconds;
+extern volatile byte ticks; // 20 ticks/sec.
+
 /* BIOS startup routine */
 int main();
 
@@ -17,3 +22,6 @@ void int_timer();
 
 /* keyboard interupt handler */
 void int_keyboard();
+
+/* sd drive interrupt handler */
+void int_drive();

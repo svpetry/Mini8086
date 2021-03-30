@@ -104,7 +104,7 @@ void putstr_inv(char *str) {
 void puthexbyte(byte value) {
     char s[3];
     itohex(value, s);   
-    if (value < 10)
+    if (value < 16)
         putch('0');
     putstr(s);
 }

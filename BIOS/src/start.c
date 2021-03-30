@@ -5,6 +5,7 @@
 #include "strutils.h"
 #include "types.h"
 #include "lowlevel.h"
+#include "sd.h"
 
 #define RESULT_COL 20
 
@@ -200,8 +201,13 @@ void check_sd_drive(int row) {
     putstr("SD drive");
     setcursor(RESULT_COL, row);
 
-    putstr("N/A");
-    cfg_sddrive = 0;
+    if (sd_reset()) {
+        putstr("OK");
+        cfg_sddrive = 1;        
+    } else {
+        putstr("N/A");
+        cfg_sddrive = 0;
+    }
 }
 
 void check_sound(int row) {

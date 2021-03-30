@@ -7,4 +7,4 @@
 #define LCD 0
 
 // SD debug mode
-#define SD_DEBUG 1
+#define SD_DEBUG 0

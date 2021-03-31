@@ -22,7 +22,7 @@ byte sd_reset();
 byte sd_init();
 
 /* reads a data packet (use with CMD17 or CMD18) */
-byte sd_read_data_packet(byte *buf);
+byte sd_read_data_packet(byte __far *buf);
 
 /* returns true when the SD slot is currently containing an SD card */
 byte sd_inserted();

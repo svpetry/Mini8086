@@ -21,6 +21,7 @@
 
 #include "ff.h"			/* Declarations of FatFs API */
 #include "diskio.h"		/* Declarations of device I/O functions */
+#include "utils.h"
 
 
 /*--------------------------------------------------------------------------
@@ -681,7 +682,19 @@ static void st_qword (BYTE* ptr, QWORD val)	/* Store an 8-byte word in little-en
 /*-----------------------------------------------------------------------*/
 
 /* Copy memory to memory */
-static void mem_cpy (void* dst, const void* src, UINT cnt)
+static void mem_cpy (void * dst, const void * src, UINT cnt)
+{
+	BYTE *d = (BYTE*)dst;
+	const BYTE *s = (const BYTE*)src;
+
+	if (cnt != 0) {
+		do {
+			*d++ = *s++;
+		} while (--cnt);
+	}
+}
+
+static void mem_cpy_far (void __far * dst, const void __far * src, UINT cnt)
 {
 	BYTE *d = (BYTE*)dst;
 	const BYTE *s = (const BYTE*)src;
@@ -1104,7 +1117,7 @@ static FRESULT move_window (	/* Returns FR_OK or FR_DISK_ERR */
 		res = sync_window(fs);		/* Flush the window */
 #endif
 		if (res == FR_OK) {			/* Fill sector window with new data */
-			if (disk_read(fs->pdrv, fs->win, sect, 1) != RES_OK) {
+			if (disk_read(fs->pdrv, near_to_far(fs->win), sect, 1) != RES_OK) {
 				sect = (LBA_t)0 - 1;	/* Invalidate window if read data is not valid */
 				res = FR_DISK_ERR;
 			}
@@ -3878,7 +3891,8 @@ FRESULT f_open (
 					} else {
 						fp->sect = sc + (DWORD)(ofs / SS(fs));
 #if !FF_FS_TINY
-						if (disk_read(fs->pdrv, fp->buf, fp->sect, 1) != RES_OK) res = FR_DISK_ERR;
+						if (disk_read(fs->pdrv, near_to_far(fp->buf),
+							fp->sect, 1) != RES_OK) res = FR_DISK_ERR;
 #endif
 					}
 				}
@@ -3902,10 +3916,10 @@ FRESULT f_open (
 /*-----------------------------------------------------------------------*/
 
 FRESULT f_read (
-	FIL* fp, 	/* Pointer to the file object */
-	void* buff,	/* Pointer to data buffer */
-	UINT btr,	/* Number of bytes to read */
-	UINT* br	/* Pointer to number of bytes read */
+	FIL* fp, 			/* Pointer to the file object */
+	void __far * buff,	/* Pointer to data buffer */
+	UINT btr,			/* Number of bytes to read */
+	UINT* br			/* Pointer to number of bytes read */
 )
 {
 	FRESULT res;
@@ -3914,7 +3928,7 @@ FRESULT f_read (
 	LBA_t sect;
 	FSIZE_t remain;
 	UINT rcnt, cc, csect;
-	BYTE *rbuff = (BYTE*)buff;
+	BYTE __far *rbuff = (BYTE __far *)buff;
 
 
 	*br = 0;	/* Clear read byte counter */
@@ -3957,11 +3971,13 @@ FRESULT f_read (
 #if !FF_FS_READONLY && FF_FS_MINIMIZE <= 2		/* Replace one of the read sectors with cached data if it contains a dirty sector */
 #if FF_FS_TINY
 				if (fs->wflag && fs->winsect - sect < cc) {
-					mem_cpy(rbuff + ((fs->winsect - sect) * SS(fs)), fs->win, SS(fs));
+					mem_cpy_far(rbuff + ((fs->winsect - sect) * SS(fs)),
+						near_to_far(fs->win), SS(fs));
 				}
 #else
 				if ((fp->flag & FA_DIRTY) && fp->sect - sect < cc) {
-					mem_cpy(rbuff + ((fp->sect - sect) * SS(fs)), fp->buf, SS(fs));
+					mem_cpy_far(rbuff + ((fp->sect - sect) * SS(fs)),
+						near_to_far(fp->buf), SS(fs));
 				}
 #endif
 #endif
@@ -3985,9 +4001,11 @@ FRESULT f_read (
 		if (rcnt > btr) rcnt = btr;					/* Clip it by btr if needed */
 #if FF_FS_TINY
 		if (move_window(fs, fp->sect) != FR_OK) ABORT(fs, FR_DISK_ERR);	/* Move sector window */
-		mem_cpy(rbuff, fs->win + fp->fptr % SS(fs), rcnt);	/* Extract partial sector */
+		mem_cpy_far(rbuff,
+			near_to_far(fs->win + fp->fptr % SS(fs)), rcnt);	/* Extract partial sector */
 #else
-		mem_cpy(rbuff, fp->buf + fp->fptr % SS(fs), rcnt);	/* Extract partial sector */
+		mem_cpy_far(rbuff,
+			near_to_far(fp->buf + fp->fptr % SS(fs)), rcnt);	/* Extract partial sector */
 #endif
 	}
 
@@ -4003,10 +4021,10 @@ FRESULT f_read (
 /*-----------------------------------------------------------------------*/
 
 FRESULT f_write (
-	FIL* fp,			/* Pointer to the file object */
-	const void* buff,	/* Pointer to the data to be written */
-	UINT btw,			/* Number of bytes to write */
-	UINT* bw			/* Pointer to number of bytes written */
+	FIL* fp,					/* Pointer to the file object */
+	const void __far * buff,	/* Pointer to the data to be written */
+	UINT btw,					/* Number of bytes to write */
+	UINT* bw					/* Pointer to number of bytes written */
 )
 {
 	FRESULT res;
@@ -4014,7 +4032,7 @@ FRESULT f_write (
 	DWORD clst;
 	LBA_t sect;
 	UINT wcnt, cc, csect;
-	const BYTE *wbuff = (const BYTE*)buff;
+	const BYTE __far *wbuff = (const BYTE __far *)buff;
 
 
 	*bw = 0;	/* Clear write byte counter */
@@ -4073,12 +4091,14 @@ FRESULT f_write (
 #if FF_FS_MINIMIZE <= 2
 #if FF_FS_TINY
 				if (fs->winsect - sect < cc) {	/* Refill sector cache if it gets invalidated by the direct write */
-					mem_cpy(fs->win, wbuff + ((fs->winsect - sect) * SS(fs)), SS(fs));
+					mem_cpy_far(near_to_far(fs->win), 
+						wbuff + ((fs->winsect - sect) * SS(fs)), SS(fs));
 					fs->wflag = 0;
 				}
 #else
 				if (fp->sect - sect < cc) { /* Refill sector cache if it gets invalidated by the direct write */
-					mem_cpy(fp->buf, wbuff + ((fp->sect - sect) * SS(fs)), SS(fs));
+					mem_cpy_far(near_to_far(fp->buf),
+						wbuff + ((fp->sect - sect) * SS(fs)), SS(fs));
 					fp->flag &= (BYTE)~FA_DIRTY;
 				}
 #endif
@@ -4104,10 +4124,12 @@ FRESULT f_write (
 		if (wcnt > btw) wcnt = btw;					/* Clip it by btw if needed */
 #if FF_FS_TINY
 		if (move_window(fs, fp->sect) != FR_OK) ABORT(fs, FR_DISK_ERR);	/* Move sector window */
-		mem_cpy(fs->win + fp->fptr % SS(fs), wbuff, wcnt);	/* Fit data to the sector */
+		mem_cpy_far(near_to_far(fs->win + fp->fptr % SS(fs)),
+			wbuff, wcnt);	/* Fit data to the sector */
 		fs->wflag = 1;
 #else
-		mem_cpy(fp->buf + fp->fptr % SS(fs), wbuff, wcnt);	/* Fit data to the sector */
+		mem_cpy_far(near_to_far(fp->buf + fp->fptr % SS(fs)),
+			wbuff, wcnt);	/* Fit data to the sector */
 		fp->flag |= FA_DIRTY;
 #endif
 	}

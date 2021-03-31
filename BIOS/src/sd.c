@@ -211,7 +211,7 @@ byte sd_init() {
     return initialized = 0;
 }
 
-byte sd_read_data_packet(byte *buf) {
+byte sd_read_data_packet(byte __far *buf) {
     int i, j;
     byte res, data;
 #if SD_DEBUG

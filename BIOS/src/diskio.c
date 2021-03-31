@@ -52,7 +52,7 @@ DSTATUS disk_initialize (
 
 DRESULT disk_read (
 	BYTE pdrv,			/* Physical drive nmuber to identify the drive */
-	BYTE *buff,	/* Data buffer to store read data */
+	BYTE __far *buff,	/* Data buffer to store read data */
 	LBA_t sector,		/* Start sector in LBA */
 	UINT count			/* Number of sectors to read */
 )
@@ -125,7 +125,7 @@ DRESULT disk_read (
 
 DRESULT disk_write (
 	BYTE pdrv,				/* Physical drive nmuber to identify the drive */
-	const BYTE *buff,	/* Data to be written */
+	const BYTE __far *buff,	/* Data to be written */
 	LBA_t sector,			/* Start sector in LBA */
 	UINT count				/* Number of sectors to write */
 )

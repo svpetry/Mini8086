@@ -16,12 +16,12 @@ char freq_str[5];
 int ram_kb;
 volatile byte __far (*memptr);
  
-void error() {
+static void error() {
     putstr(" ERROR!");
     while (1) ;
 }
 
-void check_cpu(int row) {
+static void check_cpu(int row) {
     setcursor(4, row);
     putstr("CPU");
 
@@ -30,7 +30,7 @@ void check_cpu(int row) {
     putstr(", Intel 8086 or compatible");
 }
 
-void check_memory(int row) {
+static void check_memory(int row) {
     unsigned long count;
     char s[12];
 
@@ -92,7 +92,7 @@ void check_memory(int row) {
     putstr(" OK");
 }
 
-void check_timer(int row) {
+static void check_timer(int row) {
     setcursor(4, row);
     putstr("Timer");
 
@@ -139,7 +139,7 @@ void check_timer(int row) {
     putstr("OK");
 }
 
-void check_keyboard(int row) {
+static void check_keyboard(int row) {
     int i, j;
     byte data, status;
 
@@ -188,7 +188,7 @@ void check_keyboard(int row) {
     putstr("self test failed!");
 }
 
-void check_serial(int row) {
+static void check_serial(int row) {
     setcursor(4, row);
     putstr("Serial ports");
     setcursor(RESULT_COL, row);
@@ -196,7 +196,7 @@ void check_serial(int row) {
     putstr("N/A");
 }
 
-void check_sd_drive(int row) {
+static void check_sd_drive(int row) {
     setcursor(4, row);
     putstr("SD drive");
     setcursor(RESULT_COL, row);
@@ -210,7 +210,7 @@ void check_sd_drive(int row) {
     }
 }
 
-void check_sound(int row) {
+static void check_sound(int row) {
     setcursor(4, row);
     putstr("Sound");
     setcursor(RESULT_COL, row);
@@ -218,7 +218,7 @@ void check_sound(int row) {
     putstr("N/A");
 }
 
-void check_rtc(int row) {
+static void check_rtc(int row) {
     setcursor(4, row);
     putstr("RTC");
     setcursor(RESULT_COL, row);

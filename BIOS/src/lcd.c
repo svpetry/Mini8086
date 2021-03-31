@@ -7,21 +7,21 @@
 #define LCD_RS 0b00010000
 #define LCD_E 0b00100000
 
-void lcd_delay_long() {
+static void lcd_delay_long() {
     int i;
     for (i = 0; i < 12000; i++) {
         asm("nop");
     }
 }
 
-void lcd_delay_short() {
+static void lcd_delay_short() {
     int i;
     for (i = 0; i < 60; i++) {
         asm("nop");
     }
 }
 
-void lcd_cmd(byte cmd) {
+static void lcd_cmd(byte cmd) {
     byte a;
 
     outp(LCD_PORT, 0x00);

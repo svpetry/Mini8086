@@ -10,7 +10,7 @@
 #define BOOT_ROW 20
 #define BOOT_COL 40
 
-void setline(char *s) {
+static void setline(char *s) {
     int i;
 #ifndef SD_DEBUG
     setcursor(BOOT_COL, BOOT_ROW);
@@ -21,13 +21,13 @@ void setline(char *s) {
 #endif
 }
 
-void delay_1sec() {
+static void delay_1sec() {
     int start_ticks = ticks;
     while (ticks == start_ticks) ;
     while (ticks != start_ticks) ;
 }
 
-void tryboot() {
+static void tryboot() {
     FATFS fs;
     FIL f;
     FSIZE_t size;

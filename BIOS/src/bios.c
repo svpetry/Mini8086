@@ -173,11 +173,6 @@ int main() {
         for (j = 0; j < 100; j++)
             asm("nop");
 
-    clrscr();
-
-    // fatfs_test();
-    // while (1) ;
-
 #if LCD == 1602
     lcd_putstr(0, 0, "                ");
     while (1) {

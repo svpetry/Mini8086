@@ -8,7 +8,7 @@
 #include "ff.h"
 
 #define BOOT_ROW 20
-#define BOOT_COL 30
+#define BOOT_COL 4
 
 static void setline(char *s) {
     int i;

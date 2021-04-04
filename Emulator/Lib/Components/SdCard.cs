@@ -49,7 +49,7 @@ namespace Emulator.Lib.Components
 
         private uint _blockSize = 512;
 
-        private uint _blockCount;
+        private uint? _blockCount;
 
         private byte[] _currentBlock = new byte[512];
 
@@ -80,7 +80,7 @@ namespace Emulator.Lib.Components
                             _state = SdState.ReadCommand;
                             _commandQueue.Enqueue(input);
                         }
-                        return 0;
+                        return 0xFF;
                     }
                 case SdState.ReadCommand:
                     {
@@ -98,23 +98,34 @@ namespace Emulator.Lib.Components
                             if (_state == SdState.ReadCommand)
                                 _state = SdState.Idle;
                         }
-                        break;
+                        return 0;
                     }
                 case SdState.ReadBlock:
                     {
+                        // break on CMD12
+                        if (input == 12 + 0x40)
+                        {
+                            _state = SdState.ReadCommand;
+                            _commandQueue.Enqueue(input);
+                            return 0;
+                        }
+
                         if (_responseQueue.Count > 0)
                             return _responseQueue.Dequeue();
 
                         var result = _currentBlock[_currentByteNo++];
                         if (_currentByteNo == _blockSize)
                         {
-                            if (_blockCount > 0)
+                            // fake CRC
+                            _responseQueue.Enqueue(0x00);
+                            _responseQueue.Enqueue(0x00);
+
+                            if (_blockCount > 0 || _blockCount == null)
                                 InitReadBlock();
                             else
                             {
-                                _responseQueue.Enqueue(0x00);
-                                _responseQueue.Enqueue(0x00);
                                 _state = SdState.Idle;
+                                _blockCount = null;
                             }
                         }
                         return result;
@@ -122,7 +133,7 @@ namespace Emulator.Lib.Components
                 case SdState.WriteBlock:
                     break;
             }
-            return 0;
+            return 0xFF;
         }
 
         public void ProcessCommand(byte command, UInt32 param)
@@ -164,16 +175,25 @@ namespace Emulator.Lib.Components
                         break;
                     // SEND_CSD
                     case 9:
+                        _responseQueue.Enqueue(0x00);
                         break;
                     // SEND_CID
                     case 10:
+                        _responseQueue.Enqueue(0x00);
                         break;
                     // STOP_TRANSMISSION
                     case 12:
+                        _blockCount = null;
+                        _currentBlock = new byte[0];
+                        _currentBlockNo = 0;
+                        _currentByteNo = 0;
+                        _responseQueue.Enqueue(0x00); // stuff byte
+                        _responseQueue.Enqueue(0x00);
                         break;
                     // SET_BLOCKLEN
                     case 16:
                         _blockSize = param;
+                        _responseQueue.Enqueue(0x00);
                         break;
                     // READ_SINGLE_BLOCK
                     case 17:
@@ -189,7 +209,6 @@ namespace Emulator.Lib.Components
                         _responseQueue.Enqueue(0x00);
                         InitReadBlock();
                         _state = SdState.ReadBlock;
-                        // TODO
                         break;
                     // SET_BLOCK_COUNT
                     case 23:
@@ -211,6 +230,7 @@ namespace Emulator.Lib.Components
                         break;
                     // READ_OCR
                     case 58:
+                        _responseQueue.Enqueue(0x00);
                         break;
                     default:
                         _responseQueue.Enqueue((byte)R1Flags.IllegalCommand);
@@ -222,7 +242,7 @@ namespace Emulator.Lib.Components
         private void InitReadBlock()
         {
             _currentByteNo = 0;
-            _blockCount--;
+            if (_blockCount > 0) _blockCount--;
             var blockStart = _currentBlockNo * _blockSize;
             _currentBlock = new byte[_blockSize];
             if (blockStart < _fileInfo.Length)

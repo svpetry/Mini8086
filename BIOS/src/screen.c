@@ -38,15 +38,15 @@ void clrscr() {
 
 void copy_bufline(int dest, int src) {
     byte __far *bufptr = (byte __far *)scrbuf;
-    memcpy1(bufptr + dest * 160, bufptr + src * 160, 160);
+    memcpy_(bufptr + dest * 160, bufptr + src * 160, 160);
 }
 
 void scrolldown() {
     int i;
     for (i = 0; i < 24; i++)
         copy_bufline(i + 1, i);
-    memset1(scrbuf, 0, 160);
-    memcpy1(screen, scrbuf, 4000);
+    memset_(scrbuf, 0, 160);
+    memcpy_(screen, scrbuf, 4000);
     if (cursor_row < 24)
         cursor_row++;
 }
@@ -56,8 +56,8 @@ void scrollup() {
     byte __far *ptr = (byte __far *)scrbuf;
     for (i = 0; i < 24; i++)
         copy_bufline(i, i + 1); 
-    memset1(ptr + 24 * 160, 0, 160);
-    memcpy1(screen, scrbuf, 4000);
+    memset_(ptr + 24 * 160, 0, 160);
+    memcpy_(screen, scrbuf, 4000);
     if (cursor_row > 0)
         cursor_row--;
 }

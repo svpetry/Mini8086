@@ -98,7 +98,7 @@ void demo2() {
     outp(0x50, 0b00000001); // 320 x 200 x 256
     byte __far *screen = (void __far *)0xC0000000;
     byte __far *picture = (void __far *)0xE0000000;
-    memcpy1(screen, picture, 64000);
+    memcpy_(screen, picture, 64000);
 
     while (1) ;
 }
@@ -149,7 +149,6 @@ void fatfs_test() {
         }
         f_closedir(&dj);
     }
-    
 }
 
 int main() {

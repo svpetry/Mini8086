@@ -223,8 +223,8 @@ byte sd_read_data_packet(byte __far *buf) {
     i = 1000;
     res = spi_send(0xFF);
 #if SD_DEBUG
-    puthexbyte(res);
-    putch('\n');
+    // puthexbyte(res);
+    // putch('\n');
 #endif 
     while (res == 0xFF && i > 0) {
         res = spi_send(0xFF);

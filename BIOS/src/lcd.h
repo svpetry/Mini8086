@@ -5,4 +5,4 @@ void lcd_init();
 void lcd_clear();
 
 /* outputs a string on the LCD */
-void lcd_putstr(int col, int row, char *str);
+void lcd_putstr(int col, int row, const char *str);

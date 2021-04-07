@@ -36,7 +36,7 @@ void clrscr() {
     setcursor(0, 0);
 }
 
-void copy_bufline(int dest, int src) {
+static void copy_bufline(int dest, int src) {
     byte __far *bufptr = (byte __far *)scrbuf;
     memcpy_(bufptr + dest * 160, bufptr + src * 160, 160);
 }
@@ -91,12 +91,12 @@ void setchar(word col, word row, char c) {
     (*scrbuf)[index] = data;
 }
 
-void putstr(char *str) {
+void putstr(const char *str) {
     while (*str)
         putch(*(str++));
 }
 
-void putstr_inv(char *str) {
+void putstr_inv(const char *str) {
     while (*str)
         putch(*(str++) + 0x80);
 }

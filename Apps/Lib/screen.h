@@ -25,10 +25,10 @@ void putch(char c);
 void setchar(word col, word row, char c);
 
 /* outputs a string */
-void putstr(char *str);
+void putstr(const char *str);
 
 /* outputs a string with inverse characters */
-void putstr_inv(char *str);
+void putstr_inv(const char *str);
 
 /* outputs a byte as 2-digit hex number */
 void puthexbyte(byte value);

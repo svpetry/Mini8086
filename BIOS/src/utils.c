@@ -12,7 +12,7 @@ void srand(word seed) {
     next = seed; 
 }
 
-void __far *memcpy_(void __far *dest, void __far *src, size_t bytes) {
+void __far *memcpy_(void __far *dest, const void __far *src, size_t bytes) {
     word __far *s = src;
     word __far *d = dest;
 

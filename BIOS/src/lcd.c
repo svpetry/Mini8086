@@ -95,7 +95,7 @@ void lcd_init() {
     lcd_cmd(0b00101000);
 }
 
-void lcd_putstr(int col, int row, char *str) {
+void lcd_putstr(int col, int row, const char *str) {
     byte cmd;
     
     // set cursor position

@@ -119,7 +119,7 @@ static void check_timer(int row) {
     }
     
     // count /= 342;
-    count /= 319;
+    count /= 320;
     i = count / 100;
     if (i == 0)
         freq_str[0] = ' ';

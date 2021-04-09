@@ -8,17 +8,17 @@
 *.bak
 links.txt
 fp-info-cache
-BiosBuilder/bin/
-BiosBuilder/obj/
-DecoderBuilder/bin/
-DecoderBuilder/obj/
+Tools/BiosBuilder/bin/
+Tools/BiosBuilder/obj/
+Tools/DecoderBuilder/bin/
+Tools/DecoderBuilder/obj/
 Emulator/bin/
 Emulator/obj/
-BIOS/_deprecated/
-BIOS/*.BIN
-BIOS/*.exe
-BIOS/bios/
-BIOS/b.asm
+Apps/BIOS/_deprecated/
+Apps/BIOS/*.BIN
+Apps/BIOS/*.exe
+Apps/BIOS/bios/
+Apps/BIOS/b.asm
 VGAreg/simulation/
 KiCad/_deprecated/
 Altera/SD controller/db/
@@ -47,7 +47,7 @@ Altera/SD controller/synthesis/output_files/
 *.dpf
 Altera/SD controller/simulation/work/
 Altera/MainV2/synthesis/.qsys_edit/
-BIOS/FatFS/
+Apps/BIOS/FatFS/
 Altera/SD controller/synthesis/simulation/modelsim/
 Altera/SD controller/synthesis/.qsys_edit/
 *.rpt
@@ -58,4 +58,4 @@ KiCad/led_board/Rev 1.0/
 KiCad/backplane/Rev 2.0/
 KiCad/io_board_v2/Rev 1.1/
 KiCad/main_v2/Rev 1.0/
-BIOS/bin/
+Apps/BIOS/bin/

@@ -11,10 +11,10 @@ namespace BiosBuilder
             for (var i = 0; i < bios.Length; i++)
                 bios[i] = 0x90; // NOP
 
-            Add(bios, "resetvector.bin", 0xFFFF0);
+            Add(bios, "bin\\resetvector.bin", 0xFFFF0);
             //var initializerSize = Add(bios, "initializer.bin", 0xF0000);
-            Add(bios, "b.bin", 0xF0000);
-            Add(bios, "picture.bin", 0xE0000);
+            Add(bios, "bin\\b.bin", 0xF0000);
+            Add(bios, "bin\\picture.bin", 0xE0000);
 
             SplitBiosAndSave(bios);
         }
@@ -41,8 +41,8 @@ namespace BiosBuilder
                     oddRom[i / 2] = bios[i];
             }
 
-            File.WriteAllBytes("ROM0.bin", evenRom);
-            File.WriteAllBytes("ROM1.bin", oddRom);
+            File.WriteAllBytes("bin\\ROM0.bin", evenRom);
+            File.WriteAllBytes("bin\\ROM1.bin", oddRom);
         }
     }
 }

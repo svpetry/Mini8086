@@ -1,10 +1,10 @@
-#include "defs.h"
 #include "start.h"
-#include "screen.h"
-#include "lcd.h"
-#include "strutils.h"
-#include "types.h"
-#include "lowlevel.h"
+#include "../../Lib/screen.h"
+#include "../../Lib/lcd.h"
+#include "../../Lib/strutils.h"
+#include "../../Lib/types.h"
+#include "../../Lib/lowlevel.h"
+#include "defs.h"
 #include "sd.h"
 
 #define RESULT_COL 20

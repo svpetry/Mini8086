@@ -11,8 +11,8 @@
 #include "diskio.h"		/* Declarations of disk functions */
 #include "defs.h"
 #include "sd.h"
-#include "screen.h"
-#include "strutils.h"
+#include "../../Lib/screen.h"
+#include "../../Lib/strutils.h"
 
 /*-----------------------------------------------------------------------*/
 /* Get Drive Status                                                      */

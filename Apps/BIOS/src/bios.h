@@ -1,4 +1,4 @@
-#include "types.h"
+#include "../../Lib/types.h"
 
 extern volatile byte hours;
 extern volatile byte minutes;

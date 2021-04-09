@@ -1,4 +1,4 @@
-#include "types.h"
+#include "../../Lib/types.h"
 
 /* send and receive a byte via SPI (to the SD card) */
 byte spi_send(byte value);

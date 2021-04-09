@@ -85,7 +85,7 @@ namespace Emulator
 
         public void Init() 
         {
-            _bios.Load(@"..\..\..\BIOS\bin\ROM0.bin", @"..\..\..\BIOS\bin\ROM1.bin");
+            _bios.Load(@"..\..\..\Apps\BIOS\bin\ROM0.bin", @"..\..\..\Apps\BIOS\bin\ROM1.bin");
         }
 
         public void Reset()

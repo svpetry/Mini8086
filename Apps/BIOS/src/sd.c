@@ -1,9 +1,9 @@
 #include "sd.h"
-#include "types.h"
-#include "lowlevel.h"
+#include "../../Lib/types.h"
+#include "../../Lib/lowlevel.h"
+#include "../../Lib/strutils.h"
+#include "../../Lib/screen.h"
 #include "defs.h"
-#include "strutils.h"
-#include "screen.h"
 
 #define SD_BLOCK_SIZE 512
 

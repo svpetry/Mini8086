@@ -4,6 +4,10 @@
 #include "../../Lib/strutils.h"
 #include "../../Lib/types.h"
 #include "../../Lib/lowlevel.h"
+#include "../../Lib/i2c.h"
+#include "../../Lib/eeprom.h"
+#include "../../Lib/bmp280.h"
+#include "../../Lib/ds1307.h"
 #include "defs.h"
 #include "sd.h"
 
@@ -11,7 +15,13 @@
 
 extern volatile byte ticks;
 
-char cfg_sddrive;
+byte cfg_sddrive;
+byte cfg_rs232;
+byte cfg_i2c;
+byte cfg_eeprom;
+byte cfg_bmp280;
+byte cfg_rtc;
+
 char freq_str[5];
 int ram_kb;
 volatile byte __far (*memptr);
@@ -219,12 +229,64 @@ static void check_sound(int row) {
     putstr("N/A");
 }
 
-static void check_rtc(int row) {
+static void check_i2c(int row) {
     setcursor(4, row);
-    putstr("RTC");
+    putstr("I2C controller");
     setcursor(RESULT_COL, row);
 
-    putstr("N/A");
+    if (!i2c_init(I2CF_88)) {
+        putstr("OK");
+        cfg_i2c = 1;        
+    } else {
+        putstr("N/A");
+        cfg_i2c = 0;
+    }
+}
+
+static void check_rtc(int row) {
+    setcursor(5, row);
+    putch(28);
+    putstr(" RTC");
+    setcursor(RESULT_COL, row);
+
+    if (cfg_i2c && !ds1307_init()) {
+        putstr("OK");
+        cfg_rtc = 1;        
+    } else {
+        putstr("N/A");
+        cfg_rtc = 0;
+    }
+}
+
+static void check_eeprom(int row) {
+    setcursor(5, row);
+    putch(28);
+    putstr(" EEPROM");
+    setcursor(RESULT_COL, row);
+
+    byte data;
+    if (cfg_i2c && !eeprom_read_buf(0x00, &data, 1)) {
+        putstr("OK");
+        cfg_eeprom = 1;        
+    } else {
+        putstr("N/A");
+        cfg_eeprom = 0;
+    }
+}
+
+static void check_bmp280(int row) {
+    setcursor(5, row);
+    putch(28);
+    putstr(" Sensor");
+    setcursor(RESULT_COL, row);
+
+    if (cfg_i2c && !bmp280_init()) {
+        putstr("OK");
+        cfg_bmp280 = 1;        
+    } else {
+        putstr("N/A");
+        cfg_bmp280 = 0;
+    }
 }
 
 void startup() {
@@ -246,7 +308,10 @@ void startup() {
     check_serial(i++);
     check_sd_drive(i++);
     check_sound(i++);
+    check_i2c(i++);
     check_rtc(i++);
+    check_eeprom(i++);
+    check_bmp280(i++);
 
 #if LCD == 1602
     lcd_putstr(0, 0, "Mini8086     0.1");

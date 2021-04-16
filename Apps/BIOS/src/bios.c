@@ -4,18 +4,20 @@
 #include "../../Lib/lowlevel.h"
 #include "../../Lib/strutils.h"
 #include "../../Lib/utils.h"
+#include "../../Lib/ds1307.h"
 #include "defs.h"
 #include "boot.h"
 #include "start.h"
 #include "sd.h"
+#include "keyboard.h"
 #include "ff.h"
 
 volatile word sp_save;
 volatile word ss_save;
 
-volatile byte hours;
-volatile byte minutes;
-volatile byte seconds;
+volatile byte t_hours;
+volatile byte t_minutes;
+volatile byte t_seconds;
 volatile byte ticks; // 20 ticks/sec.
 
 // interrupt handler
@@ -38,18 +40,14 @@ void int_overflow() {
 }
 
 void int_timer() {
-    ticks++;
-    if (ticks == 20) {
+    if (++ticks == 20) {
         ticks = 0;
-        seconds++;
-        if (seconds == 60) {
-            seconds = 0;
-            minutes++;
-            if (minutes == 60) {
-                minutes = 0;
-                hours++;
-                if (hours == 24) {
-                    hours = 0;
+        if (++t_seconds == 60) {
+            t_seconds = 0;
+            if (++t_minutes == 60) {
+                t_minutes = 0;
+                if (++t_hours == 24) {
+                    t_hours = 0;
                 }
             }
         }
@@ -57,98 +55,25 @@ void int_timer() {
 }
 
 void int_keyboard() {
-
+    keyb_handleint();
 }
 
 void int_drive() {
     sd_reset();
 }
 
-void demo1() {
-    outp(0x50, 0b00000010);
-    
-    byte r, g, b;
-
-    word x, y;
-    byte __far *screen = (void __far *)0xC0000000;
-    for (y = 0; y < 200; y++) {
-        for (x = 0; x < 320; x++) {
-            
-            r = (x % 80) / 10;
-            g = y / 25;
-            b = x / 80;
-            *(screen++) = (b << 6) + (g << 3) + (r << 0);
-        }
-    }
-    screen = (void __far *)0xCFA00000;
-    for (y = 0; y < 200; y++) {
-        for (x = 0; x < 320; x++) {
-            
-            r = (x % 80) / 10;
-            g = y / 25;
-            b = x / 80;
-            *(screen++) = (b << 6) + (g << 3) + (r << 0);
-        }
-    }
-
-    while (1) ;
+void update_clock() {
+    byte hours, minutes, seconds;
+    ds1307_gettime(&hours, &minutes, &seconds);
+    ticks = 0;
+    t_hours = hours;
+    t_minutes = minutes;
+    t_seconds = seconds;
 }
 
-void demo2() {
-    outp(0x50, 0b00000001); // 320 x 200 x 256
-    byte __far *screen = (void __far *)0xC0000000;
-    byte __far *picture = (void __far *)0xE0000000;
-    memcpy_(screen, picture, 64000);
-
-    while (1) ;
-}
-
-void demo() {
-    word i, j;
-
-    clrscr();
-    while (1) {
-        set_textcol(rand());
-        putstr("ABCDEFGHIJKLMNOPQRSTXYZ");
-    }
-}
-
-void fatfs_test() {
-    char str[12], label[12];
-
-    FATFS fs;
-    DIR dj;
-    FILINFO fno;
-    FRESULT res;
-
-    putstr("\n\n");
-
-    res = f_mount(&fs, "", 0);
-    putstr("f_mount: ");
-    itoa(res, str);
-    putstr(str);
-    putch('\n');
-
-    res = f_getlabel("", label, 0);
-    putstr("f_getlabel: ");
-    itoa(res, str);
-    putstr(str);
-    putch('\n');
-
-    putstr("volume label: ");
-    putstr(label);
-    putch('\n');
-
-    res = f_opendir(&dj, "");
-    if (res == FR_OK) {
-        res = f_readdir(&dj, &fno) ;
-        while (res == FR_OK && fno.fname[0]) {
-            putstr(fno.fname);
-            putch('\n');
-            res = f_readdir(&dj, &fno);
-        }
-        f_closedir(&dj);
-    }
+void draw_menu() {
+    setcursor(2, 24);
+    putstr_inv("F1 BOOT FROM SD    F2 SET DATE/TIME    F3 FILE SYSTEM BROWSER");
 }
 
 int main() {
@@ -156,18 +81,22 @@ int main() {
     byte a;
     char s[12];
 
-    hours = 0;
-    minutes = 0;
-    seconds = 0;
+    t_hours = 0;
+    t_minutes = 0;
+    t_seconds = 0;
     ticks = 0;
 
     init_screen();
+    keyb_init();
 #if LCD != 0
     lcd_init();
 #endif
 
     // show startup screen, system test
     startup();
+
+    // update clock from RTC module
+    if (cfg_rtc) update_clock();
 
     for (i = 0; i < 1000; i++)
         for (j = 0; j < 100; j++)
@@ -176,15 +105,15 @@ int main() {
 #if LCD == 1602
     lcd_putstr(0, 0, "                ");
     while (1) {
-        itoa(hours, s);
+        itoa(t_hours, s);
         ltrim(s, 2, '0');
         lcd_putstr(8, 0, s);
         lcd_putstr(10, 0, ":");
-        itoa(minutes, s);
+        itoa(t_minutes, s);
         ltrim(s, 2, '0');
         lcd_putstr(11, 0, s);
         lcd_putstr(13, 0, ":");
-        itoa(seconds, s);
+        itoa(t_seconds, s);
         ltrim(s, 2, '0');
         lcd_putstr(14, 0, s);
 
@@ -194,15 +123,15 @@ int main() {
 #endif
 #if LCD == 2004
     while (1) {
-        itoa(hours, s);
+        itoa(t_hours, s);
         ltrim(s, 2, '0');
         lcd_putstr(0, 3, s);
         lcd_putstr(2, 3, ":");
-        itoa(minutes, s);
+        itoa(t_minutes, s);
         ltrim(s, 2, '0');
         lcd_putstr(3, 3, s);
         lcd_putstr(5, 3, ":");
-        itoa(seconds, s);
+        itoa(t_seconds, s);
         ltrim(s, 2, '0');
         lcd_putstr(6, 3, s);
 
@@ -210,6 +139,8 @@ int main() {
             asm("nop");
     }
 #endif
+
+    draw_menu();
 
     // boot from SD card
     boot();

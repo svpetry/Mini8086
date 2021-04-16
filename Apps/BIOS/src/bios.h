@@ -1,8 +1,8 @@
 #include "../../Lib/types.h"
 
-extern volatile byte hours;
-extern volatile byte minutes;
-extern volatile byte seconds;
+extern volatile byte t_hours;
+extern volatile byte t_minutes;
+extern volatile byte t_seconds;
 extern volatile byte ticks; // 20 ticks/sec.
 
 /* BIOS startup routine */

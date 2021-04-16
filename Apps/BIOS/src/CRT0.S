@@ -29,6 +29,50 @@
 .set ICW4, 0b00000001 // 8086 mode, normal EOI, unbuffered mode
 .set OCW1, 0b11111110 // enable interrupt 0 (timer)
 
+.macro ENTER_INTERRUPT
+	push %ax
+	push %bx
+	push %cx
+	push %dx
+	push %si
+	push %di
+	push %bp
+	push %ds
+	push %es
+	// change data segment and stack
+	xorw %bx, %bx
+	movw %bx, %ds
+	movw %ss, %ax
+	movw %ax, ss_save
+	movw %sp, sp_save
+	andw %ax, %ax
+	jz no_stack_chg_\@
+	movw %bx, %ss
+	movw $BIOS_STACK_START, %sp
+no_stack_chg_\@:
+.endm
+
+.macro LEAVE_INTERRUPT
+	// restore stack
+	movw ss_save, %ax
+	movw %ax, %ss
+	movw sp_save, %sp
+
+	pop %es
+	pop %ds
+	pop %bp
+	pop %di
+	pop %si
+	pop %dx
+	pop %cx
+	pop %bx
+	mov $0x20, %al
+	out %al, $PIC_CMD // send EOI
+	pop %ax
+	sti
+	iret
+.endm
+
 _start:
 	// set segments
 	movw $0x0000, %dx
@@ -148,147 +192,64 @@ int04:
 	call int_overflow
 	iret
 	
-	// hardware interrupts
+	/****** hardware interrupts ******/
 
 	// IRQ0: timer
 int08:
-	push %ax
-	push %bx
-	push %cx
-	push %dx
-	push %si
-	push %di
-	push %bp
-	push %ds
-	push %es
-	
-	// change data segment and stack
-	xorw %bx, %bx
-	movw %bx, %ds
-	movw %ss, %ax
-	movw %ax, ss_save
-	movw %sp, sp_save
-	andw %ax, %ax
-	jz no_stack_chg_08
-	movw %bx, %ss
-	movw $BIOS_STACK_START, %sp
-no_stack_chg_08:
-
+	ENTER_INTERRUPT
 	call int_timer
-
-	// restore stack
-	movw ss_save, %ax
-	movw %ax, %ss
-	movw sp_save, %sp
-
-	pop %es
-	pop %ds
-	pop %bp
-	pop %di
-	pop %si
-	pop %dx
-	pop %cx
-	pop %bx
-	mov $0x20, %al
-	out %al, $PIC_CMD // send EOI
-	pop %ax
-	sti
-	iret
+	LEAVE_INTERRUPT
 	
 	// IRQ1: keyboard
 int09:
-	push %ax
-	push %bx
-	push %cx
-	push %dx
-	push %si
-	push %di
-	push %bp
-	push %ds
-	push %es
-
-	// change data segment and stack
-	xorw %bx, %bx
-	movw %bx, %ds
-	movw %ss, %ax
-	movw %ax, ss_save
-	movw %sp, sp_save
-	andw %ax, %ax
-	jz no_stack_chg_09
-	movw %bx, %ss
-	movw $BIOS_STACK_START, %sp
-no_stack_chg_09:
-
+	ENTER_INTERRUPT
 	call int_keyboard
-
-	// restore stack
-	movw ss_save, %ax
-	movw %ax, %ss
-	movw sp_save, %sp
-
-	pop %es
-	pop %ds
-	pop %bp
-	pop %di
-	pop %si
-	pop %dx
-	pop %cx
-	pop %bx
-	mov $0x20, %al
-	out %al, $PIC_CMD // send EOI
-	pop %ax
-	sti
-	iret
+	LEAVE_INTERRUPT
 
 	// IRQ6: sd drive
 int0E:
-	push %ax
+	ENTER_INTERRUPT
+	call int_drive
+	LEAVE_INTERRUPT
+
+	/****** software interrupts ******/
+int10:
 	push %bx
-	push %cx
-	push %dx
 	push %si
 	push %di
 	push %bp
 	push %ds
 	push %es
 
-	// change data segment and stack
 	xorw %bx, %bx
 	movw %bx, %ds
+	movw %bx, %es
+
+	mov %ax, int_ax
+	mov %cx, int_cx
+	mov %dx, int_dx
+
 	movw %ss, %ax
-	movw %ax, ss_save
-	movw %sp, sp_save
-	andw %ax, %ax
-	jz no_stack_chg_0E
+	movw %ax, int_ss_save
+	movw %sp, int_sp_save
 	movw %bx, %ss
-	movw $BIOS_STACK_START, %sp
-no_stack_chg_0E:
 
-	call int_drive
+	call int_bios
 
-	// restore stack
-	movw ss_save, %ax
+	movw int_ss_save, %ax
 	movw %ax, %ss
-	movw sp_save, %sp
+	movw int_sp_save, %sp
+
+	mov int_ax, %ax
+	mov int_cx, %cx
+	mov int_dx, %dx
 
 	pop %es
 	pop %ds
 	pop %bp
 	pop %di
 	pop %si
-	pop %dx
-	pop %cx
 	pop %bx
-	mov $0x20, %al
-	out %al, $PIC_CMD // send EOI
-	pop %ax
-	sti
-	iret
-
-	// software interrupts
-int10:
-
-	call int_bios
 	iret
 
 .size _start, . - _start

@@ -62,7 +62,7 @@ void scrollup() {
         cursor_row--;
 }
 
-void setcursor(word col, word row) {
+void setcursor(byte col, byte row) {
     cursor_col = col;
     cursor_row = row;
 }
@@ -84,7 +84,7 @@ void putch(char c) {
     }
 }
 
-void setchar(word col, word row, char c) {
+void setchar(byte col, byte row, char c) {
     word index = row * 80 + col;
     word data = c + (textcol << 8);
     (*screen)[index] = data;
@@ -99,6 +99,11 @@ void putstr(const char *str) {
 void putstr_inv(const char *str) {
     while (*str)
         putch(*(str++) + 0x80);
+}
+
+void putstr_far(const char __far *str) {
+    while (*str)
+        putch(*(str++));
 }
 
 void puthexbyte(byte value) {

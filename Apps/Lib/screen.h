@@ -16,19 +16,22 @@ void scrolldown();
 void scrollup();
 
 /* sets the cursor position */
-void setcursor(word col, word row);
+void setcursor(byte col, byte row);
 
 /* outputs a single char at the cursor position */
 void putch(char c);
 
 /* sets a char at a given position */
-void setchar(word col, word row, char c);
+void setchar(byte col, byte row, char c);
 
 /* outputs a string */
 void putstr(const char *str);
 
 /* outputs a string with inverse characters */
 void putstr_inv(const char *str);
+
+/* outputs a string (far pointer) */
+void putstr_far(const char __far *str);
 
 /* outputs a byte as 2-digit hex number */
 void puthexbyte(byte value);

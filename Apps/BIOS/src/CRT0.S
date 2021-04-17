@@ -27,7 +27,7 @@
 .set ICW1, 0b00010111
 .set ICW2, 0x08 // interrupt offset
 .set ICW4, 0b00000001 // 8086 mode, normal EOI, unbuffered mode
-.set OCW1, 0b11111110 // enable interrupt 0 (timer)
+.set OCW1, 0b11111100 // enable interrupt 0 (timer), 1 (keyboard)
 
 .macro ENTER_INTERRUPT
 	push %ax

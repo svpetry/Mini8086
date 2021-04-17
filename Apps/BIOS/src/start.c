@@ -179,6 +179,11 @@ static void check_keyboard(int row) {
         data = inp(0x60);
         switch (data) {
             case 0x00:
+                outp(0x64, 0x60); // write controller configuration byte
+                while ((inp(0x64) & 0b00000010) > 1) ; // wait for empty input buffer
+                outp(0x60, 0b00000001); // enable first PS/2 port interrupt
+                
+                while ((inp(0x64) & 0b00000010) > 1) ; // wait for empty input buffer
                 outp(0x64, 0xAE); // enable keyboard interface
                 putstr("OK");
                 return;

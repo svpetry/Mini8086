@@ -1,6 +1,7 @@
 #include "biosfunc.h"
 #include "../../Lib/types.h"
 #include "../../Lib/screen.h"
+#include "keyboard.h"
 
 volatile word int_sp_save;
 volatile word int_ss_save;
@@ -55,6 +56,12 @@ void int_bios() {
         case 0x06: {
             dword addr = (((dword)int_cx) << 16) + int_dx;
             putstr_far((char __far *)addr);
+            break;
+        }
+
+        // read keycode from keyboard
+        case 0x10: {
+            int_ax = keyb_get_code();
             break;
         }
     }

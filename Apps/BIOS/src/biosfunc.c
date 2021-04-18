@@ -59,9 +59,9 @@ void int_bios() {
             break;
         }
 
-        // read keycode from keyboard
+        // read character from keyboard buffer
         case 0x10: {
-            int_ax = keyb_get_code();
+            int_ax = getchar();
             break;
         }
     }

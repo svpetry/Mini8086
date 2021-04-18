@@ -1,8 +1,8 @@
 @echo off
 
 del bin\b.bin
-del bin\BIOS0.bin
-del bin\BIOS1.bin
+del bin\ROM0.bin
+del bin\ROM1.bin
 nasm -f bin src\resetvector.asm -o bin\resetvector.bin
 
 if exist c:\windows\sysnative\wsl.exe (

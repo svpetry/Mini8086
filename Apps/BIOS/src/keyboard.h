@@ -7,7 +7,7 @@ void keyb_init();
 void keyb_handleint();
 
 /* returns true if the keyboard queue is not empty */
-byte keyb_has_code();
+byte haschar();
 
 /* returns the next keycode in the queue */
-char keyb_get_code();
+char getchar();

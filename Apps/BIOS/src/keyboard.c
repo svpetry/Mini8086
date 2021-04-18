@@ -1,6 +1,7 @@
 #include "../../Lib/types.h"
 #include "../../Lib/lowlevel.h"
 #include "keylayouts.h"
+#include "../../Lib/keys.h"
 
 #define KB_QUEUE_LEN 32
 
@@ -56,37 +57,37 @@ static char read_char() {
                 getkeycode_wait(); // 0x14
                 getkeycode_wait(); // 0xF0
                 getkeycode_wait(); // 0x77
-                result = 0x07;
+                result = KEY_PAUSE;
                 break;
             case 0x6B: // left
-                result = 0x01;
+                result = KEY_LEFT;
                 break;
             case 0x75: // up
-                result = 0x02;
+                result = KEY_UP;
                 break;
             case 0x72: // down
-                result = 0x03;
+                result = KEY_DOWN;
                 break;
             case 0x74: // right
-                result = 0x04;
+                result = KEY_RIGHT;
                 break;
             case 0x6C: // home
-                result = 0x05;
+                result = KEY_HOME;
                 break;
             case 0x69: // end
-                result = 0x06;
+                result = KEY_END;
                 break;
             case 0x7D: // page up
-                result = 0x0B;
+                result = KEY_PAGEUP;
                 break;
             case 0x7A: // page down
-                result = 0x0C;
+                result = KEY_PAGEDOWN;
                 break;
             case 0x71: // del
-                result = 0x7F;
+                result = KEY_DELETE;
                 break;
             case 0x70: // insert
-                result = 0x1C;
+                result = KEY_INSERT;
         }
     } else {
         result = decodekey_ger(code, shift_l || shift_r);
@@ -104,10 +105,10 @@ static char read_char() {
                 result = '\n';
                 break;
             case 0x76: // escape
-                result = 0x1B;
+                result = KEY_ESCAPE;
                 break;
             case 0x66: // backspace
-                result = 0x08;
+                result = KEY_BACKSPACE                                                                                                 ;
                 break;
             case 0x12: // left shift
                 shift_l = key_break ? 0 : 1;

@@ -5,12 +5,15 @@
 #include "../../Lib/strutils.h"
 #include "../../Lib/utils.h"
 #include "../../Lib/ds1307.h"
+#include "../../Lib/keys.h"
 #include "defs.h"
 #include "boot.h"
 #include "start.h"
 #include "sd.h"
 #include "keyboard.h"
 #include "ff.h"
+#include "filebrowser.h"
+#include "bootmenu.h"
 
 volatile word sp_save;
 volatile word ss_save;
@@ -73,7 +76,27 @@ void update_clock() {
 
 void draw_menu() {
     setcursor(2, 24);
-    putstr_inv("F1 BOOT FROM SD    F2 SET DATE/TIME    F3 FILE SYSTEM BROWSER");
+    putstr_inv("F1 BOOT FROM SD    F2 FILE SYSTEM BROWSER    F10 BIOS SETUP");
+}
+
+void handle_bootmenu() {
+    char key = getchar();
+    if (key == KEY_DELETE || key == KEY_ESCAPE || key >= KEY_F1 && key <= KEY_F12) {
+        draw_menu();
+        while (getchar()) asm("nop");
+        while (key != KEY_F1) {
+            switch (key) {
+                case KEY_F2:
+                    filebrowser();
+                    break;
+                case KEY_F10:
+                    bootmenu();
+                    break;
+            }
+            while (!haschar()) asm("nop");
+            key = getchar();
+        }
+    }
 }
 
 int main() {
@@ -101,6 +124,8 @@ int main() {
     for (i = 0; i < 1000; i++)
         for (j = 0; j < 100; j++)
             asm("nop");
+
+    handle_bootmenu();
 
 #if LCD == 1602
     lcd_putstr(0, 0, "                ");
@@ -139,8 +164,6 @@ int main() {
             asm("nop");
     }
 #endif
-
-    draw_menu();
 
     // boot from SD card
     boot();

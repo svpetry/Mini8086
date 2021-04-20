@@ -9,6 +9,7 @@
 #include "../../Lib/bmp280.h"
 #include "../../Lib/ds1307.h"
 #include "defs.h"
+#include "build.h"
 #include "sd.h"
 
 #define RESULT_COL 20
@@ -302,8 +303,8 @@ void startup() {
     }
     setcursor(1, 0);
     putstr_inv("Mini8086 BIOS 0.1");
-    setcursor(68, 0);
-    putstr_inv(__DATE__);
+    setcursor(64, 0);
+    putstr_inv(BUILD);
 
     i = 2;
     check_cpu(i++);

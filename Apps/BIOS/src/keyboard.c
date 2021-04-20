@@ -116,6 +116,42 @@ static char read_char() {
             case 0x59: // right shift
                 shift_r = key_break ? 0 : 1;
                 break;
+            case 0x05: // F1
+                result = KEY_F1;
+                break;
+            case 0x06: // F2
+                result = KEY_F2;
+                break;
+            case 0x04: // F3
+                result = KEY_F3;
+                break;
+            case 0x0C: // F4
+                result = KEY_F4;
+                break;
+            case 0x03: // F5
+                result = KEY_F5;
+                break;
+            case 0x0B: // F6
+                result = KEY_F6;
+                break;
+            case 0x83: // F7
+                result = KEY_F7;
+                break;
+            case 0x0A: // F8
+                result = KEY_F8;
+                break;
+            case 0x01: // F9
+                result = KEY_F9;
+                break;
+            case 0x09: // F10
+                result = KEY_F10;
+                break;
+            case 0x78: // F11
+                result = KEY_F11;
+                break;
+            case 0x07: // F12
+                result = KEY_F12;
+                break;
         }
     }
     

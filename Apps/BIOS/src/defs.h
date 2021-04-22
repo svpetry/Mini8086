@@ -8,3 +8,6 @@
 
 // SD debug mode
 #define SD_DEBUG 0
+
+// keyboard debug mode
+#define KEYB_DEBUG 0

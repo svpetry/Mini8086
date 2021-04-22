@@ -1,6 +1,8 @@
 #include "../../Lib/types.h"
 #include "../../Lib/lowlevel.h"
+#include "../../Lib/screen.h"
 #include "keylayouts.h"
+#include "defs.h"
 #include "../../Lib/keys.h"
 
 #define KB_QUEUE_LEN 32
@@ -22,10 +24,17 @@ static void add_to_queue(char c) {
 }
 
 static byte getkeycode_wait() {
+    byte code = 0;
     int maxtries = 2000;
     while ((inp(0x64) & 0b00000001) == 0) asm("nop");
-    if ((inp(0x64) & 0b00000001) > 0) return inp(0x60);
-    return 0;
+    if ((inp(0x64) & 0b00000001) > 0)
+        code = inp(0x60);
+#if KEYB_DEBUG
+    putstr("code ");
+    puthexbyte(code);
+    putch('\n');
+#endif
+    return code;
 }
 
 static char read_char() {
@@ -33,7 +42,7 @@ static char read_char() {
     byte key_break = 0;
     char result = 0;
    
-    byte code = inp(0x60);
+    byte code = getkeycode_wait();
 
     // special key
     if (code == 0xE0 || code == 0xE1) {
@@ -108,7 +117,7 @@ static char read_char() {
                 result = KEY_ESCAPE;
                 break;
             case 0x66: // backspace
-                result = KEY_BACKSPACE                                                                                                 ;
+                result = KEY_BACKSPACE;
                 break;
             case 0x12: // left shift
                 shift_l = key_break ? 0 : 1;
@@ -155,6 +164,10 @@ static char read_char() {
         }
     }
     
+#if KEYB_DEBUG
+    putstr("---\n");
+#endif
+
     if (key_break) return 0;
     return result;
 }

@@ -28,7 +28,7 @@ namespace Emulator.Lib
 
         public static int SdControllerBasePort => 0x90;
 
-        public static string SdImagePath => "d:\\SD.img";
+        public static string SdImagePath => @"..\..\..\Apps\sdcard.img";
 
         public static int BiosMemAddress => 0xE0000;
 

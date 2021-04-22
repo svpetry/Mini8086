@@ -29,6 +29,8 @@ namespace Emulator
 
         public Lcd44780 Lcd => _lcd;
 
+        public KeybController KeybController => _keybController;
+
         public Cpu8086 Cpu => _cpu;
 
         public MemoryMapper MemMapper => _memMapper;
@@ -68,7 +70,7 @@ namespace Emulator
             //components.Add(_ppi = new Ppi(Config.PpiBasePort));
             //_portMapper.Register(Config.PpiBasePort, Config.PpiBasePort + 0x07, _ppi);
 
-            components.Add(_keybController = new KeybController(Config.KeybControllerBasePort));
+            components.Add(_keybController = new KeybController(Config.KeybControllerBasePort, _pic));
             _portMapper.Register(Config.KeybControllerBasePort, Config.KeybControllerBasePort + 0x07, _keybController);
 
             components.Add(_sdController = new SdController(Config.SdControllerBasePort, Config.SdImagePath));

@@ -36,5 +36,17 @@ namespace Emulator
             if (e.PropertyName == "DisassembledLines")
                 Dispatcher.Invoke(() => ScrollViewer.ScrollToBottom());
         }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            _viewModel.KeyDown(e.Key);
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+            _viewModel.KeyUp(e.Key);
+        }
     }
 }

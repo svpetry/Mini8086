@@ -13,7 +13,7 @@
 #include "keyboard.h"
 #include "ff.h"
 #include "filebrowser.h"
-#include "bootmenu.h"
+#include "biossetup.h"
 
 volatile word sp_save;
 volatile word ss_save;
@@ -90,7 +90,7 @@ void handle_bootmenu() {
                     filebrowser();
                     break;
                 case KEY_F10:
-                    bootmenu();
+                    biossetup();
                     break;
             }
             while (!haschar()) asm("nop");

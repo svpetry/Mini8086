@@ -1,3 +1,3 @@
 #include "../../Lib/types.h"
 
-void bootmenu();
+void biossetup();

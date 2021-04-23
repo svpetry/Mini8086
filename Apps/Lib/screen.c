@@ -36,6 +36,14 @@ void clrscr() {
     setcursor(0, 0);
 }
 
+void clrrow(byte row) {
+    word i;
+    for (i = row * 80; i < (row + 1) * 80; i++) {
+        (*screen)[i] = 0;
+        (*scrbuf)[i] = 0;
+    }
+}
+
 static void copy_bufline(int dest, int src) {
     byte __far *bufptr = (byte __far *)scrbuf;
     memcpy_(bufptr + dest * 160, bufptr + src * 160, 160);

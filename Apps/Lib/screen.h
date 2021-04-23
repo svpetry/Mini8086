@@ -9,6 +9,9 @@ void init_screen();
 /* clears the screen */
 void clrscr();
 
+/* clears a row on the screen */
+void clrrow(byte row);
+
 /* scrolls the screen down by one line */
 void scrolldown();
 

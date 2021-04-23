@@ -5,7 +5,9 @@
 #include "defs.h"
 #include "../../Lib/keys.h"
 
-#define KB_QUEUE_LEN 32
+#define KB_QUEUE_LEN    32
+#define KEYLAYOUT_US    0
+#define KEYLAYOUT_DE    1
 
 char kb_queue[KB_QUEUE_LEN];
 byte kb_queue_count;

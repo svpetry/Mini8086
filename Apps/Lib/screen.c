@@ -99,6 +99,11 @@ void setchar(byte col, byte row, char c) {
     (*scrbuf)[index] = data;
 }
 
+char getscreenchar(byte col, byte row) {
+    word index = row * 80 + col;
+    return (*scrbuf)[index];
+}
+
 void putstr(const char *str) {
     while (*str)
         putch(*(str++));

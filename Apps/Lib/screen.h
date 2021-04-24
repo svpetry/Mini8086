@@ -27,6 +27,9 @@ void putch(char c);
 /* sets a char at a given position */
 void setchar(byte col, byte row, char c);
 
+/* gets a char at a given position */
+char getscreenchar(byte col, byte row);
+
 /* outputs a string */
 void putstr(const char *str);
 

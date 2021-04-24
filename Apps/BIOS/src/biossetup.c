@@ -12,6 +12,16 @@
 #define BS_ROW 6
 #define BS_COLUMN2 42
 
+static void waitforchar(byte time50ms) {
+    byte t = ticks;
+    while (ticks == t && !haschar()) asm("nop");
+    while (time50ms > 0 && !haschar()) {
+        t = ticks;
+        while (ticks == t && !(haschar())) asm("nop");
+        time50ms--;
+    }
+}
+
 static void putnum_2(int num) {
     if (num < 10)
         putch('0');
@@ -48,24 +58,26 @@ static void update_values() {
     putstr("DE");
 }
 
-static int input_number(byte col, byte row, byte digits) {
+static int input_number(byte col, byte row, byte digits, byte *abort) {
     int num = 0;
     int i;
+    char orig_char = getscreenchar(col, row);
     while (digits > 0) {
         byte wait = 1;
         do {
-            setcursor(col, row);
-            putch(' ' + 128);
-            for (i = 0; i < 20000 & !haschar(); i++) asm("nop");
+            setchar(col, row, orig_char + 128);
+            waitforchar(5);
             if (!haschar()) {
-                setcursor(col, row);
-                putch(' ');
-                for (i = 0; i < 20000 & !haschar(); i++) asm("nop");
+                setchar(col, row, orig_char);
+                waitforchar(5);
             }
             char c = getchar();
+            if (c == KEY_ESCAPE) {
+                *abort = 1;
+                return 0;
+            }
             if (c >= '0' && c <= '9') {
-                setcursor(col, row);
-                putch(c);
+                setchar(col, row, c);
                 num = num * 10 + c - '0';
                 wait = 0;
             }
@@ -77,9 +89,14 @@ static int input_number(byte col, byte row, byte digits) {
 }
 
 static void input_time() {
-    byte hours = input_number(BS_COLUMN2, BS_ROW, 2);
-    byte minutes = input_number(BS_COLUMN2 + 3, BS_ROW, 2);
-    byte seconds = input_number(BS_COLUMN2 + 6, BS_ROW, 2);
+    byte abort = 0;
+    byte hours = input_number(BS_COLUMN2, BS_ROW, 2, &abort);
+    if (abort) return;
+    byte minutes = input_number(BS_COLUMN2 + 3, BS_ROW, 2, &abort);
+    if (abort) return;
+    byte seconds = input_number(BS_COLUMN2 + 6, BS_ROW, 2, &abort);
+    if (abort) return;
+
     if (hours > 23) hours = 23;
     if (minutes > 59) minutes = 59;
     if (seconds > 59) seconds = 59;
@@ -92,9 +109,14 @@ static void input_time() {
 }
 
 static void input_date() {
-    byte day = input_number(BS_COLUMN2, BS_ROW + 1, 2);
-    byte month = input_number(BS_COLUMN2 + 3, BS_ROW + 1, 2);
-    byte year = input_number(BS_COLUMN2 + 8, BS_ROW + 1, 2);
+    byte abort = 0;
+    byte day = input_number(BS_COLUMN2, BS_ROW + 1, 2, &abort);
+    if (abort) return;
+    byte month = input_number(BS_COLUMN2 + 3, BS_ROW + 1, 2, &abort);
+    if (abort) return;
+    byte year = input_number(BS_COLUMN2 + 8, BS_ROW + 1, 2, &abort);
+    if (abort) return;
+
     if (day > 31) day = 31;
     if (month > 12) month = 12;
     ds1307_setdate(day, month, year);

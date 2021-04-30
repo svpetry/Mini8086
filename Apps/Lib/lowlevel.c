@@ -19,3 +19,7 @@ inline byte inp(word port) {
     );
     return value;
 }
+
+void reboot() {
+    asm("ljmpw $0xFFFF, $0x0000");
+}

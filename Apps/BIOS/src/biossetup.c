@@ -6,6 +6,7 @@
 #include "bios.h"
 #include "../../Lib/strutils.h"
 #include "../../Lib/ds1307.h"
+#include "../../Lib/lowlevel.h"
 #include "start.h"
 
 #define BS_COLUMN 20
@@ -169,5 +170,5 @@ void biossetup() {
 
     } while (!exit);
 
-    asm("ljmpw $0xFFFF, $0x0000");
+    reboot();
 }

@@ -35,10 +35,10 @@ static void tryboot() {
     res = f_mount(&fs, "", 0);
     if (res != FR_OK) return;
 
-    res = f_open(&f, "boot.bin", FA_READ);
+    res = f_open(&f, "kernel.bin", FA_READ);
     if (res != FR_OK) return;
 
-    // load boot.bin to 0100:0000
+    // load kernel.bin to 0100:0000
     size = f_size(&f);
     res = f_read(&f, dest, size, &br);
     if (res != FR_OK)
@@ -72,7 +72,7 @@ void boot() {
             tryboot();
 
             while (sd_inserted()) {
-                setline("Could not load boot.bin. Please remove SD card.");
+                setline("Could not load kernel.bin. Please remove SD card.");
                 delay_1sec();
             }
             setline("");

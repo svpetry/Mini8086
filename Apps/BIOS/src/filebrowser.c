@@ -1,6 +1,7 @@
 #include "filebrowser.h"
+#include "../../Lib/lowlevel.h"
 
 void filebrowser() {
 
-    asm("ljmpw $0xFFFF, $0x0000");
+    reboot();
 }

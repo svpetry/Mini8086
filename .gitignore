@@ -61,3 +61,5 @@ KiCad/main_v2/Rev 1.0/
 Apps/BIOS/bin/
 Apps/Command/bin/
 Apps/.vscode/
+Apps/sdcard.img
+build.h

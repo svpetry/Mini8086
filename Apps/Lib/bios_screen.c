@@ -7,7 +7,7 @@ void clrscr() {
         "int $0x10"
         : /* no outputs */
         : /* no inputs */
-        : "ax", "cx", "dx"
+        : "ax", "bx", "cx", "dx", "si", "di"
     );
 }
 
@@ -17,7 +17,7 @@ void scrolldown() {
         "int $0x10"
         : /* no outputs */
         : /* no inputs */
-        : "ax", "cx", "dx"
+        : "ax", "bx", "cx", "dx", "si", "di"
     );
 }
 
@@ -27,7 +27,7 @@ void scrollup() {
         "int $0x10"
         : /* no outputs */
         : /* no inputs */
-        : "ax", "cx", "dx"
+        : "ax", "bx", "cx", "dx", "si", "di"
     );
 }
 
@@ -39,7 +39,7 @@ void setcursor(byte col, byte row) {
         "int $0x10"
         : /* no outputs */
         : "g" (col), "g" (row)
-        : "ax", "cx", "dx"
+        : "ax", "bx", "cx", "dx", "si", "di"
     );
 }
 
@@ -50,7 +50,7 @@ void putch(char c) {
         "int $0x10"
         : /* no outputs */
         : "g" (c)
-        : "ax", "cx", "dx"
+        : "ax", "bx", "cx", "dx", "si", "di"
     );
 }
 
@@ -59,11 +59,11 @@ void putstr(const char __far *str) {
     word offs = ((dword)str);
     asm(
         "movb $0x06, %%ah\n"
-        "movw %0, %%cx\n"
-        "movw %1, %%dx\n"
+        "movw %0, %%dx\n"
+        "movw %1, %%cx\n"
         "int $0x10"
         : /* no outputs */
         : "g" (seg), "g" (offs)
-        : "ax", "cx", "dx"
+        : "ax", "bx", "cx", "dx", "si", "di"
     );
 }

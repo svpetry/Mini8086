@@ -3,19 +3,19 @@
 #include "ff.h"
 #include "bios_api.h"
 
-#define MAX_HANDLES 10
+#define MAX_HANDLES 4
 
-// static FATFS fs;
-// static FIL file_handles[MAX_HANDLES];
-// static DIR dir_handles[MAX_HANDLES];
+static FATFS fs;
+static FIL file_handles[MAX_HANDLES];
+static DIR dir_handles[MAX_HANDLES];
 
 static byte mounted;
 
 void initialize_filesys() {
-    // for (byte i = 0; i < MAX_HANDLES; i++) {
-    //     file_handles[i].obj.fs = NULL;
-    //     dir_handles[i].obj.fs = NULL;
-    // }
+    for (byte i = 0; i < MAX_HANDLES; i++) {
+        file_handles[i].obj.fs = NULL;
+        dir_handles[i].obj.fs = NULL;
+    }
     mounted = 0;
 }
 
@@ -27,9 +27,9 @@ void fsapi_unmount() {
 }
 
 static void mount_if_needed() {
-    // if (mounted) return;
-    // f_mount(&fs, "", 0);
-    // mounted = 1;
+    if (mounted) return;
+    f_mount(&fs, "", 0);
+    mounted = 1;
 }
 
 void handle_filesys(byte code) {

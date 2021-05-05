@@ -61,7 +61,7 @@ void int_keyboard() {
 
 void int_drive() {
     sd_reset();
-    // fsapi_unmount();
+    fsapi_unmount();
 }
 
 void update_clock() {
@@ -112,7 +112,7 @@ int main() {
     t_seconds = 0;
     ticks = 0;
 
-   // initialize_filesys();
+    initialize_filesys();
     init_screen();
     keyb_init();
 #if LCD != 0
@@ -122,9 +122,6 @@ int main() {
     // show startup screen, system test
     startup();
 
-    putstr("boot1\n");
-
-
     // update clock from RTC module
     if (cfg_rtc) update_clock();
 
@@ -132,7 +129,6 @@ int main() {
         for (j = 0; j < 100; j++)
             asm("nop");
 
-    putstr("boot2\n");
     handle_bootmenu();
 
 #if LCD == 1602

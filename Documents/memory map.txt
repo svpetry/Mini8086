@@ -20,6 +20,6 @@ F0000-FFFFF	ROM
 --------------------------------------------------------------------------------
 
 00000-003FF	8086 interrupt vectors
-00400-00FFF	BIOS data area
-01000-0FFFF	OS kernel code + data
+00400-01FFF	BIOS data area
+02000-0FFFF	OS kernel code + data
 10000-xxxxx	user code

@@ -63,3 +63,4 @@ Apps/Command/bin/
 Apps/.vscode/
 Apps/sdcard.img
 build.h
+Apps/Kernel/bin/

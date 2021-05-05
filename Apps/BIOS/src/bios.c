@@ -13,7 +13,9 @@
 #include "keyboard.h"
 #include "ff.h"
 #include "filebrowser.h"
-#include "biossetup.h"
+#include "bios_setup.h"
+#include "bios_api.h"
+#include "bios_fsapi.h"
 
 volatile word sp_save;
 volatile word ss_save;
@@ -43,18 +45,14 @@ void int_overflow() {
 }
 
 void int_timer() {
-    if (++ticks == 20) {
-        ticks = 0;
-        if (++t_seconds == 60) {
-            t_seconds = 0;
-            if (++t_minutes == 60) {
-                t_minutes = 0;
-                if (++t_hours == 24) {
-                    t_hours = 0;
-                }
-            }
-        }
-    }
+    if (++ticks < 20) return;
+    ticks = 0;
+    if (++t_seconds < 60) return;
+    t_seconds = 0;
+    if (++t_minutes < 60) return;
+    t_minutes = 0;
+    if (++t_hours < 24) return;
+    t_hours = 0;
 }
 
 void int_keyboard() {
@@ -63,6 +61,7 @@ void int_keyboard() {
 
 void int_drive() {
     sd_reset();
+    // fsapi_unmount();
 }
 
 void update_clock() {
@@ -90,7 +89,7 @@ void handle_bootmenu() {
                     filebrowser();
                     break;
                 case KEY_F10:
-                    biossetup();
+                    bios_setup();
                     break;
             }
             while (!haschar()) asm("nop");
@@ -98,7 +97,11 @@ void handle_bootmenu() {
         }
     }
 }
-
+/*
+void __far test() {
+    putstr("Hello!");
+}
+*/
 int main() {
     word i, j, k;
     byte a;
@@ -109,6 +112,7 @@ int main() {
     t_seconds = 0;
     ticks = 0;
 
+   // initialize_filesys();
     init_screen();
     keyb_init();
 #if LCD != 0
@@ -118,6 +122,9 @@ int main() {
     // show startup screen, system test
     startup();
 
+    putstr("boot1\n");
+
+
     // update clock from RTC module
     if (cfg_rtc) update_clock();
 
@@ -125,6 +132,7 @@ int main() {
         for (j = 0; j < 100; j++)
             asm("nop");
 
+    putstr("boot2\n");
     handle_bootmenu();
 
 #if LCD == 1602
@@ -164,6 +172,11 @@ int main() {
             asm("nop");
     }
 #endif
+
+    // void __far (*func)() = &test;
+
+    // clrscr();
+    // (*func)();
 
     // boot from SD card
     boot();

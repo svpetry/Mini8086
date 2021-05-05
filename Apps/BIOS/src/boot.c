@@ -44,6 +44,7 @@ static void tryboot() {
     if (res != FR_OK)
         return;
 
+    clrscr();
     // initialize segments and stack, then far jump to 0100:0000
     asm(
         "mov $0x0100,%ax\n"

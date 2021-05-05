@@ -1,3 +1,3 @@
 #include "../../Lib/types.h"
 
-void biossetup();
+void bios_setup();

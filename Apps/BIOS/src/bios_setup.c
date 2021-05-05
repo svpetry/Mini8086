@@ -1,4 +1,4 @@
-#include "biossetup.h"
+#include "bios_setup.h"
 #include "../../Lib/types.h"
 #include "../../Lib/keys.h"
 #include "../../Lib/screen.h"
@@ -127,7 +127,7 @@ static void input_keylayout() {
 
 }
 
-void biossetup() {
+void bios_setup() {
     int i;
 
     for (i = 1; i < 23; i++)

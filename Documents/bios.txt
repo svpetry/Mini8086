@@ -2,6 +2,8 @@
 BIOS function at INT 10h
 
 
+SCREEN =====================================================
+
 ------------------------------------------------------------
 AH = 00h	Clear screen
 
@@ -12,49 +14,160 @@ DH: row
 DL: column
 
 ------------------------------------------------------------
-AH = 02h	Scroll window down
+AH = 02h	Scroll down
 
 AL: lines to scroll
 
 ------------------------------------------------------------
-AH = 03h	Scroll window up
+AH = 03h	Scroll up
 
 AL: lines to scroll
 
 ------------------------------------------------------------
-AH = 04h	Write char at cursor position
+AH = 04h	Write character at cursor position
 
 AL: character code
 
 ------------------------------------------------------------
-AH = 05h	Write character and color at cursor position
-
-AL: character code
-BL: color
-
-------------------------------------------------------------
-AH = 06h	Read character and color at cursor position
+AH = 05h	Read character from cursor position
 
 returns:
 AL: character code
-BL: color
 
 ------------------------------------------------------------
-AH = 07h	Write string at cursor position
+AH = 06h	Write string at cursor position
 
-ES:SI: string address
+DX:CX: pointer to string
 
+------------------------------------------------------------
 
+KEYBOARD ===================================================
 
+------------------------------------------------------------
+AH = 10h	Read keycode from keyboard
 
+returns:
+AL: keycode
+------------------------------------------------------------
 
+FILE SYSTEM ================================================
 
+------------------------------------------------------------
+AH = 20h	Read volume name
 
+DX:CX: pointer to destination string
 
+returns:
+AL: 0 = OK, 1 = error
 
+------------------------------------------------------------
+AH = 21h	Open file
 
+AL: mode
+0 = read
+1 = write
+2 = append
 
---------------------------------------------------------------------------------
-BIOS startup
+DX:CX: pointer to file name
 
-- 
+returns:
+AL: 0 = OK, 1 = error
+BL: file handle
+
+------------------------------------------------------------
+AH = 22h	Close file
+
+AL: file handle
+
+------------------------------------------------------------
+AH = 23h	Get file info
+
+DX:CX: file name
+
+returns:
+AL: 0 = OK, 1 = file does not exist
+DX:CX: file size in bytes (32 bit)
+SI:DI: file timestamp (32 bit)
+	31:25 - year difference to 1980
+	24:21 - month
+	20:16 - day
+	15:11 - hour
+	10:5 - minute
+	4:0 - second / 2
+
+------------------------------------------------------------
+AH = 24h	Seek
+
+AL: file handle
+DX:CX: position
+
+------------------------------------------------------------
+AH = 25h	Rename file
+
+DX:CX: old filename
+SI:DI: new filename
+
+returns:
+AL: 0 = OK, 1 = error
+
+------------------------------------------------------------
+AH = 26h	Read data
+
+AL: file handle
+DX:CX: pointer to buffer
+SI:DI: number of bytes to read
+
+returns:
+AL: 0 = OK, 1 = error
+
+------------------------------------------------------------
+AH = 27h	Write data
+
+AL: file handle
+DX:CX: pointer to buffer
+SI:DI: number of bytes to write
+
+returns:
+AL: 0 = OK, 1 = error
+
+------------------------------------------------------------
+AH = 10h	Open directory
+
+returns:
+AL: 0 = OK, 1 = error
+BL: directory handle
+
+------------------------------------------------------------
+AH = 11h	Read next directory entry
+
+AL: directory handle
+DX:CX: pointer to destination string
+
+returns:
+AL: 0 = OK, 1 = error
+
+------------------------------------------------------------
+AH = 12h	Close directory
+
+AL: directory handle
+
+returns:
+AL: 0 = OK, 1 = error
+
+------------------------------------------------------------
+AH = 13h	Create directory
+
+AL: directory handle
+
+returns:
+AL: 0 = OK, 1 = error
+
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+
+OTHER ======================================================
+
+- read/write date & time

@@ -1,17 +1,29 @@
-#include "biosfunc.h"
+#include "bios_api.h"
 #include "../../Lib/types.h"
 #include "../../Lib/screen.h"
 #include "keyboard.h"
+#include "bios_fsapi.h"
 
 volatile word int_sp_save;
 volatile word int_ss_save;
 
 volatile word int_ax;
+volatile word int_bx;
 volatile word int_cx;
 volatile word int_dx;
+volatile word int_si;
+volatile word int_di;
+
 
 void int_bios() {
-    switch (int_ax >> 8) {
+    byte code = int_ax >> 8;
+
+    if (code >= 0x20) {
+        handle_filesys(code);
+        return;
+    }
+
+    switch (code) {
 
         // clear screen
         case 0x00: {
@@ -54,7 +66,7 @@ void int_bios() {
 
         // write string at cursor position
         case 0x06: {
-            dword addr = (((dword)int_cx) << 16) + int_dx;
+            dword addr = (((dword)int_dx) << 16) + int_cx;
             putstr_far((char __far *)addr);
             break;
         }

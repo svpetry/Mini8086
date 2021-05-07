@@ -4,7 +4,7 @@ STARTUP(crt0.o)
 
 MEMORY {
 	rom (rx) : ORIGIN = 0xF0000, LENGTH = 64K - 0x10
-	ram (!rx) : ORIGIN = 0x00400, LENGTH = 0x01C00
+	ram (!rx) : ORIGIN = 0x00400, LENGTH = 0x03C00
 }
 
 SECTIONS {

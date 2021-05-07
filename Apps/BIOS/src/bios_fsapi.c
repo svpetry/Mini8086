@@ -4,7 +4,7 @@
 #include "bios_api.h"
 #include "../../Lib/strutils.h"
 
-#define MAX_HANDLES     2
+#define MAX_HANDLES     5
 #define MAX_FNAME_LEN   13
 #define MAX_PATH_LEN    80
 #define MODE_READ       0

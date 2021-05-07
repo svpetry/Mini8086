@@ -43,6 +43,7 @@ static void tryboot() {
     res = f_read(&f, dest, size, &br);
     if (res != FR_OK)
         return;
+    f_close(&f);
     f_unmount("");
 
     clrscr();

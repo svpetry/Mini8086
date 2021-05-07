@@ -72,7 +72,7 @@ DX:CX: pointer to file name
 
 returns:
 AL: 0 = OK, 1 = error
-BL: file handle
+AH: file handle
 
 ------------------------------------------------------------
 AH = 22h	Close file
@@ -86,20 +86,25 @@ DX:CX: file name
 
 returns:
 AL: 0 = OK, 1 = file does not exist
+AH: attributes
 DX:CX: file size in bytes (32 bit)
-SI:DI: file timestamp (32 bit)
-	31:25 - year difference to 1980
-	24:21 - month
-	20:16 - day
+SI: file date
+	15:9 - year difference to 1980
+	8:5 - month
+	4:0 - day
+DI: file time
 	15:11 - hour
 	10:5 - minute
 	4:0 - second / 2
-
+	
 ------------------------------------------------------------
 AH = 24h	Seek
 
 AL: file handle
 DX:CX: position
+
+returns:
+AL: 0 = OK, 1 = error
 
 ------------------------------------------------------------
 AH = 25h	Rename file
@@ -115,7 +120,8 @@ AH = 26h	Read data
 
 AL: file handle
 DX:CX: pointer to buffer
-SI:DI: number of bytes to read
+SI: number of bytes to read
+DI: actual number of bytes read
 
 returns:
 AL: 0 = OK, 1 = error
@@ -125,20 +131,29 @@ AH = 27h	Write data
 
 AL: file handle
 DX:CX: pointer to buffer
-SI:DI: number of bytes to write
+SI: number of bytes to write
+DI: actual number of bytes written
 
 returns:
 AL: 0 = OK, 1 = error
 
 ------------------------------------------------------------
-AH = 10h	Open directory
+AH = 28h	Open directory
 
 returns:
 AL: 0 = OK, 1 = error
-BL: directory handle
+AH: directory handle
 
 ------------------------------------------------------------
-AH = 11h	Read next directory entry
+AH = 29h	Close directory
+
+AL: directory handle
+
+returns:
+AL: 0 = OK, 1 = error
+
+------------------------------------------------------------
+AH = 2Ah	Read next directory entry
 
 AL: directory handle
 DX:CX: pointer to destination string
@@ -147,15 +162,7 @@ returns:
 AL: 0 = OK, 1 = error
 
 ------------------------------------------------------------
-AH = 12h	Close directory
-
-AL: directory handle
-
-returns:
-AL: 0 = OK, 1 = error
-
-------------------------------------------------------------
-AH = 13h	Create directory
+AH = 2Bh	Create directory
 
 AL: directory handle
 

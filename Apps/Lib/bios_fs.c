@@ -2,24 +2,24 @@
 #include "utils.h"
 
 byte fs_volname(char *s) {
-    void __far *ptr = near_to_far(s);
-    word seg = ((dword)ptr) >> 16;
-    word offs = (dword)ptr;
     byte status;
     asm(
-        "movw %1, %%dx\n"
-        "movw %2, %%cx\n"
+        "pushw %%ds\n"
+        "popw %%dx\n"
+        "movw %1, %%cx\n"
         "movb $0x20, %%ah\n"
         "int $0x10\n"
         "movb %%al, %0"
         : "=g" (status)
-        : "g" (seg), "g" (offs)
-        : "ax", "bx", "cx", "dx", "si", "di"
+        : "g" (s)
+        : "ax", "cx", "dx", "si", "di"
     );
     return status;
 }
 
-byte fs_open(const char *filename, byte *handle);
+byte fs_open(const char *filename, byte *handle) {
+
+}
 
 byte fs_close(byte handle) {
 

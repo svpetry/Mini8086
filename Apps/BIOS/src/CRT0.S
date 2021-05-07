@@ -214,6 +214,7 @@ int0E:
 
 	/****** software interrupts ******/
 int10:
+	push %bx
 	push %bp
 	push %ds
 	push %es
@@ -224,7 +225,6 @@ int10:
 
 	mov %ax, int_ax
 	mov %cx, int_cx
-	mov %bx, int_bx
 	mov %dx, int_dx
 	mov %si, int_si
 	mov %di, int_di
@@ -241,7 +241,6 @@ int10:
 	movw int_sp_save, %sp
 
 	mov int_ax, %ax
-	mov int_bx, %bx
 	mov int_cx, %cx
 	mov int_dx, %dx
 	mov int_si, %si
@@ -250,6 +249,7 @@ int10:
 	pop %es
 	pop %ds
 	pop %bp
+	pop %bx
 	iret
 
 .size _start, . - _start

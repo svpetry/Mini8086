@@ -26,7 +26,7 @@ byte fs_read(byte handle, byte *buffer, dword count);
 byte fs_write(byte handle, byte *buffer, dword count);
 
 /* open directory */
-byte fs_opendir(byte *handle);
+byte fs_opendir(const char *path, byte *handle);
 
 /* read next directory entry */
 byte fs_read_entry(byte handle, char *s);

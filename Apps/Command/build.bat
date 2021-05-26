@@ -5,4 +5,6 @@ if exist c:\windows\sysnative\wsl.exe (
 	wsl ./build.sh
 )
 
+..\..\Tools\PrepExec\bin\Release\PrepExec bin\command.raw bin\command.bin 8
+
 pause

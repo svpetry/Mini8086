@@ -198,10 +198,9 @@ namespace Emulator.Lib.Components
                 if (_currentInterrupt == null) return;
 
                 _inServiceReg &= (byte)~(1 << _currentInterrupt.Value);
+                _currentInterrupt = null;
                 if (_pendingInterrupts.Count > 0)
                     InternalDoInterrupt(_pendingInterrupts.Dequeue());
-                else
-                    _currentInterrupt = null;
             }
         }
 
@@ -227,8 +226,7 @@ namespace Emulator.Lib.Components
             {
                 if (_currentInterrupt == null)
                     InternalDoInterrupt(intNoValue);
-                // TODO: this is not good.
-                else //if (intNo != HardwareInterrupt.Timer || (_currentInterrupt != intNoValue && !_pendingInterrupts.Contains(intNoValue)))
+                else if (_currentInterrupt != intNoValue && !_pendingInterrupts.Contains(intNoValue))
                     _pendingInterrupts.Enqueue(intNoValue);
             }
         }

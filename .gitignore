@@ -64,3 +64,5 @@ Apps/.vscode/
 Apps/sdcard.img
 build.h
 Apps/Kernel/bin/
+Tools/PrepExec/bin/
+Tools/PrepExec/obj/

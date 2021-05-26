@@ -51,9 +51,9 @@ static void check_memory(int row) {
     // test first 64 KB
     setcursor(RESULT_COL, row);
     putstr("64 KB");
-    memptr = (unsigned char __far *)0x00001000;
+    memptr = (unsigned char __far *)0x00004000;
     count = 0;
-    while (count < 0xF000) {
+    while (count < 0xC000) {
         *memptr = 0xAA;
         if (*memptr != 0xAA) error();
         *memptr = 0x55;

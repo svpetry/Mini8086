@@ -140,6 +140,8 @@ AL: 0 = OK, 1 = error
 ------------------------------------------------------------
 AH = 28h	Open directory
 
+DX:CX: path
+
 returns:
 AL: 0 = OK, 1 = error
 AH: directory handle

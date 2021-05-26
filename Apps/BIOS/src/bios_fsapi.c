@@ -2,16 +2,15 @@
 #include "sd.h"
 #include "ff.h"
 #include "bios_api.h"
+#include "../../Lib/screen.h"
 #include "../../Lib/strutils.h"
+#include "../../Lib/biosdefs.h"
 
 #define MAX_HANDLES     5
 #define MAX_FNAME_LEN   13
 #define MAX_PATH_LEN    80
-#define MODE_READ       0
-#define MODE_WRITE      1
-#define MODE_APPEND     2
 
-#define FAR_PTR_STR(seg, offs) (char __far *)((((dword)seg) << 16) + offs)
+#define FAR_PTR_STR(seg, offs) (char __far *)(((dword)seg << 16) + offs)
 
 static FATFS fs;
 static FIL file_obj[MAX_HANDLES];
@@ -66,6 +65,7 @@ static void read_volname() {
     dword sn;
     char __far *dest = FAR_PTR_STR(int_dx, int_cx);
     if (f_getlabel("", s, &sn) != FR_OK) {
+        *dest = 0;
         int_ax = 0x01;
         return;
     }
@@ -116,7 +116,9 @@ static void file_info() {
     char filepath[MAX_PATH_LEN];
     far_to_near_str(int_dx, int_cx, filepath, MAX_PATH_LEN);
     FILINFO fi;
-    if (f_stat(filepath, &fi) != FR_OK) {
+
+    FRESULT result = f_stat(filepath, &fi);
+    if (result != FR_OK) {
         int_ax = 0x01;
         return;
     }
@@ -206,13 +208,14 @@ static void close_dir() {
 static void read_dir_entry() {
     byte handle = int_ax & 0xFF;
     DIR *dirobj = &dir_obj[handle];
+    char __far *dest = FAR_PTR_STR(int_dx, int_cx);
 
     FILINFO fi;
     if (f_readdir(dirobj, &fi) != FR_OK) {
+        *dest = 0;
         int_ax = 0x01;
         return;
     }
-    char __far *dest = FAR_PTR_STR(int_dx, int_cx);
     for (byte i = 0; i < MAX_FNAME_LEN && fi.fname[i]; i++, dest++)
         *dest = fi.fname[i];
     *dest = 0;

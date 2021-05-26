@@ -54,7 +54,7 @@ static void tryboot() {
         "mov %ax,%ds\n"
         "mov %ax,%es\n"
         "mov %ax,%ss\n"
-        "mov $0x0EFFE,%sp\n"
+        "mov $0x0BFFE,%sp\n"
         "ljmp $0x0400,$0x0000\n"
         );
 }

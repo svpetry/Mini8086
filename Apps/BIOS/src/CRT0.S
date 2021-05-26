@@ -30,6 +30,8 @@
 .set OCW1, 0b11111100 // enable interrupt 0 (timer), 1 (keyboard)
 
 .macro ENTER_INTERRUPT
+	sti
+	pushf
 	push %ax
 	push %bx
 	push %cx
@@ -40,14 +42,15 @@
 	push %ds
 	push %es
 	// change data segment and stack
+	movw %ss, %ax
 	xorw %bx, %bx
 	movw %bx, %ds
-	movw %ss, %ax
+	movw %bx, %es
+	movw %bx, %ss
 	movw %ax, ss_save
 	movw %sp, sp_save
 	andw %ax, %ax
 	jz no_stack_chg_\@
-	movw %bx, %ss
 	movw $BIOS_STACK_START, %sp
 no_stack_chg_\@:
 .endm
@@ -55,8 +58,8 @@ no_stack_chg_\@:
 .macro LEAVE_INTERRUPT
 	// restore stack
 	movw ss_save, %ax
-	movw %ax, %ss
 	movw sp_save, %sp
+	movw %ax, %ss
 
 	pop %es
 	pop %ds
@@ -69,6 +72,7 @@ no_stack_chg_\@:
 	mov $0x20, %al
 	out %al, $PIC_CMD // send EOI
 	pop %ax
+	popf
 	sti
 	iret
 .endm
@@ -183,13 +187,19 @@ int_empty:
 	
 	// CPU interrupts
 int00:
+	cld
 	call int_div_by_zero
+	sti
 	iret
 int02:
+	cld
 	call int_nmi
+	sti
 	iret
 int04:
+	cld
 	call int_overflow
+	sti
 	iret
 	
 	/****** hardware interrupts ******/
@@ -197,18 +207,21 @@ int04:
 	// IRQ0: timer
 int08:
 	ENTER_INTERRUPT
+	cld
 	call int_timer
 	LEAVE_INTERRUPT
 	
 	// IRQ1: keyboard
 int09:
 	ENTER_INTERRUPT
+	cld
 	call int_keyboard
 	LEAVE_INTERRUPT
 
 	// IRQ6: sd drive
 int0E:
 	ENTER_INTERRUPT
+	cld
 	call int_drive
 	LEAVE_INTERRUPT
 
@@ -223,33 +236,36 @@ int10:
 	movw %bx, %ds
 	movw %bx, %es
 
-	mov %ax, int_ax
-	mov %cx, int_cx
-	mov %dx, int_dx
-	mov %si, int_si
-	mov %di, int_di
+	movw %ax, int_ax
+	movw %cx, int_cx
+	movw %dx, int_dx
+	movw %si, int_si
+	movw %di, int_di
 
 	movw %ss, %ax
 	movw %ax, int_ss_save
 	movw %sp, int_sp_save
 	movw %bx, %ss
+	movw $BIOS_STACK_START, %sp
 
+	cld
 	call int_bios
 
 	movw int_ss_save, %ax
 	movw %ax, %ss
 	movw int_sp_save, %sp
 
-	mov int_ax, %ax
-	mov int_cx, %cx
-	mov int_dx, %dx
-	mov int_si, %si
-	mov int_di, %di
+	movw int_ax, %ax
+	movw int_cx, %cx
+	movw int_dx, %dx
+	movw int_si, %si
+	movw int_di, %di
 
 	pop %es
 	pop %ds
 	pop %bp
 	pop %bx
+	sti
 	iret
 
 .size _start, . - _start

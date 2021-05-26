@@ -1,16 +1,12 @@
 #include "../../Lib/types.h"
 
-union header {
-	struct header_int {
-		union header __far *ptr;
-		dword size;
-	} h;
-	byte fill[16];
+struct header {
+	struct header __far *ptr;
+	dword size;
 };
-
-typedef union header header;
+typedef struct header header;
 
 unsigned int malloc_free_ram();
 void malloc_reset(void __far *heap_start, dword heap_size);
-void __far *malloc_(unsigned int nbytes);
+void __far *malloc_(dword nbytes);
 void free_(void __far *ap);

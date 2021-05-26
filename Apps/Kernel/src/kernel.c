@@ -6,7 +6,7 @@
 #include "scheduler.h"
 
 #define HEAP_START ((void __far *)0x10000000)
-#define HEAP_SIZE 0xC0000 - 0x10000
+#define HEAP_SIZE 0x10000ul
 
 static void init() {
     malloc_reset(HEAP_START, HEAP_SIZE);
@@ -14,7 +14,6 @@ static void init() {
 }
 
 int main() {
-    putstr("Hello.");
     init();
     start_scheduler();
     reboot();

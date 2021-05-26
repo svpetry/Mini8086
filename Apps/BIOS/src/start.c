@@ -112,7 +112,7 @@ static void check_timer(int row) {
     byte t = ticks;
     while (t == ticks && count > 0) {
         for (i = 0; i < 10; i++) {
-            asm("nop");
+            asm volatile("nop");
         }
         count--;
     }
@@ -129,8 +129,8 @@ static void check_timer(int row) {
             count++;
     }
     
-    // count /= 342;
-    count /= 320;
+    // count /= 320; // -Os
+    count /= 550; // -O2
     i = count / 100;
     if (i == 0)
         freq_str[0] = ' ';
@@ -162,7 +162,7 @@ static void check_keyboard(int row) {
     outp(0x64, 0xAA);
     data = 0;
     for (j = 0; j < 10 && data != 0x55; j++) {
-        for (i = 0; i < 2000; i++) asm("nop");
+        for (i = 0; i < 2000; i++) asm volatile("nop");
         data = inp(0x60);
     }
     if (data != 0x55) {
@@ -173,7 +173,7 @@ static void check_keyboard(int row) {
     outp(0x64, 0xAB); // perform controller self test
     status = 0;
     for (j = 0; j < 10 && (status & 1) == 0; j++) {
-        for (i = 0; i < 2000; i++) asm("nop");
+        for (i = 0; i < 2000; i++) asm volatile("nop");
         status = inp(0x64);
     }
     if ((status & 1) == 1) {

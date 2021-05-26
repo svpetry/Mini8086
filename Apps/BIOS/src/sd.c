@@ -136,7 +136,7 @@ static byte send_cmd1() {
 static void sd_delay() {
     int i;
     for (i = 0; i < 2000; i++)
-        asm("nop");
+        asm volatile("nop");
 }
 
 static byte sd_init_internal() {

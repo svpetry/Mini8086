@@ -15,10 +15,10 @@
 
 static void waitforchar(byte time50ms) {
     byte t = ticks;
-    while (ticks == t && !haschar()) asm("nop");
+    while (ticks == t && !haschar()) asm volatile("nop");
     while (time50ms > 0 && !haschar()) {
         t = ticks;
-        while (ticks == t && !(haschar())) asm("nop");
+        while (ticks == t && !(haschar())) asm volatile("nop");
         time50ms--;
     }
 }
@@ -101,11 +101,11 @@ static void input_time() {
     if (hours > 23) hours = 23;
     if (minutes > 59) minutes = 59;
     if (seconds > 59) seconds = 59;
-    asm("CLI");
+    asm volatile ("CLI");
     t_hours = hours;
     t_minutes = minutes;
     t_seconds = seconds;
-    asm("STI");
+    asm volatile ("STI");
     if (cfg_rtc) ds1307_settime(hours, minutes, seconds);
 }
 

@@ -29,19 +29,19 @@ volatile byte ticks; // 20 ticks/sec.
 void int_div_by_zero() {
     clrscr();
     putstr("DIVIDE BY ZERO ERROR. SYSTEM HALTED.");
-    asm("hlt");
+    asm volatile("hlt");
 }
 
 void int_nmi() {
     clrscr();
     putstr("HARDWARE ERROR. SYSTEM HALTED.");
-    asm("hlt");
+    asm volatile("hlt");
 }
 
 void int_overflow() {
     clrscr();
     putstr("OVERFLOW ERROR. SYSTEM HALTED.");
-    asm("hlt");
+    asm volatile("hlt");
 }
 
 void int_timer() {
@@ -82,7 +82,7 @@ void handle_bootmenu() {
     char key = getchar();
     if (key == KEY_DELETE || key == KEY_ESCAPE || key >= KEY_F1 && key <= KEY_F12) {
         draw_menu();
-        while (getchar()) asm("nop");
+        while (getchar()) asm volatile("nop");
         while (key != KEY_F1) {
             switch (key) {
                 case KEY_F2:
@@ -92,7 +92,7 @@ void handle_bootmenu() {
                     bios_setup();
                     break;
             }
-            while (!haschar()) asm("nop");
+            while (!haschar()) asm volatile("nop");
             key = getchar();
         }
     }
@@ -127,7 +127,7 @@ int main() {
 
     for (i = 0; i < 1000; i++)
         for (j = 0; j < 100; j++)
-            asm("nop");
+            asm volatile("nop");
 
     handle_bootmenu();
 
@@ -147,7 +147,7 @@ int main() {
         lcd_putstr(14, 0, s);
 
         for (j = 0; j < 1000; j++)
-            asm("nop");
+            asm volatile("nop");
     }
 #endif
 #if LCD == 2004
@@ -165,7 +165,7 @@ int main() {
         lcd_putstr(6, 3, s);
 
         for (j = 0; j < 1000; j++)
-            asm("nop");
+            asm volatile("nop");
     }
 #endif
 

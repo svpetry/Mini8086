@@ -49,6 +49,8 @@ namespace Emulator.ViewModels
 
         public ObservableCollection<string> DisassembledLines { get; } = new ObservableCollection<string>();
 
+        public string AssemblyBreak { get; set; } = "";
+
         #region Ports
 
         public byte PortA
@@ -343,6 +345,8 @@ namespace Emulator.ViewModels
                             lines.Enqueue(_emulator.DisassembledLine);
                             if (lines.Count > 1000)
                                 lines.Dequeue();
+                            if (AssemblyBreak != "" && _emulator.DisassembledLine.Contains(AssemblyBreak))
+                                _doStop = true;
                         }
                     }
                     stopWatch.Stop();

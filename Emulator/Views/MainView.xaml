@@ -94,15 +94,19 @@
             <TextBlock Padding="5,0,0,0" FontFamily="Consolas" FontSize="12" Text="{Binding LcdLine2}" Foreground="White" Background="Blue"/>
         </StackPanel>
         <Grid Grid.Row="1" Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Border Grid.Row="0" Grid.Column="1" Margin="10" BorderBrush="Gray" BorderThickness="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Margin="10" BorderBrush="Gray" BorderThickness="1">
                 <ScrollViewer x:Name="ScrollViewer">
                     <ListBox ItemsSource="{Binding DisassembledLines}" FontFamily="Consolas" BorderThickness="0"/>
                 </ScrollViewer>
             </Border>
+            <StackPanel Margin="10,0,10,5" Grid.Row="1" Orientation="Horizontal" IsEnabled="{Binding EnableDisassembler}">
+                <TextBlock Margin="0,0,20,0" Text="Break if instruction contains" />
+                <TextBox Text="{Binding AssemblyBreak}" Width="200"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

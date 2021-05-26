@@ -1,0 +1,7 @@
+Executable header size is 16 bytes.
+
+Byte	Content
+0	0x45 executable identifier 'E'
+1	0x58 executable identifier 'X'
+2	size in RAM in KB
+3-15	unused for now

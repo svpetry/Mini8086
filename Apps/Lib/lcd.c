@@ -10,14 +10,14 @@
 static void lcd_delay_long() {
     int i;
     for (i = 0; i < 12000; i++) {
-        asm("nop");
+        asm volatile("nop");
     }
 }
 
 static void lcd_delay_short() {
     int i;
     for (i = 0; i < 60; i++) {
-        asm("nop");
+        asm volatile("nop");
     }
 }
 

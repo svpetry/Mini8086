@@ -1,25 +1,25 @@
 #include "lowlevel.h"
 
 inline void outp(word port, byte value) {
-    asm(
+    asm volatile (
         "movb %1, %%al\n"
         "movw %0, %%dx\n"
         "outb %%al, %%dx"
-        : : "g" (port), "g" (value)
+        : : "g" (port), "g" (value) : "ax", "dx"
     );
 }
 
 inline byte inp(word port) {
     byte value;
-    asm(
+    asm volatile (
         "movw %1, %%dx\n"
         "inb %%dx, %%al\n"
         "movb %%al, %0\n"
-        : "=g" (value) : "g" (port)
+        : "=g" (value) : "g" (port) : "ax", "dx"
     );
     return value;
 }
 
 void reboot() {
-    asm("ljmpw $0xFFFF, $0x0000");
+    asm volatile ("ljmpw $0xFFFF, $0x0000");
 }

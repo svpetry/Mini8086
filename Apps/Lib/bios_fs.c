@@ -3,8 +3,8 @@
 
 byte fs_volname(char *s) {
     byte status;
-    asm(
-        "pushw %%ds\n"
+    asm volatile (
+        "pushw %%cs\n"
         "popw %%dx\n"
         "movw %1, %%cx\n"
         "movb $0x20, %%ah\n"
@@ -12,7 +12,7 @@ byte fs_volname(char *s) {
         "movb %%al, %0"
         : "=g" (status)
         : "g" (s)
-        : "ax", "cx", "dx", "si", "di"
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
     );
     return status;
 }
@@ -49,8 +49,8 @@ byte fs_write(byte handle, byte *buffer, dword count) {
 
 byte fs_opendir(const char *path, byte *handle) {
     byte status, h;
-    asm(
-        "pushw %%ds\n"
+    asm volatile (
+        "pushw %%cs\n"
         "popw %%dx\n"
         "movw %2, %%cx\n"
         "movb $0x28, %%ah\n"
@@ -59,7 +59,7 @@ byte fs_opendir(const char *path, byte *handle) {
         "movb %%ah, %1\n"
         : "=g" (status), "=g" (h)
         : "g" (path)
-        : "ax", "cx", "dx", "si", "di"
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
     );
     *handle = h;
     return status;
@@ -67,22 +67,22 @@ byte fs_opendir(const char *path, byte *handle) {
 
 byte fs_closedir(byte handle) {
     byte status;
-    asm(
+    asm volatile (
         "movb %1, %%al\n"
         "movb $0x29, %%ah\n"
         "int $0x10\n"
         "movb %%al, %0\n"
         : "=g" (status)
         : "g" (handle)
-        : "ax", "cx", "dx", "si", "di"
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
     );
     return status;
 }
 
 byte fs_read_entry(byte handle, char *s) {
     byte status;
-    asm(
-        "pushw %%ds\n"
+    asm volatile (
+        "pushw %%cs\n"
         "popw %%dx\n"
         "movw %1, %%cx\n"
         "movb %2, %%al\n"
@@ -91,7 +91,7 @@ byte fs_read_entry(byte handle, char *s) {
         "movb %%al, %0\n"
         : "=g" (status)
         : "g" (s), "g" (handle)
-        : "ax", "cx", "dx", "si", "di"
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
     );
     return status;
 }

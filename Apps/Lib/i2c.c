@@ -7,7 +7,7 @@ static byte i2c_br;
 static void i2c_delay_long() {
     word i;
     for (i = 0; i < 20000; i++)
-        asm("nop");
+        asm volatile("nop");
 }
 
 static byte wait_for_status(byte status) {

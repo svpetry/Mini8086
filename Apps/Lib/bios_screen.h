@@ -16,4 +16,4 @@ void setcursor(byte col, byte row);
 void putch(char c);
 
 /* outputs a string */
-void putstr(const char __far *str);
+void putstr(const char *str);

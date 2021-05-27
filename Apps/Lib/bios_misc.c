@@ -13,3 +13,16 @@ char getchar() {
     );
     return c;
 }
+
+byte get_ticks() {
+    byte ticks;
+    asm volatile (
+        "movb $0x11, %%ah\n"
+        "int $0x10\n"
+        "movb %%al, %0"
+        : "=g" (ticks)
+        : /* no inputs */
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
+    );
+    return ticks;
+}

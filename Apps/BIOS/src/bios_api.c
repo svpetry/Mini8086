@@ -3,6 +3,7 @@
 #include "../../Lib/screen.h"
 #include "keyboard.h"
 #include "bios_fsapi.h"
+#include "bios.h"
 
 volatile word int_sp_save;
 volatile word int_ss_save;
@@ -73,6 +74,12 @@ void int_bios() {
         // read character from keyboard buffer
         case 0x10: {
             int_ax = getchar();
+            break;
+        }
+
+        // read current tick count
+        case 0x11: {
+            int_ax = ticks;
             break;
         }
     }

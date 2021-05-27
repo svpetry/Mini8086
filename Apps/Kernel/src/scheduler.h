@@ -15,6 +15,7 @@ struct processinfo {
     word ss_save;
     byte priority;
     struct processinfo __far *next;
+    struct processinfo __far *prev;
 };
 typedef struct processinfo processinfo;
 

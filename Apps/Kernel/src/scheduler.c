@@ -10,17 +10,21 @@
 
 #define PIC_DATA    0x21
 #define TMR_CH1     0x41
+#define TMR_CH1_STR "0x41"
 #define TMR_CMD     0x43
+#define TMR_CMD_STR "0x43"
 
 // // timer values for 20 ms interval (decimal 20000)
 #define TMR_LO      0x20
+#define TMR_LO_STR  "0x20"
 #define TMR_HI      0x4E
+#define TMR_HI_STR  "0x4E"
 
 // timer values for 50 ms interval (decimal 60000)
 // #define TMR_LO      0x60
 // #define TMR_HI      0xEA
 
-static volatile processinfo __far *current_process;
+static processinfo __far *current_process;
 static volatile word scheduler_seg;
 static volatile byte header_offset;
 
@@ -29,6 +33,7 @@ static volatile word proc_ss_save;
 static volatile word proc_sp_save;
 
 static dword procstart;
+static byte terminate;
 
 static void puthexbyte(byte value) {
     char s[3];
@@ -59,16 +64,87 @@ static void showpointer(void __far *ptr) {
 /* handle INT 81h (terminate process) */
 static void __far handle_terminate() {
     asm volatile (
-        "nop\n"
-        "nop\n"
+        "pushf\n"
+	    "push %%ax\n"
+	    "push %%bx\n"
+	    "push %%cx\n"
+	    "push %%dx\n"
+	    "push %%si\n"
+	    "push %%di\n"
+	    "push %%bp\n"
+	    "push %%ds\n"
+	    "push %%es\n"
+
+        // save process stack to CX:BX
+        "movw %%sp, %%bx\n"
+        "movw %%ss, %%cx\n"
+
+        // restore segments
+        "movw %%cs, %%ax\n"
+        "movw %%ax, %%ss\n"
+        "movw %%ax, %%ds\n"
+        "movw %%ax, %%es\n"
+
+        // restore stack from sp_save
+        "movw %3, %%sp\n"
+
+        // save process stack from CX:BX to proc_ss_save:proc_sp_save
+        "movw %%bx, %1\n"
+        "movw %%cx, %0\n"
+        "movb $0x01, %2\n"
+
+        "cld\n"
+        "lret"
+        : "=m" (proc_ss_save), "=m" (proc_sp_save), "=m" (terminate)
+        : "m" (sp_save)
+        :
     );
 }
 
 /* handle INT 80h (sleep) */
 static void __far handle_sleep() {
     asm volatile (
-        "nop\n"
-        "nop\n"
+        "pushf\n"
+	    "push %%ax\n"
+	    "push %%bx\n"
+	    "push %%cx\n"
+	    "push %%dx\n"
+	    "push %%si\n"
+	    "push %%di\n"
+	    "push %%bp\n"
+	    "push %%ds\n"
+	    "push %%es\n"
+
+        // save process stack to CX:BX
+        "movw %%sp, %%bx\n"
+        "movw %%ss, %%cx\n"
+
+        // restore segments
+        "movw %%cs, %%ax\n"
+        "movw %%ax, %%ss\n"
+        "movw %%ax, %%ds\n"
+        "movw %%ax, %%es\n"
+
+        // reset timer
+        "movw $0b01110110, %%ax\n"
+        "out %%ax, $"TMR_CMD_STR"\n"
+        "movw $"TMR_LO_STR", %%ax\n"
+        "out %%ax, $"TMR_CH1_STR"\n"
+        "movw $"TMR_HI_STR", %%ax\n"
+        "out %%ax, $"TMR_CH1_STR"\n"
+
+        // restore stack from sp_save
+        "movw %2, %%sp\n"
+
+        // save process stack from CX:BX to proc_ss_save:proc_sp_save
+        "movw %%bx, %1\n"
+        "movw %%cx, %0\n"
+
+        "cld\n"
+        "lret"
+        : "=m" (proc_ss_save), "=m" (proc_sp_save)
+        : "m" (sp_save) 
+        :
     );
 }
 
@@ -79,9 +155,9 @@ static void __far handle_timer() {
         "pushf\n"
 	    "push %%ax\n"
 
-        // check if called from ROM
+        // check if called from ROM or kernel
         "movw %%ss, %%ax\n"
-        "cmpw $0x0000, %%ax\n"
+        "cmpw $0x0400, %%ax\n"
         "ja cont\n"
 
         // send EOI
@@ -145,7 +221,7 @@ static void init() {
 
     // set interrupt vectors
     dword __far *int_addr;
-    int_addr = (dword __far *)0x00000028; // INT 0Ah (IRQ 3)
+    int_addr = (dword __far *)0x00000028; // INT 0Ah (IRQ 2)
     *int_addr = (dword)(&handle_timer);
     int_addr = (dword __far *)0x00000200; // INT 80h (sleep)
     *int_addr = (dword)(&handle_sleep);
@@ -155,12 +231,10 @@ static void init() {
     // enable TIMER1 interrupt (IRQ2)
     byte mask = inp(PIC_DATA);
     mask &= 0b11111011;
-    //mask = 0b11111011;
     outp(PIC_DATA, mask);
 }
 
 static void start_timer() {
-    // outp(TMR_CMD, 0b01110000); // CH1, interrupt on terminal count
     outp(TMR_CMD, 0b01110110); // // CH1, square wave generator
     outp(TMR_CH1, TMR_LO);
     outp(TMR_CH1, TMR_HI);
@@ -196,6 +270,8 @@ static void __far resume_process() {
 }
 
 static void run_process() {
+    terminate = 0;
+
     enum processstate ps = current_process->state;
     dword ptr; /* contains the pointer to the code to be called */
     word new_sp = 0;
@@ -273,8 +349,11 @@ static void new_process(char *filename, byte priority) {
     if (current_process == NULL) {
         current_process = new_pi;
         current_process->next = new_pi;
+        current_process->prev = new_pi;
     } else {
         new_pi->next = current_process->next;
+        new_pi->prev = current_process;
+        current_process->next->prev = new_pi;
         current_process->next = new_pi;
     }
 
@@ -282,8 +361,6 @@ static void new_process(char *filename, byte priority) {
     new_pi->priority = priority;
 
     new_pi->size = (word)header.size << 6;
-    // puthexword(new_pi->size);
-    // putch('\n');
     
     mem += pheader_size; // TODO increase seg in pointer
     if (fs_read(handle, mem, size)) {
@@ -296,6 +373,26 @@ static void new_process(char *filename, byte priority) {
     fs_close(handle);
 }
 
+static void terminate_process() {
+    processinfo __far *p = current_process;
+
+    if (p->next == p) {
+        free_((void __far *)p);
+        current_process = NULL;
+        clrscr();
+        putstr("No process. System halted.");
+        asm volatile (
+            "cli\n"
+            "hlt\n"
+        );
+    }
+
+    p->prev->next = p->next;
+    p->next->prev = p->prev;
+    current_process = p->prev;
+    free_((void __far *)p);
+}
+
 void start_scheduler() {
     init();
 
@@ -305,6 +402,7 @@ void start_scheduler() {
     start_timer();
     do {
         run_process();
+        if (terminate) terminate_process();
         current_process = get_next_process();
     } while (current_process != NULL);
 }

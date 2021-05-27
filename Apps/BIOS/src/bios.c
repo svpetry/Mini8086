@@ -97,11 +97,7 @@ void handle_bootmenu() {
         }
     }
 }
-/*
-void __far test() {
-    putstr("Hello!");
-}
-*/
+
 int main() {
     word i, j, k;
     byte a;
@@ -168,11 +164,6 @@ int main() {
             asm volatile("nop");
     }
 #endif
-
-    // void __far (*func)() = &test;
-
-    // clrscr();
-    // (*func)();
 
     // boot from SD card
     boot();

@@ -9,6 +9,7 @@ enum processstate {
 
 struct processinfo {
     word id;
+    char name[9];
     enum processstate state;
     word size; // size in units (16 bytes)
     word sp_save;

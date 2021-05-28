@@ -25,8 +25,8 @@
 // #define TMR_HI      0xEA
 
 static processinfo __far *current_process;
-static volatile word scheduler_seg;
 static volatile byte header_offset;
+static word pid_gen;
 
 static volatile word sp_save;
 static volatile word proc_ss_save;
@@ -209,15 +209,8 @@ static void __far handle_timer() {
 
 static void init() {
     current_process = NULL;
+    pid_gen = 1;
     header_offset = (sizeof(processinfo) + 15) / 16;
-
-    asm volatile (
-        "pushw %%cs\n"
-        "popw %0"
-        : "=g" (scheduler_seg)
-        : /* no inputs */
-        : /* uses no registers */
-    );
 
     // set interrupt vectors
     dword __far *int_addr;
@@ -317,6 +310,20 @@ static void run_process() {
     }
 }
 
+static void init_process(processinfo __far *new_pi, const char *filename, byte priority) {
+    new_pi->id = pid_gen++;
+    new_pi->state = ps_new;
+    new_pi->priority = priority;
+
+    // set process name
+    byte i = 0;
+    while (filename[i] != 0 && filename[i] != '.' && i < 8) {
+        new_pi->name[i] = filename[i];
+        i++;
+    }
+    new_pi->name[i] = 0;
+}
+
 static void new_process(char *filename, byte priority) {
     dword size;
     if (fs_filesize(filename, &size)) {
@@ -357,8 +364,7 @@ static void new_process(char *filename, byte priority) {
         current_process->next = new_pi;
     }
 
-    new_pi->state = ps_new;
-    new_pi->priority = priority;
+    init_process(new_pi, filename, priority);
 
     new_pi->size = (word)header.size << 6;
     

@@ -15,6 +15,10 @@ void start_process(char *filename) {
 
 }
 
+void terminate_process(char *procname) {
+    
+}
+
 void sleep(word milliseconds) {
     if (milliseconds < TICK_DURATION_MS) {
         asm volatile (

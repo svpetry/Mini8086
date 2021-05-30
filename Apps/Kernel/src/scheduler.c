@@ -5,6 +5,7 @@
 #include "../../Lib/strutils.h"
 #include "../../Lib/bios_fs.h"
 #include "../../Lib/utils.h"
+#include "../../Lib/crc8.h"
 
 #define MAX_THREADS 64
 
@@ -324,24 +325,31 @@ static void init_process(processinfo __far *new_pi, const char *filename, byte p
     new_pi->name[i] = 0;
 }
 
+static byte check_crc8(byte __far *mem, word size, byte expected_crc) {
+    byte crc = crc8x_fast(0, NULL, 0);
+    crc = crc8x_fast(crc, mem, size);
+    return crc != expected_crc;
+}
+
 static void new_process(char *filename, byte priority) {
     dword size;
     if (fs_filesize(filename, &size)) {
         putstr(filename);
-        putstr(" not found.");
+        putstr(" not found.\n");
         return;
     }
 
     byte handle;
     if (fs_open(filename, &handle, MODE_READ)) {
         putstr(filename);
-        putstr(" open error.");
+        putstr(" open error.\n");
         return;
     }
     
     fileheader header;
     void __far *ptr = near_to_far(&header);
     fs_read(handle, ptr, sizeof(fileheader));
+    size -= sizeof(fileheader);
 
     if (header.id[0] != 'E' || header.id[1] != 'X') {
         putstr(filename);
@@ -367,16 +375,32 @@ static void new_process(char *filename, byte priority) {
     init_process(new_pi, filename, priority);
 
     new_pi->size = (word)header.size << 6;
-    
-    mem += pheader_size; // TODO increase seg in pointer
+
+    // set pointer to memory after header
+    word seg = (word)((dword)mem >> 16);
+    word offs = (word)((dword)mem & 0xFFFF);
+    seg += pheader_size >> 4;
+    mem = (byte __far *)(((dword)seg << 16) + (dword)offs);
+
+    byte error = 0;
     if (fs_read(handle, mem, size)) {
         putstr(filename);
-        putstr(" read error.");
-        //  TODO clean up after error
-        return;
+        putstr(" read error.\n");
+        error = 1;
+    }
+    fs_close(handle);
+
+    if (!error && check_crc8(mem, size, header.crc8)) {
+        putstr(filename);
+        putstr(" checksum error.\n");
+        error = 1;
     }
 
-    fs_close(handle);
+    if (error) {
+        current_process->next = new_pi->next;
+        current_process->next->prev = current_process;
+        free_(new_pi);
+    }
 }
 
 static void terminate_process() {
@@ -386,7 +410,7 @@ static void terminate_process() {
         free_((void __far *)p);
         current_process = NULL;
         clrscr();
-        putstr("No process. System halted.");
+        putstr("No process. System halted.\n");
         asm volatile (
             "cli\n"
             "hlt\n"

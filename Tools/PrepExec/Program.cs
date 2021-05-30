@@ -38,7 +38,7 @@ namespace PrepExec
                 0x45,
                 0x58,
                 (byte)fileSize,
-                0
+                Crc8.Crc8Fast(Crc8.Crc8Fast(0, null, 0), data.ToArray(), data.Count)
             };
             while (header.Count < 16)
                 header.Add(0);

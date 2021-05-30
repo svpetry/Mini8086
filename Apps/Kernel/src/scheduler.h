@@ -23,7 +23,8 @@ typedef struct processinfo processinfo;
 typedef struct {
     char id[2];
     byte size;
-    byte unused[13];
+    byte crc8;
+    byte unused[12];
 } fileheader;
 
 void start_scheduler();

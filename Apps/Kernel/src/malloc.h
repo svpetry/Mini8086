@@ -6,7 +6,7 @@ struct header {
 };
 typedef struct header header;
 
-unsigned int malloc_free_ram();
+dword malloc_free_ram();
 void malloc_reset(void __far *heap_start, dword heap_size);
 void __far *malloc_(dword nbytes);
 void free_(void __far *ap);

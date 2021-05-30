@@ -8,38 +8,14 @@ static header __far *freep = NULL;
 static void __far *heap_start;
 static dword heap_size;
 
-static void puthexbyte(byte value) {
-    char s[3];
-    itohex(value, s);   
-    if (value < 16)
-    	putch('0');
-    putstr(s);
-}
-
-static void puthexword(word value) {
-    puthexbyte((byte)(value >> 8));
-    puthexbyte((byte)(value & 0xFF));
-}
-
-static void showpointer(void __far *ptr) {
-	dword p = (dword)ptr;
-	volatile word hi = (word)(p >> 16);
-	volatile word lo = (word)(p & 0xFFFF);
-
-    puthexword(hi);
-	putch(':');
-    puthexword(lo);
-    putch('\n');
-}
-
 static header __far *inc_ptr(header __far *p, int units) {
 	dword dw_ptr = (dword)p;
 	dw_ptr += (dword)units << 16;
 	return (header __far *)dw_ptr;
 }
 
-unsigned int malloc_free_ram() {
-	unsigned int size;
+dword malloc_free_ram() {
+	dword size;
 	header __far *p;
 	size = freep->size;
 	p = freep->ptr;
@@ -48,7 +24,7 @@ unsigned int malloc_free_ram() {
 		size += p->size;
 		p = p->ptr;
 	}
-	return size << 2;
+	return size * UNIT_SIZE;
 }
 
 void malloc_reset(void __far *start, dword size) {
@@ -80,8 +56,6 @@ void __far *malloc_(dword nbytes) {
 			freep = prevp;
 
 			void __far *memp = (void __far *)inc_ptr(p, 1);
-			putstr("malloc: ");
-			showpointer(memp);
 			return memp;
 		}
 		if (p == freep)  /* wrapped around free list */

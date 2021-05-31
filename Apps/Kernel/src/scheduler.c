@@ -1,5 +1,6 @@
 #include "scheduler.h"
 #include "malloc.h"
+#include "utils.h"
 #include "../../Lib/lowlevel.h"
 #include "../../Lib/bios_screen.h"
 #include "../../Lib/strutils.h"
@@ -36,6 +37,7 @@ static volatile word proc_sp_save;
 static dword procstart;
 static byte terminate;
 
+/*
 static void puthexbyte(byte value) {
     char s[3];
     itohex(value, s);   
@@ -61,6 +63,7 @@ static void showpointer(void __far *ptr) {
     puthexword(lo);
     putch('\n');
 }
+*/
 
 /* handle INT 81h (terminate process) */
 static void __far handle_terminate() {
@@ -331,18 +334,16 @@ static byte check_crc8(byte __far *mem, word size, byte expected_crc) {
     return crc != expected_crc;
 }
 
-static void new_process(char *filename, byte priority) {
+static void new_process(const char *filename, byte priority) {
     dword size;
     if (fs_filesize(filename, &size)) {
-        putstr(filename);
-        putstr(" not found.\n");
+        file_error(filename, "not found.");
         return;
     }
 
     byte handle;
     if (fs_open(filename, &handle, MODE_READ)) {
-        putstr(filename);
-        putstr(" open error.\n");
+        file_error(filename, "open error.");
         return;
     }
     
@@ -352,8 +353,7 @@ static void new_process(char *filename, byte priority) {
     size -= sizeof(fileheader);
 
     if (header.id[0] != 'E' || header.id[1] != 'X') {
-        putstr(filename);
-        putstr(" not executable.");
+        file_error(filename, "not executable.");
         return;
     }
 
@@ -384,15 +384,13 @@ static void new_process(char *filename, byte priority) {
 
     byte error = 0;
     if (fs_read(handle, mem, size)) {
-        putstr(filename);
-        putstr(" read error.\n");
+        file_error(filename, "read error.");
         error = 1;
     }
     fs_close(handle);
 
     if (!error && check_crc8(mem, size, header.crc8)) {
-        putstr(filename);
-        putstr(" checksum error.\n");
+        file_error(filename, "checksum error.");
         error = 1;
     }
 
@@ -410,7 +408,7 @@ static void terminate_process() {
         free_((void __far *)p);
         current_process = NULL;
         clrscr();
-        putstr("No process. System halted.\n");
+        error("No process. System halted.");
         asm volatile (
             "cli\n"
             "hlt\n"
@@ -423,12 +421,10 @@ static void terminate_process() {
     free_((void __far *)p);
 }
 
-void start_scheduler() {
+void start_scheduler(const char *command_name) {
     init();
 
-    new_process("command.bin", 1);
-    new_process("command1.bin", 1);
-    new_process("command2.bin", 1);
+    new_process(command_name, 1);
     start_timer();
     do {
         run_process();

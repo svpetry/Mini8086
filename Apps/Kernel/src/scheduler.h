@@ -27,4 +27,4 @@ typedef struct {
     byte unused[12];
 } fileheader;
 
-void start_scheduler();
+void start_scheduler(const char *command_name);

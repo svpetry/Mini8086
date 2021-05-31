@@ -15,6 +15,6 @@ static void init() {
 
 int main() {
     init();
-    start_scheduler();
+    start_scheduler("command.bin");
     reboot();
 }

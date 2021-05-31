@@ -17,3 +17,6 @@ void putch(char c);
 
 /* outputs a string */
 void putstr(const char *str);
+
+/* prints a text on the screen */
+void settext(byte col, byte row, const char *s, byte color);

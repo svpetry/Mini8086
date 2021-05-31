@@ -10,8 +10,8 @@ AH = 00h	Clear screen
 ------------------------------------------------------------
 AH = 01h	Set cursor position
 
-DH: row
 DL: column
+DH: row
 
 ------------------------------------------------------------
 AH = 02h	Scroll down
@@ -38,6 +38,14 @@ AL: character code
 AH = 06h	Write string at cursor position
 
 DX:CX: pointer to string
+
+------------------------------------------------------------
+AH = 07h	Outputs a text on the screen
+
+DL: column
+DH: row
+CL: color
+SI:DI: pointer to string
 
 ------------------------------------------------------------
 

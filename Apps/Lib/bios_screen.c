@@ -68,3 +68,19 @@ void putstr(const char *str) {
         : "ax", "cx", "dx", "si", "di", "cc", "memory"
     );
 }
+
+void settext(byte col, byte row, const char *s, byte color) {
+    addr = (word)s;
+    asm volatile (
+        "movb $0x07, %%ah\n"
+        "movw %%ss, %%si\n"
+        "movw %0, %%di\n"
+        "movb %1, %%dl\n"
+        "movb %2, %%dh\n"
+        "movb %3, %%cl\n"
+        "int $0x10"
+        : /* no outputs */
+        : "m" (addr), "g" (col), "g" (row), "g" (color)
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
+    );
+}

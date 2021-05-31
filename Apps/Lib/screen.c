@@ -4,14 +4,18 @@
 #include "utils.h"
 #include "types.h"
 
+#define SCREEN_COLUMNS 80
+#define SCREEN_ROWS    25
+#define SCREEN_SIZE (SCREEN_COLUMNS * SCREEN_ROWS)
+
 byte cursor_col;
 byte cursor_row;
 byte textcol;
-word __far (*screen)[2000];
-word __far (*scrbuf)[2000];
+word __far (*screen)[SCREEN_SIZE];
+word __far (*scrbuf)[SCREEN_SIZE];
 
-void set_textcol(byte col) {
-    textcol = col;
+void set_textcol(byte color) {
+    textcol = color;
 }
 
 void init_screen() {
@@ -29,7 +33,7 @@ void init_screen() {
 
 void clrscr() {
     word i;
-    for (i = 0; i < 2000; i++) {
+    for (i = 0; i < SCREEN_SIZE; i++) {
         (*screen)[i] = 0;
         (*scrbuf)[i] = 0;
     }
@@ -38,7 +42,7 @@ void clrscr() {
 
 void clrrow(byte row) {
     word i;
-    for (i = row * 80; i < (row + 1) * 80; i++) {
+    for (i = row * SCREEN_COLUMNS; i < (row + 1) * SCREEN_COLUMNS; i++) {
         (*screen)[i] = 0;
         (*scrbuf)[i] = 0;
     }
@@ -46,26 +50,26 @@ void clrrow(byte row) {
 
 static void copy_bufline(int dest, int src) {
     byte __far *bufptr = (byte __far *)scrbuf;
-    memcpy_(bufptr + dest * 160, bufptr + src * 160, 160);
+    memcpy_(bufptr + dest * SCREEN_COLUMNS * 2, bufptr + src * SCREEN_COLUMNS * 2, SCREEN_COLUMNS * 2);
 }
 
 void scrolldown() {
     int i;
-    for (i = 0; i < 24; i++)
+    for (i = 0; i < SCREEN_ROWS - 1; i++)
         copy_bufline(i + 1, i);
-    memset_(scrbuf, 0, 160);
-    memcpy_(screen, scrbuf, 4000);
-    if (cursor_row < 24)
+    memset_(scrbuf, 0, SCREEN_COLUMNS * 2);
+    memcpy_(screen, scrbuf, SCREEN_SIZE * 2);
+    if (cursor_row < SCREEN_ROWS - 1)
         cursor_row++;
 }
 
 void scrollup() {
     int i;
     byte __far *ptr = (byte __far *)scrbuf;
-    for (i = 0; i < 24; i++)
+    for (i = 0; i < SCREEN_ROWS - 1; i++)
         copy_bufline(i, i + 1); 
-    memset_(ptr + 24 * 160, 0, 160);
-    memcpy_(screen, scrbuf, 4000);
+    memset_(ptr + (SCREEN_ROWS - 1) * SCREEN_COLUMNS * 2, 0, SCREEN_COLUMNS * 2);
+    memcpy_(screen, scrbuf, SCREEN_SIZE * 2);
     if (cursor_row > 0)
         cursor_row--;
 }
@@ -77,30 +81,52 @@ void setcursor(byte col, byte row) {
 
 void putch(char c) {
     if (c != '\n') {
-        word index = cursor_row * 80 + cursor_col;
+        word index = cursor_row * SCREEN_COLUMNS + cursor_col;
         word data = c + (textcol << 8);
         (*screen)[index] = data;
         (*scrbuf)[index] = data;
         cursor_col++;
     }
 
-    if (c == '\n' || cursor_col == 80) {
+    if (c == '\n' || cursor_col == SCREEN_COLUMNS) {
         cursor_col = 0;
-        if (cursor_row == 24)
+        if (cursor_row == SCREEN_ROWS - 1)
             scrollup();
         cursor_row++;
     }
 }
 
 void setchar(byte col, byte row, char c) {
-    word index = row * 80 + col;
+    word index = row * SCREEN_COLUMNS + col;
     word data = c + (textcol << 8);
     (*screen)[index] = data;
     (*scrbuf)[index] = data;
 }
 
+void settext(byte col, byte row, const char *s, byte color) {
+    word index = row * SCREEN_COLUMNS + col;
+    while (*s && index < SCREEN_SIZE) {
+        word data = *s + (textcol << 8);
+        (*screen)[index] = data;
+        (*scrbuf)[index] = data;
+        s++;
+        index++;
+    }
+}
+
+void settext_far(byte col, byte row, const char __far *s, byte color) {
+    word index = row * SCREEN_COLUMNS + col;
+    while (*s && index < SCREEN_SIZE) {
+        word data = *s + (textcol << 8);
+        (*screen)[index] = data;
+        (*scrbuf)[index] = data;
+        s++;
+        index++;
+    }
+}
+
 char getscreenchar(byte col, byte row) {
-    word index = row * 80 + col;
+    word index = row * SCREEN_COLUMNS + col;
     return (*scrbuf)[index];
 }
 

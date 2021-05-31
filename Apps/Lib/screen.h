@@ -1,7 +1,7 @@
 #include "types.h"
 
 /* sets the active text color */
-void set_textcol(byte col);
+void set_textcol(byte color);
 
 /* initializes the screen in textmode with default colors */
 void init_screen();
@@ -26,6 +26,12 @@ void putch(char c);
 
 /* sets a char at a given position */
 void setchar(byte col, byte row, char c);
+
+/* prints a text on the screen */
+void settext(byte col, byte row, const char *s, byte color);
+
+/* prints a text on the screen (far pointer) */
+void settext_far(byte col, byte row, const char __far *s, byte color);
 
 /* gets a char at a given position */
 char getscreenchar(byte col, byte row);

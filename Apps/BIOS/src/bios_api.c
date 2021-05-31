@@ -71,6 +71,13 @@ void int_bios() {
             break;
         }
 
+        // output a text on the screen
+        case 0x07: {
+            dword addr = (((dword)int_si) << 16) + int_di;
+            settext_far(int_dx, int_dx >> 8, (char __far *)addr, int_cx);
+            break;
+        }
+
         // read character from keyboard buffer
         case 0x10: {
             int_ax = getchar();

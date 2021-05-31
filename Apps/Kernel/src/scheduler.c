@@ -8,8 +8,6 @@
 #include "../../Lib/utils.h"
 #include "../../Lib/crc8.h"
 
-#define MAX_THREADS 64
-
 #define PIC_DATA    0x21
 #define TMR_CH1     0x41
 #define TMR_CH1_STR "0x41"
@@ -26,7 +24,14 @@
 // #define TMR_LO      0x60
 // #define TMR_HI      0xEA
 
+#define PRIORITY_ORDER_LEN 9
+#define PRIORITY_LEVELS    3 // priority levels P1, P2, P3. P0 = realtime priority (stored in the same list as P1)
+
+static byte priority_order[PRIORITY_ORDER_LEN] = {1, 1, 2, 1, 1, 2, 1, 1, 3};
+static byte prio_order_idx;
+
 static processinfo __far *current_process;
+static processinfo __far *processes[PRIORITY_LEVELS]; // double linked list of processes for each priority level
 static volatile byte header_offset;
 static word pid_gen;
 
@@ -109,15 +114,15 @@ static void __far handle_terminate() {
 static void __far handle_sleep() {
     asm volatile (
         "pushf\n"
-	    "push %%ax\n"
-	    "push %%bx\n"
-	    "push %%cx\n"
-	    "push %%dx\n"
-	    "push %%si\n"
-	    "push %%di\n"
-	    "push %%bp\n"
-	    "push %%ds\n"
-	    "push %%es\n"
+	    "pushw %%ax\n"
+	    "pushw %%bx\n"
+	    "pushw %%cx\n"
+	    "pushw %%dx\n"
+	    "pushw %%si\n"
+	    "pushw %%di\n"
+	    "pushw %%bp\n"
+	    "pushw %%ds\n"
+	    "pushw %%es\n"
 
         // save process stack to CX:BX
         "movw %%sp, %%bx\n"
@@ -128,14 +133,6 @@ static void __far handle_sleep() {
         "movw %%ax, %%ss\n"
         "movw %%ax, %%ds\n"
         "movw %%ax, %%es\n"
-
-        // reset timer
-        "movw $0b01110110, %%ax\n"
-        "out %%ax, $"TMR_CMD_STR"\n"
-        "movw $"TMR_LO_STR", %%ax\n"
-        "out %%ax, $"TMR_CH1_STR"\n"
-        "movw $"TMR_HI_STR", %%ax\n"
-        "out %%ax, $"TMR_CH1_STR"\n"
 
         // restore stack from sp_save
         "movw %2, %%sp\n"
@@ -157,7 +154,7 @@ static void __far handle_timer() {
     asm volatile (
         "sti\n"
         "pushf\n"
-	    "push %%ax\n"
+	    "pushw %%ax\n"
 
         // check if called from ROM or kernel
         "movw %%ss, %%ax\n"
@@ -173,14 +170,14 @@ static void __far handle_timer() {
         "iret\n"
 
         "cont:\n"
-	    "push %%bx\n"
-	    "push %%cx\n"
-	    "push %%dx\n"
-	    "push %%si\n"
-	    "push %%di\n"
-	    "push %%bp\n"
-	    "push %%ds\n"
-	    "push %%es\n"
+	    "pushw %%bx\n"
+	    "pushw %%cx\n"
+	    "pushw %%dx\n"
+	    "pushw %%si\n"
+	    "pushw %%di\n"
+	    "pushw %%bp\n"
+	    "pushw %%ds\n"
+	    "pushw %%es\n"
 
         "movb $0x20, %%al\n"
         "out %%al, $0x20\n" // send EOI
@@ -213,7 +210,10 @@ static void __far handle_timer() {
 
 static void init() {
     current_process = NULL;
+    for (int i = 0; i < PRIORITY_LEVELS; i++)
+        processes[i] = NULL;
     pid_gen = 1;
+    prio_order_idx = 0;
     header_offset = (sizeof(processinfo) + 15) / 16;
 
     // set interrupt vectors
@@ -232,13 +232,40 @@ static void init() {
 }
 
 static void start_timer() {
-    outp(TMR_CMD, 0b01110110); // // CH1, square wave generator
-    outp(TMR_CH1, TMR_LO);
-    outp(TMR_CH1, TMR_HI);
+    asm volatile (
+        "movw $0b01110110, %ax\n" // CH1, square wave generator
+        "out %ax, $"TMR_CMD_STR"\n"
+        "movw $"TMR_LO_STR", %ax\n"
+        "out %ax, $"TMR_CH1_STR"\n"
+        "movw $"TMR_HI_STR", %ax\n"
+        "out %ax, $"TMR_CH1_STR"\n"
+    );
+}
+
+static void stop_timer() {
+    asm volatile (
+        "movw $0b01110010, %ax\n" // CH1, hardware re-triggerable one-shot (means disabled)
+        "out %ax, $"TMR_CMD_STR"\n"
+        "movw $0xFF, %ax\n"
+        "out %ax, $"TMR_CH1_STR"\n"
+        "out %ax, $"TMR_CH1_STR"\n"
+    );
 }
 
 static processinfo __far *get_next_process() {
-    return current_process->next;
+    processinfo __far *process = NULL;
+    byte prio = priority_order[prio_order_idx] - 1;
+    do {
+        process = processes[prio];
+        if (process == NULL) prio--;
+    } while (process == NULL && prio > 0);
+    
+    if (process != NULL)
+        processes[prio] = process->next;
+
+    if (++prio_order_idx == PRIORITY_ORDER_LEN)
+        prio_order_idx = 0;
+    return process;
 }
 
 static void __far resume_process() {
@@ -251,15 +278,15 @@ static void __far resume_process() {
         : : "g" (proc_ss_save), "g" (proc_sp_save) : "ax", "memory"
     );
     asm volatile (
-        "pop %es\n"
-        "pop %ds\n"
-        "pop %bp\n"
-        "pop %di\n"
-        "pop %si\n"
-        "pop %dx\n"
-        "pop %cx\n"
-        "pop %bx\n"
-        "pop %ax\n"
+        "popw %es\n"
+        "popw %ds\n"
+        "popw %bp\n"
+        "popw %di\n"
+        "popw %si\n"
+        "popw %dx\n"
+        "popw %cx\n"
+        "popw %bx\n"
+        "popw %ax\n"
         "popf\n"
         "iret\n"
     );
@@ -273,7 +300,9 @@ static void run_process() {
     dword ptr; /* contains the pointer to the code to be called */
     word new_sp = 0;
     if (ps == ps_new) {
-        ptr = (dword)current_process; // call to 
+        if (current_process->priority == 0)
+            stop_timer(); // real time priority
+        ptr = (dword)current_process;
         volatile word seg = (ptr >> 16) + header_offset;
         volatile word offs = ptr;
         ptr = ((dword)seg << 16) + offs;
@@ -361,19 +390,7 @@ static void new_process(const char *filename, byte priority) {
     byte __far *mem = malloc_((((dword)header.size) << 10) + pheader_size);
 
     processinfo __far *new_pi = (processinfo __far *)mem;
-    if (current_process == NULL) {
-        current_process = new_pi;
-        current_process->next = new_pi;
-        current_process->prev = new_pi;
-    } else {
-        new_pi->next = current_process->next;
-        new_pi->prev = current_process;
-        current_process->next->prev = new_pi;
-        current_process->next = new_pi;
-    }
-
     init_process(new_pi, filename, priority);
-
     new_pi->size = (word)header.size << 6;
 
     // set pointer to memory after header
@@ -382,31 +399,55 @@ static void new_process(const char *filename, byte priority) {
     seg += pheader_size >> 4;
     mem = (byte __far *)(((dword)seg << 16) + (dword)offs);
 
-    byte error = 0;
+    byte err = 0;
     if (fs_read(handle, mem, size)) {
         file_error(filename, "read error.");
-        error = 1;
+        err = 1;
     }
     fs_close(handle);
 
-    if (!error && check_crc8(mem, size, header.crc8)) {
+    if (!err && check_crc8(mem, size, header.crc8)) {
         file_error(filename, "checksum error.");
-        error = 1;
+        err = 1;
     }
 
-    if (error) {
-        current_process->next = new_pi->next;
-        current_process->next->prev = current_process;
+    if (err) {
         free_(new_pi);
+        return;
+    }
+        
+    byte pindex = priority == 0 ? 0 : priority - 1;
+    processinfo __far *curr_pi = processes[pindex];
+    if (curr_pi == NULL) {
+        curr_pi = new_pi;
+        curr_pi->next = new_pi;
+        curr_pi->prev = new_pi;
+        processes[pindex] = curr_pi;
+    } else {
+        new_pi->next = curr_pi->next;
+        new_pi->prev = curr_pi;
+        curr_pi->next->prev = new_pi;
+        curr_pi->next = new_pi;
     }
 }
 
 static void terminate_process() {
     processinfo __far *p = current_process;
-
+    current_process = NULL;
+    
     if (p->next == p) {
+         byte pindex = p->priority == 0 ? 0 : p->priority - 1;
+         processes[pindex] = NULL;
+    }
+
+    byte no_proc = 1;
+    for (byte i = 0; i < PRIORITY_LEVELS && no_proc; i++) {
+        if (processes[i] != NULL)
+            no_proc = 0;
+    }
+
+    if (no_proc) {
         free_((void __far *)p);
-        current_process = NULL;
         clrscr();
         error("No process. System halted.");
         asm volatile (
@@ -425,10 +466,13 @@ void start_scheduler(const char *command_name) {
     init();
 
     new_process(command_name, 1);
-    start_timer();
-    do {
-        run_process();
-        if (terminate) terminate_process();
+    while (1) {
         current_process = get_next_process();
-    } while (current_process != NULL);
+        if (current_process != NULL) {
+            start_timer();
+            run_process();
+            stop_timer();
+            if (terminate) terminate_process();
+        }
+    }
 }

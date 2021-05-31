@@ -80,7 +80,8 @@ namespace Emulator.Lib.Components
 
                     // programmable one-shot
                     case 1:
-                        throw new NotImplementedException();
+                        //throw new NotImplementedException();
+                        break;
 
                     // rate generator
                     case 2:
@@ -92,11 +93,13 @@ namespace Emulator.Lib.Components
 
                     // software triggered strobe
                     case 4:
-                        throw new NotImplementedException();
+                        //throw new NotImplementedException();
+                        break;
 
                     // hardware triggered strobe
                     case 5:
-                        throw new NotImplementedException();
+                        //throw new NotImplementedException();
+                        break;
                 }
             }
         }

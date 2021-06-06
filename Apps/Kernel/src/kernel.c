@@ -2,7 +2,7 @@
 #include "../../Lib/strutils.h"
 #include "../../Lib/lowlevel.h"
 #include "../../Lib/bios_misc.h"
-#include "malloc.h"
+#include "kmalloc.h"
 #include "scheduler.h"
 
 #define HEAP_START ((void __far *)0x10000000)

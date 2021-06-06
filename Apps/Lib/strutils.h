@@ -1,3 +1,6 @@
+#ifndef STRUTILS_H
+#define STRUTILS_H
+
 /* returs the length of a string */
 int strlen(char *s);
 
@@ -24,3 +27,5 @@ void itohex(int n, char s[]);
 
 /* converts a long integer to a string */
 void ltoa(long i, char* buf);
+
+#endif

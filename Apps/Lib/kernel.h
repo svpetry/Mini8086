@@ -1,3 +1,6 @@
+#ifndef KERNEL_H
+#define KERNEL_H
+
 #include "types.h"
 
 /* allocate memory */
@@ -11,3 +14,5 @@ void start_process(char *filename);
 
 /* wait for a given number of milliseconds */
 void sleep(word milliseconds);
+
+#endif

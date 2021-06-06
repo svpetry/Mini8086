@@ -1,3 +1,6 @@
+#ifndef BIOS_API_H
+#define BIOS_API_H
+
 #include "../../Lib/types.h"
 
 extern volatile word int_ax;
@@ -8,3 +11,5 @@ extern volatile word int_si;
 extern volatile word int_di;
 
 void int_bios();
+
+#endif

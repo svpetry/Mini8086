@@ -1,3 +1,6 @@
+#ifndef DS1207_H
+#define DS1207_H
+
 #include "../Lib/types.h"
 
 /* DS1307 initialization */
@@ -14,3 +17,5 @@ void ds1307_setdate(byte day, byte month, byte year);
 
 /* gets the date */
 void ds1307_getdate(byte *day, byte *month, byte *year);
+
+#endif

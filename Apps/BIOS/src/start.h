@@ -1,3 +1,6 @@
+#ifndef START_H
+#define START_H
+
 #include "../../Lib/types.h"
 
 void startup();
@@ -22,3 +25,5 @@ extern byte cfg_rtc;
 
 /* amount of RAM in KBytes */
 extern int ram_kb;
+
+#endif

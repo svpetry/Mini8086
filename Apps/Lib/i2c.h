@@ -1,3 +1,6 @@
+#ifndef I2C_H
+#define I2C_H
+
 #include "types.h"
 #include "lowlevel.h"
 
@@ -39,3 +42,5 @@ byte i2c_write(byte data);
 
 /* receive a byte */
 byte i2c_read(byte *data, byte ack);
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef BIOS_FS_H
+#define BIOS_FS_H
+
 #include "types.h"
 #include "biosdefs.h"
 
@@ -40,3 +43,5 @@ byte fs_closedir(byte handle);
 
 /* create directory */
 byte fs_createdir(const char *dirname);
+
+#endif

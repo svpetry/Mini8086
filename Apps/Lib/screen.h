@@ -1,3 +1,6 @@
+#ifndef SCREEN_H
+#define SCREEN_H
+
 #include "types.h"
 
 /* sets the active text color */
@@ -47,3 +50,5 @@ void putstr_far(const char __far *str);
 
 /* outputs a byte as 2-digit hex number */
 void puthexbyte(byte value);
+
+#endif

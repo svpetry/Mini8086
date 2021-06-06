@@ -1,3 +1,6 @@
+#ifndef SCHEDULER_H
+#define SCHEDULER_H
+
 #include "../../Lib/types.h"
 
 enum processstate {
@@ -30,3 +33,5 @@ typedef struct {
 extern volatile word sp_save;
 
 void start_scheduler(const char *command_name);
+
+#endif

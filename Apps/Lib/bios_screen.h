@@ -1,3 +1,6 @@
+#ifndef BIOS_SCREEN_H
+#define BIOS_SCREEN_H
+
 #include "types.h"
 
 /* clears the screen */
@@ -20,3 +23,5 @@ void putstr(const char *str);
 
 /* prints a text on the screen */
 void settext(byte col, byte row, const char *s, byte color);
+
+#endif

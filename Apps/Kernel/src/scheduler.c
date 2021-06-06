@@ -1,6 +1,6 @@
 #include "scheduler.h"
-#include "malloc.h"
-#include "utils.h"
+#include "kmalloc.h"
+#include "kutils.h"
 #include "../../Lib/lowlevel.h"
 #include "../../Lib/bios_screen.h"
 #include "../../Lib/strutils.h"

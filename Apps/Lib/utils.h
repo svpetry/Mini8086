@@ -1,3 +1,6 @@
+#ifndef UTILS_H
+#define UTILS_H
+
 #include "types.h"
 
 #define RAND_MAX 32767
@@ -24,3 +27,5 @@ void *memset(void *dest, int val, size_t len);
 
 /* convert near to far pointer */
 void __far *near_to_far(void *p);
+
+#endif

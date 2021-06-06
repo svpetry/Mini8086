@@ -1,4 +1,7 @@
 
+#ifndef KEYS_H
+#define KEYS_H
+
 #define KEY_LEFT        0x01
 #define KEY_UP          0x02
 #define KEY_RIGHT       0x03
@@ -24,3 +27,5 @@
 #define KEY_ESCAPE      0x1B
 #define KEY_INSERT      0x1C
 #define KEY_DELETE      0x7F
+
+#endif

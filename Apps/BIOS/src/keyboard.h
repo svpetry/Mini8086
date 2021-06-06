@@ -1,3 +1,6 @@
+#ifndef KEYBOARD_H
+#define KEYBOARD_H
+
 #include "../../Lib/types.h"
 
 /* initializes the keyboard handling */
@@ -11,3 +14,5 @@ byte haschar();
 
 /* returns the next keycode in the queue */
 char getchar();
+
+#endif

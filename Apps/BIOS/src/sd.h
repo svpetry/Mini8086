@@ -1,3 +1,6 @@
+#ifndef SD_H
+#define SD_H
+
 #include "../../Lib/types.h"
 
 /* send and receive a byte via SPI (to the SD card) */
@@ -35,3 +38,5 @@ void sd_led_rd(byte state);
 
 /* sets the write LED state */
 void sd_led_wr(byte state);
+
+#endif

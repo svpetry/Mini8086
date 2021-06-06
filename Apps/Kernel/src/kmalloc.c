@@ -1,4 +1,4 @@
-#include "malloc.h"
+#include "kmalloc.h"
 #include "../../Lib/bios_screen.h"
 #include "../../Lib/strutils.h"
 

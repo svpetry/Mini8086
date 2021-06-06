@@ -1,3 +1,6 @@
+#ifndef DEFS_H
+#define DEFS_H
+
 /*
     connected LC display
     0: none
@@ -11,3 +14,5 @@
 
 // keyboard debug mode
 #define KEYB_DEBUG 0
+
+#endif

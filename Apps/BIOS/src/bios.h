@@ -1,3 +1,6 @@
+#ifndef BIOS_H
+#define BIOS_H
+
 #include "../../Lib/types.h"
 
 extern volatile byte t_hours;
@@ -25,3 +28,5 @@ void int_keyboard();
 
 /* sd drive interrupt handler */
 void int_drive();
+
+#endif

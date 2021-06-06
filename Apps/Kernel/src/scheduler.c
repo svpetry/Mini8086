@@ -35,7 +35,7 @@ static processinfo __far *processes[PRIORITY_LEVELS]; // double linked list of p
 static volatile byte header_offset;
 static word pid_gen;
 
-static volatile word sp_save;
+volatile word sp_save;
 static volatile word proc_ss_save;
 static volatile word proc_sp_save;
 

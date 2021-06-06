@@ -1,12 +1,39 @@
 kernel functions at INT 20h
 
+------------------------------------------------------------
+AH = 00h	start process
 
-SCREEN =====================================================
+returns:
+AL: result code
 
 ------------------------------------------------------------
-AH = 00h	
+AH = 01h	kill process
+
+CX:DX		process name
+
+returns:
+AL: result code
+
 ------------------------------------------------------------
-AH = 80h	Sleep (finish scheduler time slice)
+AH = 02h	list first process
+
+CX:DX		pointer to data structure
+
+returns:
+AL: result code
+
 ------------------------------------------------------------
-AH = 81h	Terminate process
+AH = 03h	list next process
+
+CX:DX		pointer to data structure
+
+returns:
+AL: result code
+
+
+other
+------------------------------------------------------------
+INT 80h	Sleep (finish scheduler time slice)
+------------------------------------------------------------
+INT 81h	Terminate current process
 ------------------------------------------------------------

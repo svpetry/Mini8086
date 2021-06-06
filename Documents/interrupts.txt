@@ -29,3 +29,4 @@ Int	Address		Type		Function
 0Eh	0038h		Hardware	IRQ6
 0Fh	003Ch		Hardware	IRQ7
 10h	0040h		Software	BIOS
+20h	0080h		Software	Kernel

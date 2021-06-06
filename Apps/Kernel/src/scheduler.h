@@ -27,4 +27,6 @@ typedef struct {
     byte unused[12];
 } fileheader;
 
+extern volatile word sp_save;
+
 void start_scheduler(const char *command_name);

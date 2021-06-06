@@ -2,14 +2,6 @@
 .code16
 .global _start
 
-.global int_empty
-.global int00
-.global int02
-.global int04
-.global int08
-.global int09
-.global int0E
-
 .set BIOS_STACK_START, 0x3FFE
 
 .set PIC_CMD, 0x20
@@ -73,7 +65,6 @@ no_stack_chg_\@:
 	out %al, $PIC_CMD // send EOI
 	pop %ax
 	popf
-	sti
 	iret
 .endm
 
@@ -227,6 +218,7 @@ int0E:
 
 	/****** software interrupts ******/
 int10:
+	pushf
 	push %bx
 	push %bp
 	push %ds
@@ -265,7 +257,7 @@ int10:
 	pop %ds
 	pop %bp
 	pop %bx
-	sti
+	popf
 	iret
 
 .size _start, . - _start

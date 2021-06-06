@@ -1,6 +1,7 @@
 #include "scheduler.h"
 #include "kmalloc.h"
 #include "kutils.h"
+#include "../../Lib/kernel_defs.h"
 #include "../../Lib/lowlevel.h"
 #include "../../Lib/bios_screen.h"
 #include "../../Lib/strutils.h"
@@ -254,17 +255,21 @@ static void stop_timer() {
 
 static processinfo __far *get_next_process() {
     processinfo __far *process = NULL;
-    byte prio = priority_order[prio_order_idx] - 1;
+    byte start_order_idx = prio_order_idx;
     do {
-        process = processes[prio];
-        if (process == NULL) prio--;
-    } while (process == NULL && prio > 0);
-    
-    if (process != NULL)
-        processes[prio] = process->next;
+        byte prio = priority_order[prio_order_idx];
+        do {
+            process = processes[prio - 1];
+            if (process == NULL) prio--;
+        } while (process == NULL && prio > 0);
+        
+        if (process != NULL)
+            processes[prio] = process->next;
 
-    if (++prio_order_idx == PRIORITY_ORDER_LEN)
-        prio_order_idx = 0;
+        if (++prio_order_idx == PRIORITY_ORDER_LEN)
+            prio_order_idx = 0;
+    } while (process == NULL && prio_order_idx != start_order_idx);
+
     return process;
 }
 
@@ -296,10 +301,10 @@ static void __far resume_process() {
 static void run_process() {
     terminate = 0;
 
-    enum processstate ps = current_process->state;
+    pstate ps = current_process->state;
     dword ptr; /* contains the pointer to the code to be called */
     word new_sp = 0;
-    if (ps == ps_new) {
+    if (ps == PS_NEW) {
         if (current_process->priority == 0)
             stop_timer(); // real time priority
         ptr = (dword)current_process;
@@ -307,12 +312,12 @@ static void run_process() {
         volatile word offs = ptr;
         ptr = ((dword)seg << 16) + offs;
         new_sp = (current_process->size * 16) - 2;
-    } else if (ps == ps_idle) {
+    } else if (ps == PS_IDLE) {
         ptr = (dword)&resume_process;
     }
 
-    if (ps == ps_new || ps == ps_idle) {
-        current_process->state = ps_running;
+    if (ps == PS_NEW || ps == PS_IDLE) {
+        current_process->state = PS_RUNNING;
         procstart = ptr;
         asm volatile (
             // save stack segment + pointer, put new SP into SI
@@ -337,7 +342,7 @@ static void run_process() {
             : "ax", "cx", "dx", "si", "di"
         );
 
-        current_process->state = ps_idle;
+        current_process->state = PS_IDLE;
         current_process->ss_save = proc_ss_save;
         current_process->sp_save = proc_sp_save;
     }
@@ -345,7 +350,7 @@ static void run_process() {
 
 static void init_process(processinfo __far *new_pi, const char *filename, byte priority) {
     new_pi->id = pid_gen++;
-    new_pi->state = ps_new;
+    new_pi->state = PS_NEW;
     new_pi->priority = priority;
 
     // set process name
@@ -363,17 +368,17 @@ static byte check_crc8(byte __far *mem, word size, byte expected_crc) {
     return crc != expected_crc;
 }
 
-static void new_process(const char *filename, byte priority) {
+static SRESULT new_process(const char *filename) {
     dword size;
     if (fs_filesize(filename, &size)) {
         file_error(filename, "not found.");
-        return;
+        return SR_FILE_NOT_FOUND;
     }
 
     byte handle;
     if (fs_open(filename, &handle, MODE_READ)) {
         file_error(filename, "open error.");
-        return;
+        return SR_FILE_OPEN_ERROR;
     }
     
     fileheader header;
@@ -383,14 +388,14 @@ static void new_process(const char *filename, byte priority) {
 
     if (header.id[0] != 'E' || header.id[1] != 'X') {
         file_error(filename, "not executable.");
-        return;
+        return SR_NO_EXEC;
     }
 
     word pheader_size = ((sizeof(processinfo) + 15) / 16) * 16;
     byte __far *mem = malloc_((((dword)header.size) << 10) + pheader_size);
 
     processinfo __far *new_pi = (processinfo __far *)mem;
-    init_process(new_pi, filename, priority);
+    init_process(new_pi, filename, header.priority);
     new_pi->size = (word)header.size << 6;
 
     // set pointer to memory after header
@@ -399,24 +404,26 @@ static void new_process(const char *filename, byte priority) {
     seg += pheader_size >> 4;
     mem = (byte __far *)(((dword)seg << 16) + (dword)offs);
 
-    byte err = 0;
+    SRESULT sresult = SR_OK;
     if (fs_read(handle, mem, size)) {
         file_error(filename, "read error.");
-        err = 1;
+        sresult = SR_READ_ERROR;
     }
     fs_close(handle);
 
-    if (!err && check_crc8(mem, size, header.crc8)) {
-        file_error(filename, "checksum error.");
-        err = 1;
+    if (sresult == SR_OK) {
+        if (check_crc8(mem, size, header.crc8)) {
+            file_error(filename, "checksum error.");
+            sresult = SR_CHECKSUM_ERROR;
+        }
     }
 
-    if (err) {
+    if (sresult != SR_OK) {
         free_(new_pi);
-        return;
+        return sresult;
     }
         
-    byte pindex = priority == 0 ? 0 : priority - 1;
+    byte pindex = header.priority == 0 ? 0 : header.priority - 1;
     processinfo __far *curr_pi = processes[pindex];
     if (curr_pi == NULL) {
         curr_pi = new_pi;
@@ -429,6 +436,7 @@ static void new_process(const char *filename, byte priority) {
         curr_pi->next->prev = new_pi;
         curr_pi->next = new_pi;
     }
+    return SR_OK;
 }
 
 static void terminate_process() {
@@ -438,41 +446,35 @@ static void terminate_process() {
     if (p->next == p) {
          byte pindex = p->priority == 0 ? 0 : p->priority - 1;
          processes[pindex] = NULL;
+    } else {
+        p->prev->next = p->next;
+        p->next->prev = p->prev;
     }
 
-    byte no_proc = 1;
-    for (byte i = 0; i < PRIORITY_LEVELS && no_proc; i++) {
-        if (processes[i] != NULL)
-            no_proc = 0;
-    }
-
-    if (no_proc) {
-        free_((void __far *)p);
-        clrscr();
-        error("No process. System halted.");
-        asm volatile (
-            "cli\n"
-            "hlt\n"
-        );
-    }
-
-    p->prev->next = p->next;
-    p->next->prev = p->prev;
-    current_process = p->prev;
     free_((void __far *)p);
 }
 
 void start_scheduler(const char *command_name) {
     init();
 
-    new_process(command_name, 1);
     while (1) {
         current_process = get_next_process();
-        if (current_process != NULL) {
-            start_timer();
-            run_process();
-            stop_timer();
-            if (terminate) terminate_process();
+
+        if (current_process == NULL) {
+            new_process(command_name);
+            current_process = get_next_process();
+            if (current_process == NULL) {
+                error("Could not load command shell. System halted.");
+                asm volatile (
+                    "cli\n"
+                    "hlt\n"
+                );
+            }
         }
+
+        start_timer();
+        run_process();
+        stop_timer();
+        if (terminate) terminate_process();
     }
 }

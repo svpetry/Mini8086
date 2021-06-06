@@ -3,17 +3,17 @@
 
 #include "../../Lib/types.h"
 
-enum processstate {
-    ps_new,
-    ps_running,
-    ps_finished,
-    ps_idle
-};
+typedef enum {
+    PS_NEW = 0,
+    PS_RUNNING,
+    PS_FINISHED,
+    PS_IDLE
+} pstate;
 
 struct processinfo {
     word id;
     char name[9];
-    enum processstate state;
+    pstate state;
     word size; // size in units (16 bytes)
     word sp_save;
     word ss_save;
@@ -27,7 +27,9 @@ typedef struct {
     char id[2];
     byte size;
     byte crc8;
-    byte unused[12];
+    byte proc_type;
+    byte priority;
+    byte unused[10];
 } fileheader;
 
 extern volatile word sp_save;

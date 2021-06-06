@@ -11,15 +11,18 @@ namespace PrepExec
     {
         static void Main(string[] args)
         {
-            if (args.Length != 3)
+            if (args.Length != 5)
             {
-                Console.WriteLine("usage PrepExec [input file] [output file] [size in KB]");
+                Console.WriteLine("usage PrepExec [input file] [output file] [size in KB] [process type] [priority]");
                 return;
             }
 
             var filePath = args[0];
             var outputFilePath = args[1];
-            var fileSize = int.Parse(args[2]);
+            var fileSize = (byte)int.Parse(args[2]);
+            var procType = (byte)int.Parse(args[3]);
+            var priority = (byte)int.Parse(args[4]);
+
             if (!File.Exists(filePath))
             {
                 Console.WriteLine("File not found.");
@@ -37,8 +40,10 @@ namespace PrepExec
             {
                 0x45,
                 0x58,
-                (byte)fileSize,
-                Crc8.Crc8Fast(Crc8.Crc8Fast(0, null, 0), data.ToArray(), data.Count)
+                fileSize,
+                Crc8.Crc8Fast(Crc8.Crc8Fast(0, null, 0), data.ToArray(), data.Count),
+                procType,
+                priority
             };
             while (header.Count < 16)
                 header.Add(0);

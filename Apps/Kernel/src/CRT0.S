@@ -18,6 +18,7 @@ _start:
 	call main
 	hlt
 
+/* INT 20h (kernel functions) */
 int20:
 	pushf
 	push %bx

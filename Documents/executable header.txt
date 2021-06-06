@@ -5,4 +5,6 @@ Byte	Content
 1	0x58 executable identifier 'X'
 2	size in RAM in KB
 3	CRC8 of file excl. the header
-4-15	unused for now
+4	process type: 0 = normal, 1 = background service
+5	priority (0-3, 0 = highest)
+6-15	unused for now

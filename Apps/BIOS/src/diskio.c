@@ -59,15 +59,15 @@ DRESULT disk_read (
 {
 #if SD_DEBUG
 	char s[16];
-	putstr("disk_read\n");
-	putstr("sector: ");
+	puts("disk_read\n");
+	puts("sector: ");
 	ltoa(sector, s);
-	putstr(s);
-	putch('\n');
-	putstr("count: ");
+	puts(s);
+	putchar('\n');
+	puts("count: ");
 	itoa(count, s);
-	putstr(s);
-	putch('\n');
+	puts(s);
+	putchar('\n');
 #endif
 
 	int i, j;
@@ -112,7 +112,7 @@ DRESULT disk_read (
 	sd_led_rd(0);
 
 #if SD_DEBUG
-	if (error) putstr("Error!\n");
+	if (error) puts("Error!\n");
 #endif
 	return error ? RES_ERROR : RES_OK;
 }
@@ -132,15 +132,15 @@ DRESULT disk_write (
 {
 #if SD_DEBUG
 	char s[16];
-	putstr("disk_write\n");
-	putstr("sector: ");
+	puts("disk_write\n");
+	puts("sector: ");
 	ltoa(sector, s);
-	putstr(s);
-	putch('\n');
-	putstr("count: ");
+	puts(s);
+	putchar('\n');
+	puts("count: ");
 	itoa(count, s);
-	putstr(s);
-	putch('\n');
+	puts(s);
+	putchar('\n');
 #endif
 
 	sd_led_wr(1);
@@ -166,11 +166,11 @@ DRESULT disk_ioctl (
 {
 #if SD_DEBUG
 	char s[16];
-	putstr("disk_ioctl\n");
-	putstr("cmd: ");
+	puts("disk_ioctl\n");
+	puts("cmd: ");
 	itoa(cmd, s);
-	putstr(s);
-	putch('\n');
+	puts(s);
+	putchar('\n');
 #endif
 
 		// Process of the command for the MMC/SD card

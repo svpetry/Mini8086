@@ -13,9 +13,9 @@
 static void setline(char *s) {
     int i;
     setcursor(BOOT_COL, BOOT_ROW);
-    putstr(s);
+    puts(s);
     for (i = 0; i < 80 - strlen(s); i++)
-        putch(' ');
+        putchar(' ');
 }
 
 static void delay_1sec() {

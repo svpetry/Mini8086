@@ -16,10 +16,10 @@ void scrollup();
 void setcursor(byte col, byte row);
 
 /* outputs a single char at the cursor position */
-void putch(char c);
+int putchar(int c);
 
 /* outputs a string */
-void putstr(const char *str);
+int puts(const char *str);
 
 /* prints a text on the screen */
 void settext(byte col, byte row, const char *s, byte color);

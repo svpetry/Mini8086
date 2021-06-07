@@ -47,7 +47,7 @@ void demo() {
     clrscr();
     while (1) {
         set_textcol(rand());
-        putstr("ABCDEFGHIJKLMNOPQRSTXYZ");
+        puts("ABCDEFGHIJKLMNOPQRSTXYZ");
     }
 }
 
@@ -59,30 +59,30 @@ void fatfs_test() {
     FILINFO fno;
     FRESULT res;
 
-    putstr("\n\n");
+    puts("\n\n");
 
     res = f_mount(&fs, "", 0);
-    putstr("f_mount: ");
+    puts("f_mount: ");
     itoa(res, str);
-    putstr(str);
-    putch('\n');
+    puts(str);
+    putchar('\n');
 
     res = f_getlabel("", label, 0);
-    putstr("f_getlabel: ");
+    puts("f_getlabel: ");
     itoa(res, str);
-    putstr(str);
-    putch('\n');
+    puts(str);
+    putchar('\n');
 
-    putstr("volume label: ");
-    putstr(label);
-    putch('\n');
+    puts("volume label: ");
+    puts(label);
+    putchar('\n');
 
     res = f_opendir(&dj, "");
     if (res == FR_OK) {
         res = f_readdir(&dj, &fno) ;
         while (res == FR_OK && fno.fname[0]) {
-            putstr(fno.fname);
-            putch('\n');
+            puts(fno.fname);
+            putchar('\n');
             res = f_readdir(&dj, &fno);
         }
         f_closedir(&dj);

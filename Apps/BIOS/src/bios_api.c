@@ -55,7 +55,7 @@ void int_bios() {
 
         // write character at cursor position
         case 0x04: {
-            putch(int_ax);
+            putchar(int_ax);
             break;
         }
 
@@ -67,7 +67,7 @@ void int_bios() {
         // write string at cursor position
         case 0x06: {
             dword addr = (((dword)int_dx) << 16) + int_cx;
-            putstr_far((char __far *)addr);
+            puts_far((char __far *)addr);
             break;
         }
 

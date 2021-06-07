@@ -25,7 +25,7 @@ void scrollup();
 void setcursor(byte col, byte row);
 
 /* outputs a single char at the cursor position */
-void putch(char c);
+int putchar(int c);
 
 /* sets a char at a given position */
 void setchar(byte col, byte row, char c);
@@ -40,13 +40,13 @@ void settext_far(byte col, byte row, const char __far *s, byte color);
 char getscreenchar(byte col, byte row);
 
 /* outputs a string */
-void putstr(const char *str);
+int puts(const char *str);
 
 /* outputs a string with inverse characters */
-void putstr_inv(const char *str);
+int puts_inv(const char *str);
 
 /* outputs a string (far pointer) */
-void putstr_far(const char __far *str);
+int puts_far(const char __far *str);
 
 /* outputs a byte as 2-digit hex number */
 void puthexbyte(byte value);

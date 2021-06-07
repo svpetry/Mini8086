@@ -32,9 +32,9 @@ static byte getkeycode_wait() {
     if ((inp(0x64) & 0b00000001) > 0)
         code = inp(0x60);
 #if KEYB_DEBUG
-    putstr("code ");
+    puts("code ");
     puthexbyte(code);
-    putch('\n');
+    putchar('\n');
 #endif
     return code;
 }
@@ -167,7 +167,7 @@ static char read_char() {
     }
     
 #if KEYB_DEBUG
-    putstr("---\n");
+    puts("---\n");
 #endif
 
     if (key_break) return 0;

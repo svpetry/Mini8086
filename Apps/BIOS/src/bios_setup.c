@@ -25,19 +25,19 @@ static void waitforchar(byte time50ms) {
 
 static void putnum_2(int num) {
     if (num < 10)
-        putch('0');
+        putchar('0');
     else
-        putch('0' + num / 10);
-    putch('0' + num % 10);    
+        putchar('0' + num / 10);
+    putchar('0' + num % 10);    
 }
 
 static void update_values() {
     // time
     setcursor(BS_COLUMN2, BS_ROW);
     putnum_2(t_hours);
-    putch(':');
+    putchar(':');
     putnum_2(t_minutes);
-    putch(':');
+    putchar(':');
     putnum_2(t_seconds);
 
     // date
@@ -46,17 +46,17 @@ static void update_values() {
         byte day, month, year;
         ds1307_getdate(&day, &month, &year);
         putnum_2(day);
-        putch('-');
+        putchar('-');
         putnum_2(month);
-        putstr("-20");
+        puts("-20");
         putnum_2(year);
     } else {
-        putstr("(RTC not available)");
+        puts("(RTC not available)");
     }
 
     // keyboard layout
     setcursor(BS_COLUMN2, BS_ROW + 2);
-    putstr("DE");
+    puts("DE");
 }
 
 static int input_number(byte col, byte row, byte digits, byte *abort) {
@@ -138,11 +138,11 @@ void bios_setup() {
     byte exit = 0;
     do {
         setcursor(BS_COLUMN, BS_ROW);
-        putstr("[1] Time");
+        puts("[1] Time");
         setcursor(BS_COLUMN, BS_ROW + 1);
-        putstr("[2] Date");
+        puts("[2] Date");
         setcursor(BS_COLUMN, BS_ROW + 2);
-        putstr("[3] Keyboard layout");
+        puts("[3] Keyboard layout");
 
         i = 0;
         while (!haschar()) {

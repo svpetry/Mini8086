@@ -28,17 +28,17 @@ int ram_kb;
 volatile byte __far (*memptr);
  
 static void error() {
-    putstr(" ERROR!");
+    puts(" ERROR!");
     while (1) ;
 }
 
 static void check_cpu(int row) {
     setcursor(4, row);
-    putstr("CPU");
+    puts("CPU");
 
     setcursor(RESULT_COL, row);
-    putstr("--.- MHz");
-    putstr(", Intel 8086 or compatible");
+    puts("--.- MHz");
+    puts(", Intel 8086 or compatible");
 }
 
 static void check_memory(int row) {
@@ -46,11 +46,11 @@ static void check_memory(int row) {
     char s[12];
 
     setcursor(4, row);
-    putstr("RAM");
+    puts("RAM");
 
     // test first 64 KB
     setcursor(RESULT_COL, row);
-    putstr("64 KB");
+    puts("64 KB");
     memptr = (unsigned char __far *)0x00004000;
     count = 0;
     while (count < 0xC000) {
@@ -79,8 +79,8 @@ static void check_memory(int row) {
         setcursor(RESULT_COL, row);
         ram_kb = ((memstart >> 28) + 1) * 64;
         itoa(ram_kb, s);
-        putstr(s);
-        putstr(" KB");
+        puts(s);
+        puts(" KB");
 
         count = 0;
         while (count < 0x10000) {
@@ -100,12 +100,12 @@ static void check_memory(int row) {
         memstart += 0x10000000;
     }
 
-    putstr(" OK");
+    puts(" OK");
 }
 
 static void check_timer(int row) {
     setcursor(4, row);
-    putstr("Timer");
+    puts("Timer");
 
     int i;
     word count = 10000;
@@ -145,10 +145,10 @@ static void check_timer(int row) {
     freq_str[4] = 0;
 
     setcursor(RESULT_COL, 2);
-    putstr(freq_str);
+    puts(freq_str);
   
     setcursor(RESULT_COL, row);
-    putstr("OK");
+    puts("OK");
 }
 
 static void check_keyboard(int row) {
@@ -156,7 +156,7 @@ static void check_keyboard(int row) {
     byte data, status;
 
     setcursor(4, row);
-    putstr("Keyboard");
+    puts("Keyboard");
     setcursor(RESULT_COL, row);
 
     outp(0x64, 0xAA);
@@ -166,7 +166,7 @@ static void check_keyboard(int row) {
         data = inp(0x60);
     }
     if (data != 0x55) {
-        putstr("N/A");
+        puts("N/A");
         return;
     }
 
@@ -186,111 +186,111 @@ static void check_keyboard(int row) {
                 
                 while ((inp(0x64) & 0b00000010) > 1) ; // wait for empty input buffer
                 outp(0x64, 0xAE); // enable keyboard interface
-                putstr("OK");
+                puts("OK");
                 return;
             case 0x01:
-                putstr("ERROR: clock line is stuck low");
+                puts("ERROR: clock line is stuck low");
                 return;
             case 0x02:
-                putstr("ERROR: clock line is stuck high");
+                puts("ERROR: clock line is stuck high");
                 return;
             case 0x03:
-                putstr("ERROR: data line is stuck low");
+                puts("ERROR: data line is stuck low");
                 return;
             case 0x04:
-                putstr("ERROR: data line is stuck high");
+                puts("ERROR: data line is stuck high");
                 return;
         }
     }
-    putstr("self test failed!");
+    puts("self test failed!");
 }
 
 static void check_serial(int row) {
     setcursor(4, row);
-    putstr("Serial ports");
+    puts("Serial ports");
     setcursor(RESULT_COL, row);
 
-    putstr("N/A");
+    puts("N/A");
 }
 
 static void check_sd_drive(int row) {
     setcursor(4, row);
-    putstr("SD drive");
+    puts("SD drive");
     setcursor(RESULT_COL, row);
 
     if (sd_reset()) {
-        putstr("OK");
+        puts("OK");
         cfg_sddrive = 1;        
     } else {
-        putstr("N/A");
+        puts("N/A");
         cfg_sddrive = 0;
     }
 }
 
 static void check_sound(int row) {
     setcursor(4, row);
-    putstr("Sound");
+    puts("Sound");
     setcursor(RESULT_COL, row);
 
-    putstr("N/A");
+    puts("N/A");
 }
 
 static void check_i2c(int row) {
     setcursor(4, row);
-    putstr("I2C controller");
+    puts("I2C controller");
     setcursor(RESULT_COL, row);
 
     if (!i2c_init(I2CF_88)) {
-        putstr("OK");
+        puts("OK");
         cfg_i2c = 1;        
     } else {
-        putstr("N/A");
+        puts("N/A");
         cfg_i2c = 0;
     }
 }
 
 static void check_rtc(int row) {
     setcursor(5, row);
-    putch(28);
-    putstr(" RTC");
+    putchar(28);
+    puts(" RTC");
     setcursor(RESULT_COL, row);
 
     if (cfg_i2c && !ds1307_init()) {
-        putstr("OK");
+        puts("OK");
         cfg_rtc = 1;        
     } else {
-        putstr("N/A");
+        puts("N/A");
         cfg_rtc = 0;
     }
 }
 
 static void check_eeprom(int row) {
     setcursor(5, row);
-    putch(28);
-    putstr(" EEPROM");
+    putchar(28);
+    puts(" EEPROM");
     setcursor(RESULT_COL, row);
 
     byte data;
     if (cfg_i2c && !eeprom_read_buf(0x00, &data, 1)) {
-        putstr("OK");
+        puts("OK");
         cfg_eeprom = 1;        
     } else {
-        putstr("N/A");
+        puts("N/A");
         cfg_eeprom = 0;
     }
 }
 
 static void check_bmp280(int row) {
     setcursor(5, row);
-    putch(28);
-    putstr(" Sensor");
+    putchar(28);
+    puts(" Sensor");
     setcursor(RESULT_COL, row);
 
     if (cfg_i2c && !bmp280_init()) {
-        putstr("OK");
+        puts("OK");
         cfg_bmp280 = 1;        
     } else {
-        putstr("N/A");
+        puts("N/A");
         cfg_bmp280 = 0;
     }
 }
@@ -302,9 +302,9 @@ void startup() {
         setchar(i, 24, ' ' + 128);
     }
     setcursor(1, 0);
-    putstr_inv("Mini8086 BIOS 0.1");
+    puts_inv("Mini8086 BIOS 0.1");
     setcursor(64, 0);
-    putstr_inv(BUILD);
+    puts_inv(BUILD);
 
     i = 2;
     check_cpu(i++);
@@ -320,17 +320,17 @@ void startup() {
     check_bmp280(i++);
 
 #if LCD == 1602
-    lcd_putstr(0, 0, "Mini8086     0.1");
+    lcd_puts(0, 0, "Mini8086     0.1");
 #endif
 #if LCD == 2004
-    lcd_putstr(0, 0, "Mini8086 BIOS    0.1");
+    lcd_puts(0, 0, "Mini8086 BIOS    0.1");
 #endif
 #if LCD != 0
     char s[6];
-    lcd_putstr(0, 1, freq_str);
-    lcd_putstr(5, 1, "MHz");
+    lcd_puts(0, 1, freq_str);
+    lcd_puts(5, 1, "MHz");
     itoa(ram_kb, s);
-    lcd_putstr(10, 1, s);
-    lcd_putstr(14, 1, "KB");
+    lcd_puts(10, 1, s);
+    lcd_puts(14, 1, "KB");
 #endif
 }

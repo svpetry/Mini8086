@@ -30,10 +30,10 @@ void sd_command(byte cmd, dword arg, byte crc) {
 #if SD_DEBUG
     char s[4];
     itoa(cmd, s);
-    putstr("sending CMD");
-    if (cmd < 10) putch('0');
-    putstr(s);
-    putch('\n');
+    puts("sending CMD");
+    if (cmd < 10) putchar('0');
+    puts(s);
+    putchar('\n');
 #endif
     spi_send(cmd | 0x40);
     spi_send((byte)(arg >> 24));
@@ -70,9 +70,9 @@ byte read_r1() {
         res = spi_send(0xFF);
     } while (--i > 0 && res == 0xFF);
 #if SD_DEBUG
-    putstr("result: ");
+    puts("result: ");
     puthexbyte(res);
-    putch('\n');
+    putchar('\n');
 #endif
     return res;
 }
@@ -87,9 +87,9 @@ byte read_r3_r7() {
 #if SD_DEBUG
         puthexbyte(res1);
         if (i < 3)
-            putch(' ');
+            putchar(' ');
         else
-            putch('\n');
+            putchar('\n');
 #endif
     }
     return res;
@@ -217,27 +217,27 @@ byte sd_read_data_packet(byte __far *buf) {
 #if SD_DEBUG
     char s[8];
 
-    putstr("sd_read_data_packet...\n");
+    puts("sd_read_data_packet...\n");
 #endif
 
     i = 1000;
     res = spi_send(0xFF);
 #if SD_DEBUG
     // puthexbyte(res);
-    // putch('\n');
+    // putchar('\n');
 #endif 
     while (res == 0xFF && i > 0) {
         res = spi_send(0xFF);
     #if SD_DEBUG
         // puthexbyte(res);
-        // putch('\n');
+        // putchar('\n');
     #endif 
         i--;
     }
 
     if (res != 0xFE) {
 #if SD_DEBUG
-        putstr("ERROR!\n");
+        puts("ERROR!\n");
 #endif 
         return res;
     }
@@ -250,10 +250,10 @@ byte sd_read_data_packet(byte __far *buf) {
         // puthexbyte(data);
         // if (j == 15) {
         //     j = 0;
-        //     putch('\n');
+        //     putchar('\n');
         // } else {
         //     j++;
-        //     putch(' ');
+        //     putchar(' ');
         // }	
 #endif 
         *(buf++) = data;
@@ -264,7 +264,7 @@ byte sd_read_data_packet(byte __far *buf) {
     spi_send(0xFF);
 
 #if SD_DEBUG
-    putstr("\ndata packet received.\n");
+    puts("\ndata packet received.\n");
 #endif
 
     return res;

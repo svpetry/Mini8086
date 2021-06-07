@@ -45,7 +45,7 @@ void setcursor(byte col, byte row) {
     );
 }
 
-void putch(char c) {
+int putchar(int c) {
     asm volatile (
         "movb $0x04, %%ah\n"
         "movb %0, %%al\n"
@@ -54,9 +54,10 @@ void putch(char c) {
         : "g" (c)
         : "ax", "cx", "dx", "si", "di", "cc", "memory"
     );
+    return 0;
 }
 
-void putstr(const char *str) {
+int puts(const char *str) {
     addr = (word)str;
     asm volatile (
         "movb $0x06, %%ah\n"
@@ -67,6 +68,7 @@ void putstr(const char *str) {
         : "m" (addr)
         : "ax", "cx", "dx", "si", "di", "cc", "memory"
     );
+    return 0;
 }
 
 void settext(byte col, byte row, const char *s, byte color) {

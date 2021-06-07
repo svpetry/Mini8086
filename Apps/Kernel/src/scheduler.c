@@ -48,8 +48,8 @@ static void puthexbyte(byte value) {
     char s[3];
     itohex(value, s);   
     if (value < 16)
-        putch('0');
-    putstr(s);
+        putchar('0');
+    puts(s);
 }
 
 static void puthexword(word value) {
@@ -65,9 +65,9 @@ static void showpointer(void __far *ptr) {
 	volatile word lo = (word)(p & 0xFFFF);
 
     puthexword(hi);
-	putch(':');
+	putchar(':');
     puthexword(lo);
-    putch('\n');
+    putchar('\n');
 }
 */
 

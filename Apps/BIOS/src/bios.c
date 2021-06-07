@@ -28,19 +28,19 @@ volatile byte ticks; // 20 ticks/sec.
 // interrupt handler
 void int_div_by_zero() {
     clrscr();
-    putstr("DIVIDE BY ZERO ERROR. SYSTEM HALTED.");
+    puts("DIVIDE BY ZERO ERROR. SYSTEM HALTED.");
     asm volatile("hlt");
 }
 
 void int_nmi() {
     clrscr();
-    putstr("HARDWARE ERROR. SYSTEM HALTED.");
+    puts("HARDWARE ERROR. SYSTEM HALTED.");
     asm volatile("hlt");
 }
 
 void int_overflow() {
     clrscr();
-    putstr("OVERFLOW ERROR. SYSTEM HALTED.");
+    puts("OVERFLOW ERROR. SYSTEM HALTED.");
     asm volatile("hlt");
 }
 
@@ -75,7 +75,7 @@ void update_clock() {
 
 void draw_menu() {
     setcursor(2, 24);
-    putstr_inv("F1 BOOT FROM SD    F2 FILE SYSTEM BROWSER    F10 BIOS SETUP");
+    puts_inv("F1 BOOT FROM SD    F2 FILE SYSTEM BROWSER    F10 BIOS SETUP");
 }
 
 void handle_bootmenu() {
@@ -128,19 +128,19 @@ int main() {
     handle_bootmenu();
 
 #if LCD == 1602
-    lcd_putstr(0, 0, "                ");
+    lcd_puts(0, 0, "                ");
     while (1) {
         itoa(t_hours, s);
         ltrim(s, 2, '0');
-        lcd_putstr(8, 0, s);
-        lcd_putstr(10, 0, ":");
+        lcd_puts(8, 0, s);
+        lcd_puts(10, 0, ":");
         itoa(t_minutes, s);
         ltrim(s, 2, '0');
-        lcd_putstr(11, 0, s);
-        lcd_putstr(13, 0, ":");
+        lcd_puts(11, 0, s);
+        lcd_puts(13, 0, ":");
         itoa(t_seconds, s);
         ltrim(s, 2, '0');
-        lcd_putstr(14, 0, s);
+        lcd_puts(14, 0, s);
 
         for (j = 0; j < 1000; j++)
             asm volatile("nop");
@@ -150,15 +150,15 @@ int main() {
     while (1) {
         itoa(t_hours, s);
         ltrim(s, 2, '0');
-        lcd_putstr(0, 3, s);
-        lcd_putstr(2, 3, ":");
+        lcd_puts(0, 3, s);
+        lcd_puts(2, 3, ":");
         itoa(t_minutes, s);
         ltrim(s, 2, '0');
-        lcd_putstr(3, 3, s);
-        lcd_putstr(5, 3, ":");
+        lcd_puts(3, 3, s);
+        lcd_puts(5, 3, ":");
         itoa(t_seconds, s);
         ltrim(s, 2, '0');
-        lcd_putstr(6, 3, s);
+        lcd_puts(6, 3, s);
 
         for (j = 0; j < 1000; j++)
             asm volatile("nop");

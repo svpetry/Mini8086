@@ -79,7 +79,7 @@ void setcursor(byte col, byte row) {
     cursor_row = row;
 }
 
-void putch(char c) {
+int putchar(int c) {
     if (c != '\n') {
         word index = cursor_row * SCREEN_COLUMNS + cursor_col;
         word data = c + (textcol << 8);
@@ -94,6 +94,7 @@ void putch(char c) {
             scrollup();
         cursor_row++;
     }
+    return 0;
 }
 
 void setchar(byte col, byte row, char c) {
@@ -130,25 +131,28 @@ char getscreenchar(byte col, byte row) {
     return (*scrbuf)[index];
 }
 
-void putstr(const char *str) {
+int puts(const char *str) {
     while (*str)
-        putch(*(str++));
+        putchar(*(str++));
+    return 0;
 }
 
-void putstr_inv(const char *str) {
+int puts_inv(const char *str) {
     while (*str)
-        putch(*(str++) + 0x80);
+        putchar(*(str++) + 0x80);
+    return 0;
 }
 
-void putstr_far(const char __far *str) {
+int puts_far(const char __far *str) {
     while (*str)
-        putch(*(str++));
+        putchar(*(str++));
+    return 0;
 }
 
 void puthexbyte(byte value) {
     char s[3];
     itohex(value, s);   
     if (value < 16)
-        putch('0');
-    putstr(s);
+        putchar('0');
+    puts(s);
 }

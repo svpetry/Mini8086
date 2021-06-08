@@ -94,6 +94,22 @@ int putchar(int c) {
             scrollup();
         cursor_row++;
     }
+    
+    // handle backspace
+    if (c == 0x08) {
+        if (cursor_col == 0) {
+            if (cursor_row > 0) {
+                cursor_row--;
+                cursor_col = SCREEN_COLUMNS - 1;
+            }
+        } else
+            cursor_col--;
+        
+        word index = cursor_row * SCREEN_COLUMNS + cursor_col;
+        word data = 0x20 + (textcol << 8);
+        (*screen)[index] = data;
+        (*scrbuf)[index] = data;
+    }
     return 0;
 }
 

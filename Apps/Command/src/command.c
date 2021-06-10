@@ -3,21 +3,24 @@
 #include "../../Lib/bios_misc.h"
 #include "../../Lib/bios_fs.h"
 #include "../../Lib/kernel.h"
-
-#define CMD_VER "0.1"
+#include "cmd_defs.h"
+#include "cmdline.h"
 
 void init() {
     clrscr();
     
-    putstr("Mini8086 command shell " CMD_VER "\n\n");
+    puts("Mini8086 command shell " CMD_VER "\n\n");
 }
 
 void start() {
+    while (1) {
+        read_cmdline(command, params);
 
+
+    }
 }
 
 int main() {
     init();
     start();
-    while (1) ;
 }

@@ -55,7 +55,7 @@ void int_bios() {
 
         // write character at cursor position
         case 0x04: {
-            putchar(int_ax);
+            putchar(int_ax & 0xFF);
             break;
         }
 

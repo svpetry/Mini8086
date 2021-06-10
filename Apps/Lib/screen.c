@@ -80,15 +80,16 @@ void setcursor(byte col, byte row) {
 }
 
 int putchar(int c) {
-    if (c != '\n') {
+    char ch = (char)c;
+    if (ch != '\n') {
         word index = cursor_row * SCREEN_COLUMNS + cursor_col;
-        word data = c + (textcol << 8);
+        word data = ch + (textcol << 8);
         (*screen)[index] = data;
         (*scrbuf)[index] = data;
         cursor_col++;
     }
 
-    if (c == '\n' || cursor_col == SCREEN_COLUMNS) {
+    if (ch == '\n' || cursor_col == SCREEN_COLUMNS) {
         cursor_col = 0;
         if (cursor_row == SCREEN_ROWS - 1)
             scrollup();
@@ -96,7 +97,7 @@ int putchar(int c) {
     }
     
     // handle backspace
-    if (c == 0x08) {
+    if (ch == 0x08) {
         if (cursor_col == 0) {
             if (cursor_row > 0) {
                 cursor_row--;

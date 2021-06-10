@@ -8,11 +8,60 @@
 #define SCREEN_ROWS    25
 #define SCREEN_SIZE (SCREEN_COLUMNS * SCREEN_ROWS)
 
-byte cursor_col;
-byte cursor_row;
+byte cursor_state = 0;
+byte cursor_enabled = 0;
+byte cursor_hidden = 0;
+byte cursor_col = 0;
+byte cursor_row = 0;
 byte textcol;
 word __far (*screen)[SCREEN_SIZE];
 word __far (*scrbuf)[SCREEN_SIZE];
+
+static byte hide_cursor() {
+    if (cursor_hidden || !cursor_enabled) return 0;
+
+    cursor_hidden = 1;
+    if (cursor_state) {
+        word index = cursor_row * SCREEN_COLUMNS + cursor_col;
+        (*screen)[index] = (*scrbuf)[index];
+    }
+    return 1;
+}
+
+static void restore_cursor() {
+    if (!cursor_hidden || !cursor_enabled) return;
+
+    if (cursor_state) {
+        word index = cursor_row * SCREEN_COLUMNS + cursor_col;
+        (*screen)[index] = (*scrbuf)[index] + 128;
+    }
+    cursor_hidden = 0;
+}
+
+void cursor_blink() {
+    if (!cursor_enabled || cursor_hidden) return;
+
+    word index = cursor_row * SCREEN_COLUMNS + cursor_col;
+    if (cursor_state) {
+        cursor_state = 0;
+        (*screen)[index] = (*scrbuf)[index];
+    } else {
+        cursor_state = 1;
+        (*screen)[index] = (*scrbuf)[index] + 128;
+    }
+}
+
+void enable_cursor(byte enable) {
+    if (cursor_enabled == enable) return;
+
+    if (!enable && cursor_state && !cursor_hidden) {
+        word index = cursor_row * SCREEN_COLUMNS + cursor_col;
+        (*screen)[index] = (*scrbuf)[index];
+    }
+    cursor_enabled = enable;
+    cursor_state = 0;
+    cursor_hidden = 0;
+}
 
 void set_textcol(byte color) {
     textcol = color;
@@ -24,28 +73,30 @@ void init_screen() {
 
     screen = (void __far *)0xC0000000;
     scrbuf = (void __far *)0x20000000;
-    cursor_col = 0;
-    cursor_row = 0;
     textcol = 0b11100100; // light blue
 
     clrscr();
 }
 
 void clrscr() {
+    byte hidden = hide_cursor();
     word i;
     for (i = 0; i < SCREEN_SIZE; i++) {
         (*screen)[i] = 0;
         (*scrbuf)[i] = 0;
     }
     setcursor(0, 0);
+    if (hidden) restore_cursor();
 }
 
 void clrrow(byte row) {
+    byte hidden = hide_cursor();
     word i;
     for (i = row * SCREEN_COLUMNS; i < (row + 1) * SCREEN_COLUMNS; i++) {
         (*screen)[i] = 0;
         (*scrbuf)[i] = 0;
     }
+    if (hidden) restore_cursor();
 }
 
 static void copy_bufline(int dest, int src) {
@@ -54,6 +105,7 @@ static void copy_bufline(int dest, int src) {
 }
 
 void scrolldown() {
+    byte hidden = hide_cursor();
     int i;
     for (i = 0; i < SCREEN_ROWS - 1; i++)
         copy_bufline(i + 1, i);
@@ -61,9 +113,11 @@ void scrolldown() {
     memcpy_(screen, scrbuf, SCREEN_SIZE * 2);
     if (cursor_row < SCREEN_ROWS - 1)
         cursor_row++;
+    if (hidden) restore_cursor();
 }
 
 void scrollup() {
+    byte hidden = hide_cursor();
     int i;
     byte __far *ptr = (byte __far *)scrbuf;
     for (i = 0; i < SCREEN_ROWS - 1; i++)
@@ -72,15 +126,20 @@ void scrollup() {
     memcpy_(screen, scrbuf, SCREEN_SIZE * 2);
     if (cursor_row > 0)
         cursor_row--;
+    if (hidden) restore_cursor();
 }
 
 void setcursor(byte col, byte row) {
+    byte hidden = hide_cursor();
     cursor_col = col;
     cursor_row = row;
+    if (hidden) restore_cursor();
 }
 
 int putchar(int c) {
     char ch = (char)c;
+
+    byte hidden = hide_cursor();
     if (ch != '\n') {
         word index = cursor_row * SCREEN_COLUMNS + cursor_col;
         word data = ch + (textcol << 8);
@@ -111,17 +170,24 @@ int putchar(int c) {
         (*screen)[index] = data;
         (*scrbuf)[index] = data;
     }
+    if (hidden) restore_cursor();
     return 0;
 }
 
 void setchar(byte col, byte row, char c) {
+    byte hidden = 0;
+    if (col == cursor_col && row == cursor_row)
+        hidden = hide_cursor();
+    
     word index = row * SCREEN_COLUMNS + col;
     word data = c + (textcol << 8);
     (*screen)[index] = data;
     (*scrbuf)[index] = data;
+    if (hidden) restore_cursor();
 }
 
 void settext(byte col, byte row, const char *s, byte color) {
+    byte hidden = hide_cursor();
     word index = row * SCREEN_COLUMNS + col;
     while (*s && index < SCREEN_SIZE) {
         word data = *s + (textcol << 8);
@@ -130,9 +196,11 @@ void settext(byte col, byte row, const char *s, byte color) {
         s++;
         index++;
     }
+    if (hidden) restore_cursor();
 }
 
 void settext_far(byte col, byte row, const char __far *s, byte color) {
+    byte hidden = hide_cursor();
     word index = row * SCREEN_COLUMNS + col;
     while (*s && index < SCREEN_SIZE) {
         word data = *s + (textcol << 8);
@@ -141,6 +209,7 @@ void settext_far(byte col, byte row, const char __far *s, byte color) {
         s++;
         index++;
     }
+    if (hidden) restore_cursor();
 }
 
 char getscreenchar(byte col, byte row) {
@@ -149,27 +218,35 @@ char getscreenchar(byte col, byte row) {
 }
 
 int puts(const char *str) {
+    byte hidden = hide_cursor();
     while (*str)
         putchar(*(str++));
+    if (hidden) restore_cursor();
     return 0;
 }
 
 int puts_inv(const char *str) {
+    byte hidden = hide_cursor();
     while (*str)
         putchar(*(str++) + 0x80);
+    if (hidden) restore_cursor();
     return 0;
 }
 
 int puts_far(const char __far *str) {
+    byte hidden = hide_cursor();
     while (*str)
         putchar(*(str++));
+    if (hidden) restore_cursor();
     return 0;
 }
 
 void puthexbyte(byte value) {
+    byte hidden = hide_cursor();
     char s[3];
     itohex(value, s);   
     if (value < 16)
         putchar('0');
     puts(s);
+    if (hidden) restore_cursor();
 }

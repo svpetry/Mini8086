@@ -78,6 +78,12 @@ void int_bios() {
             break;
         }
 
+        // show or hide the cursor
+        case 0x08: {
+            enable_cursor(int_ax & 0xFF);
+            break;
+        }
+
         // read character from keyboard buffer
         case 0x10: {
             int_ax = getchar();

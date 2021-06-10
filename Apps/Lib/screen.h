@@ -3,6 +3,12 @@
 
 #include "types.h"
 
+/* should be called by a timer and not manually */
+void cursor_blink();
+
+/* show or hide the cursor */
+void enable_cursor(byte enable);
+
 /* sets the active text color */
 void set_textcol(byte color);
 

@@ -86,3 +86,14 @@ void settext(byte col, byte row, const char *s, byte color) {
         : "ax", "cx", "dx", "si", "di", "cc", "memory"
     );
 }
+
+void enable_cursor(byte enable) {
+    asm volatile (
+        "movb $0x08, %%ah\n"
+        "movb %0, %%al\n"
+        "int $0x10"
+        : /* no outputs */
+        : "g" (enable)
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
+    );
+}

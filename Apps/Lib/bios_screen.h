@@ -24,4 +24,7 @@ int puts(const char *str);
 /* prints a text on the screen */
 void settext(byte col, byte row, const char *s, byte color);
 
+/* Show or hide the cursor */
+void enable_cursor(byte enable);
+
 #endif

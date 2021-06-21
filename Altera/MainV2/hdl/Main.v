@@ -57,7 +57,8 @@ reg [1:0] addr_overload;
 reg led_blink;
 reg [24:0] blink_counter;
 
-parameter TIMER_DIVIDER = 15; // divider for the timer clock. clk2 is divided by this value.
+parameter TIMER_DIVIDER = 15; // divider for the timer clock. clk2 is divided by 2x this value.
+// => PIT_CLK = clk / (4 * TIMER_DIVIDER)
 
 // clk2 internal clock generation
 always @(posedge clk)

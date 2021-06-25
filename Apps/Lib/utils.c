@@ -13,7 +13,7 @@ void srand(word seed) {
 }
 
 void __far *memcpy_(void __far *dest, const void __far *src, size_t len) {
-	dword sp = (dword)dest;
+	dword sp = (dword)src;
 	volatile word shi = (word)(sp >> 16);
 	volatile word slo = (word)(sp & 0xFFFF);
 
@@ -40,6 +40,7 @@ void __far *memcpy_(void __far *dest, const void __far *src, size_t len) {
         : "g" (shi), "g" (slo), "g" (dhi), "g" (dlo), "g" (len) 
         : "ds", "si", "es", "di", "ax", "cx", "cc"
     );
+
     return dest;
 }
 

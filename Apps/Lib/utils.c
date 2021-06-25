@@ -13,41 +13,59 @@ void srand(word seed) {
 }
 
 void __far *memcpy_(void __far *dest, const void __far *src, size_t len) {
-    const word __far *s = src;
-    word __far *d = dest;
+	dword sp = (dword)dest;
+	volatile word shi = (word)(sp >> 16);
+	volatile word slo = (word)(sp & 0xFFFF);
 
-    while (len >=2) {
-        *(d++) = *(s++);
-        len -= 2;
-    }
-    if (len == 1) {
-        *((byte __far *) d) = *((byte __far *) s);
-    }
+	dword dp = (dword)dest;
+	volatile word dhi = (word)(dp >> 16);
+	volatile word dlo = (word)(dp & 0xFFFF);
 
-    // size_t words = len / 2;
-    // len %= 2;
-    // __asm__ volatile("cld\n" "rep movsw" : : "S" (src), "D" (dest), "c" (words));
-    // __asm__ volatile(        "rep movsb" : : "c" (len));
+    asm volatile (
+        "cld\n"
+        "movw %4, %%cx\n"
+        "shr $0x01, %%cx\n"
+        "movw %0, %%ax\n"
+        "movw %%ax, %%ds\n"
+        "movw %1, %%si\n"
+        "movw %2, %%ax\n"
+        "movw %%ax, %%es\n"
+        "movw %3, %%di\n"
+        "rep movsw\n"
+        "testw $0x0001, %4\n"
+        "jz cont_mc\n"
+        "movsb\n"
+        "cont_mc:\n"
+        : /* no output */
+        : "g" (shi), "g" (slo), "g" (dhi), "g" (dlo), "g" (len) 
+        : "ds", "si", "es", "di", "ax", "cx", "cc"
+    );
     return dest;
 }
 
 void __far *memset_(void __far *dest, byte val, size_t len) {
-    word __far *d = dest;
-    word wval = (val << 8) | val;
+	dword p = (dword)dest;
+	volatile word hi = (word)(p >> 16);
+	volatile word lo = (word)(p & 0xFFFF);
 
-    while (len >=2) {
-        *(d++) = wval;
-        len -= 2;
-    }
-    if (len == 1) {
-        *((byte __far *) d) = val;
-    }
-
-    // size_t words = len / 2;
-    // len %= 2;
-    // word wval = (val << 8) | val;
-    // __asm__ volatile("cld\n" "rep stosw" : : "D"(dest), "ax"(wval), "c" (words));
-    // __asm__ volatile(        "rep stosb" : : "al"(val), "c" (len));
+    asm volatile (
+        "cld\n"
+        "movw %3, %%cx\n"
+        "shr $0x01, %%cx\n"
+        "movw %0, %%ax\n"
+        "movw %%ax, %%es\n"
+        "movw %1, %%di\n"
+        "movb %2, %%al\n"
+        "movb %%al, %%ah\n"
+        "rep stosw\n"
+        "testw $0x0001, %3\n"
+        "jz cont_ms\n"
+        "stosb\n"
+        "cont_ms:\n"
+        : /* no output */
+        : "g" (hi), "g" (lo), "g" (val), "g" (len) 
+        : "es", "di", "cx", "ax", "cc"
+    );
     return dest;
 }
 

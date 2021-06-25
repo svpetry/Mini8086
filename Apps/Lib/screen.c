@@ -80,11 +80,10 @@ void init_screen() {
 
 void clrscr() {
     byte hidden = hide_cursor();
-    word i;
-    for (i = 0; i < SCREEN_SIZE; i++) {
-        (*screen)[i] = 0;
-        (*scrbuf)[i] = 0;
-    }
+    word i, data;
+    data = textcol << 8;
+    memset_(screen, 0, SCREEN_SIZE * 2);
+    memset_(scrbuf, 0, SCREEN_SIZE * 2);
     setcursor(0, 0);
     if (hidden) restore_cursor();
 }

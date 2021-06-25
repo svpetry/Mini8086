@@ -1,4 +1,4 @@
-ia16-elf-gcc -Os -c -o crt0.o ./src/CRT0.S
+ia16-elf-gcc -c -o crt0.o ./src/CRT0.S
 ia16-elf-gcc -O3 -mcmodel=tiny -fno-jump-tables -nostartfiles \
     -mtune=i8086 -mno-segment-relocation-stuff -T ./src/APP.LD -o ./bin/command.raw \
     ./src/command.c ./src/cmdline.c \

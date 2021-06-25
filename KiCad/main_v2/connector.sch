@@ -1270,4 +1270,12 @@ Wire Bus Line
 	3600 2850 3600 4450
 Wire Bus Line
 	1800 2450 1800 4450
+Text Notes 3750 2900 0    100  ~ 0
+Bottom
+Text Notes 1300 2900 0    100  ~ 0
+Top
+Text Notes 2500 4950 0    100  ~ 0
+Right
+Text Notes 2550 750  0    100  ~ 0
+Left
 $EndSCHEMATC

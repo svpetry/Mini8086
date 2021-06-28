@@ -130,7 +130,7 @@ static void check_timer(int row) {
     }
     
     // count /= 320; // -Os
-    count /= 550; // -O2
+    count /= 584; // -O2
     i = count / 100;
     if (i == 0)
         freq_str[0] = ' ';

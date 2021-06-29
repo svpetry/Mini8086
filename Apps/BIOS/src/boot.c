@@ -30,7 +30,7 @@ static void tryboot() {
     FSIZE_t size;
     FRESULT res;
     UINT br;
-    void __far *dest = (void __far *)0x04000000;
+    void __far *dest = (void __far *)0x05000000;
 
     res = f_mount(&fs, "", 0);
     if (res != FR_OK) return;
@@ -38,7 +38,7 @@ static void tryboot() {
     res = f_open(&f, "kernel.bin", FA_READ);
     if (res != FR_OK) return;
 
-    // load kernel.bin to 0400:0000
+    // load kernel.bin to 0500:0000
     size = f_size(&f);
     res = f_read(&f, dest, size, &br);
     if (res != FR_OK)
@@ -48,15 +48,15 @@ static void tryboot() {
 
     clrscr();
 
-    // initialize segments and stack, then far jump to 0400:0000
+    // initialize segments and stack, then far jump to 0500:0000
     asm(
-        "mov $0x0400,%ax\n"
-        "mov %ax,%ds\n"
-        "mov %ax,%es\n"
-        "mov %ax,%ss\n"
-        "mov $0x0BFFE,%sp\n"
-        "ljmp $0x0400,$0x0000\n"
-        );
+        "mov $0x0500, %ax\n"
+        "mov %ax, %ds\n"
+        "mov %ax, %es\n"
+        "mov %ax, %ss\n"
+        "mov $0x0AFFF, %sp\n"
+        "ljmp $0x0500, $0x0000\n"
+    );
 }
 
 void boot() {

@@ -72,7 +72,7 @@ void init_screen() {
     outp(0x51, 0b10000000); // background color: blue
 
     screen = (void __far *)0xC0000000;
-    scrbuf = (void __far *)0x20000000;
+    scrbuf = (void __far *)0x04000000;
     textcol = 0b11100100; // light blue
 
     clrscr();

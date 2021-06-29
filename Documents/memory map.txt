@@ -21,5 +21,6 @@ F0000-FFFFF	ROM
 
 00000-003FF	8086 interrupt vectors
 00400-03FFF	BIOS data area
-04000-0FFFF	OS kernel code + data
+04000-05000	BIOS screen buffer
+05000-0FFFF	OS kernel code + data
 10000-xxxxx	user code

@@ -80,10 +80,9 @@ void init_screen() {
 
 void clrscr() {
     byte hidden = hide_cursor();
-    word i, data;
-    data = textcol << 8;
-    memset_(screen, 0, SCREEN_SIZE * 2);
-    memset_(scrbuf, 0, SCREEN_SIZE * 2);
+    word data = textcol << 8;
+    memset16(screen, data, SCREEN_SIZE);
+    memset16(scrbuf, data, SCREEN_SIZE);
     setcursor(0, 0);
     if (hidden) restore_cursor();
 }
@@ -91,9 +90,10 @@ void clrscr() {
 void clrrow(byte row) {
     byte hidden = hide_cursor();
     word i;
+    word data = textcol << 8;
     for (i = row * SCREEN_COLUMNS; i < (row + 1) * SCREEN_COLUMNS; i++) {
-        (*screen)[i] = 0;
-        (*scrbuf)[i] = 0;
+        (*screen)[i] = data;
+        (*scrbuf)[i] = data;
     }
     if (hidden) restore_cursor();
 }
@@ -108,7 +108,7 @@ void scrolldown() {
     int i;
     for (i = 0; i < SCREEN_ROWS - 1; i++)
         copy_bufline(i + 1, i);
-    memset_(scrbuf, 0, SCREEN_COLUMNS * 2);
+    memset16(scrbuf, (word)textcol << 8, SCREEN_COLUMNS);
     memcpy_(screen, scrbuf, SCREEN_SIZE * 2);
     if (cursor_row < SCREEN_ROWS - 1)
         cursor_row++;
@@ -121,7 +121,7 @@ void scrollup() {
     byte __far *ptr = (byte __far *)scrbuf;
     for (i = 0; i < SCREEN_ROWS - 1; i++)
         copy_bufline(i, i + 1); 
-    memset_(ptr + (SCREEN_ROWS - 1) * SCREEN_COLUMNS * 2, 0, SCREEN_COLUMNS * 2);
+    memset16(ptr + (SCREEN_ROWS - 1) * SCREEN_COLUMNS * 2, (word)textcol << 8, SCREEN_COLUMNS);
     memcpy_(screen, scrbuf, SCREEN_SIZE * 2);
     if (cursor_row > 0)
         cursor_row--;

@@ -70,6 +70,26 @@ void __far *memset_(void __far *dest, byte val, size_t len) {
     return dest;
 }
 
+void __far *memset16(void __far *dest, unsigned int val, size_t len) {
+	dword p = (dword)dest;
+	volatile word hi = (word)(p >> 16);
+	volatile word lo = (word)(p & 0xFFFF);
+
+    asm volatile (
+        "cld\n"
+        "movw %3, %%cx\n"
+        "movw %0, %%ax\n"
+        "movw %%ax, %%es\n"
+        "movw %1, %%di\n"
+        "movw %2, %%ax\n"
+        "rep stosw\n"
+        : /* no output */
+        : "g" (hi), "g" (lo), "g" (val), "g" (len) 
+        : "es", "di", "cx", "ax", "cc"
+    );
+    return dest;
+}
+
 void *memcpy(void *dest, const void *src, size_t len) {
     const word *s = src;
     word *d = dest;

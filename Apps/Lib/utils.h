@@ -19,6 +19,9 @@ void __far *memcpy_(void __far *dest, const void __far *src, size_t len);
 /* fill memory (far pointer) */
 void __far *memset_(void __far *dest, unsigned char val, size_t len);
 
+/* fill memory (far pointer, 16 bit) */
+void __far *memset16(void __far *dest, unsigned int val, size_t len);
+
 /* memory copy (near pointer) */
 void *memcpy(void *dest, const void *src, size_t len);
 

@@ -198,9 +198,6 @@ namespace Emulator.Lib.Components
                 case Key.U:
                     scanCodes.Add(0x3C);
                     break;
-                case Key.I:
-                    scanCodes.Add(0x34);
-                    break;
                 case Key.O:
                     scanCodes.Add(0x44);
                     break;
@@ -236,6 +233,9 @@ namespace Emulator.Lib.Components
                     break;
                 case Key.H:
                     scanCodes.Add(0x33);
+                    break;
+                case Key.I:
+                    scanCodes.Add(0x43);
                     break;
                 case Key.J:
                     scanCodes.Add(0x3B);

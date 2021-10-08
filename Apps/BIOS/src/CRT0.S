@@ -22,7 +22,6 @@
 .set OCW1, 0b11111100 // enable interrupt 0 (timer), 1 (keyboard)
 
 .macro ENTER_INTERRUPT
-	sti
 	pushf
 	push %ax
 	push %bx
@@ -173,24 +172,20 @@ clr_loop:
 
 	// interrupt handlers
 int_empty:
-	sti
 	iret
 	
 	// CPU interrupts
 int00:
 	cld
 	call int_div_by_zero
-	sti
 	iret
 int02:
 	cld
 	call int_nmi
-	sti
 	iret
 int04:
 	cld
 	call int_overflow
-	sti
 	iret
 	
 	/****** hardware interrupts ******/

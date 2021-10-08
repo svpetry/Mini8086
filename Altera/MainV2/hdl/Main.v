@@ -202,11 +202,14 @@ begin
 		end
 		else begin
 			// I/O access
+			if (INTA)
+			begin
 			IO_TIMER <= ~(addr_io >= 10'h040 && addr_io <= 10'h047);
 			IO_PIC <= ~(addr_io >= 10'h020 && addr_io <= 10'h027);
 			IO_DBG <= ~(addr_io >= 10'h010 && addr_io <= 10'h017);
 			VGA_IO <= ~(addr_io >= 10'h050 && addr_io <= 10'h057);
 			io_chipset <= addr_io >= 10'h030 && addr_io <= 10'h037;
+			end;
 			OE_DATA <= DEN;
 		end
 	end

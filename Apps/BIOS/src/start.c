@@ -51,9 +51,9 @@ static void check_memory(int row) {
     // test first 64 KB
     setcursor(RESULT_COL, row);
     puts("64 KB");
-    memptr = (unsigned char __far *)0x00004000;
+    memptr = (unsigned char __far *)0x00005000;
     count = 0;
-    while (count < 0xC000) {
+    while (count < 0xB000) {
         *memptr = 0xAA;
         if (*memptr != 0xAA) error();
         *memptr = 0x55;
@@ -108,7 +108,7 @@ static void check_timer(int row) {
     puts("Timer");
 
     int i;
-    word count = 10000;
+    word count = 20000;
     byte t = ticks;
     while (t == ticks && count > 0) {
         for (i = 0; i < 10; i++) {

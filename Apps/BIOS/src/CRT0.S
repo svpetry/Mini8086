@@ -22,7 +22,6 @@
 .set OCW1, 0b11111100 // enable interrupt 0 (timer), 1 (keyboard)
 
 .macro ENTER_INTERRUPT
-	pushf
 	push %ax
 	push %bx
 	push %cx
@@ -63,7 +62,6 @@ no_stack_chg_\@:
 	mov $0x20, %al
 	out %al, $PIC_CMD // send EOI
 	pop %ax
-	popf
 	iret
 .endm
 
@@ -213,7 +211,6 @@ int0E:
 
 	/****** software interrupts ******/
 int10:
-	pushf
 	push %bx
 	push %bp
 	push %ds
@@ -252,7 +249,6 @@ int10:
 	pop %ds
 	pop %bp
 	pop %bx
-	popf
 	iret
 
 .size _start, . - _start

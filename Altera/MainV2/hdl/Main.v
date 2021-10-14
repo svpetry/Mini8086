@@ -40,7 +40,7 @@ module Main(
 );
 
 reg clk2;
-reg [2:0] cpuclk_state;
+reg [1:0] cpuclk_state;
 reg [3:0] reset_cnt = 4'b1111;
 reg [4:0] tmrclk_cnt;
 reg io_chipset;

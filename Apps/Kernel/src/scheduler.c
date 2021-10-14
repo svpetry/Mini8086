@@ -74,7 +74,6 @@ static void showpointer(void __far *ptr) {
 /* handle INT 81h (terminate process) */
 static void __far handle_terminate() {
     asm volatile (
-        "pushf\n"
 	    "push %%ax\n"
 	    "push %%bx\n"
 	    "push %%cx\n"
@@ -114,7 +113,6 @@ static void __far handle_terminate() {
 /* handle INT 80h (sleep) */
 static void __far handle_sleep() {
     asm volatile (
-        "pushf\n"
 	    "pushw %%ax\n"
 	    "pushw %%bx\n"
 	    "pushw %%cx\n"
@@ -153,8 +151,6 @@ static void __far handle_sleep() {
 /* handler timer 1 interrupt (IRQ2) */
 static void __far handle_timer() {
     asm volatile (
-        "sti\n"
-        "pushf\n"
 	    "pushw %%ax\n"
 
         // check if called from ROM or kernel
@@ -166,7 +162,6 @@ static void __far handle_timer() {
         "movb $0x20, %%al\n"
         "out %%al, $0x20\n"
         "popw %%ax\n"
-        "popf\n"
 
         "iret\n"
 
@@ -292,7 +287,6 @@ static void __far resume_process() {
         "popw %cx\n"
         "popw %bx\n"
         "popw %ax\n"
-        "popf\n"
         "iret\n"
     );
     /* never returns */

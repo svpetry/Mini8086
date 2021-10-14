@@ -166,6 +166,7 @@ clr_loop:
 
 	// run main
 	call main
+	cli
 	hlt
 
 	// interrupt handlers

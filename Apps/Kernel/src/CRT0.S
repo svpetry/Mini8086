@@ -20,7 +20,6 @@ _start:
 
 /* INT 20h (kernel functions) */
 int20:
-	pushf
 	push %bx
 	push %bp
 	push %ds
@@ -55,7 +54,6 @@ int20:
 	pop %ds
 	pop %bp
 	pop %bx
-	popf
 	iret
 
 .size _start, . - _start

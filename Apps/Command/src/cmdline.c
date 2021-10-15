@@ -4,9 +4,10 @@
 #include "../../Lib/bios_screen.h"
 #include "../../Lib/kernel.h"
 #include "../../Lib/utils.h"
+#include "../../Lib/strutils.h"
 
-char last_cmdbuf[CMDLINE_MAXLEN];
-char cmdbuf[CMDLINE_MAXLEN];
+char last_cmdbuf[CMDLINE_MAXLEN + 1];
+char cmdbuf[CMDLINE_MAXLEN + 1];
 char *params[MAX_PARAMS];
 byte paramcount;
 
@@ -45,20 +46,39 @@ void read_cmdline() {
 	const char *wrong_parameter_count = "Wrong parameter count!";
 	const char *cmd_prompt = "CMD>";
 
-	memset(cmdbuf, 0, CMDLINE_MAXLEN);
 	last_cmdbuf[0] = 0;
+	putchar('\n');
     puts(cmd_prompt);
 
-    byte last_ticks = get_ticks();
-    byte tick_count;
+	enable_cursor(1);
+	int pos = 0;
     char c;
     do {
-        c = getchar();
-        if (!c) {
-            sleep(40);
-        }
-        
-    } while (!c);
+        do {
+			c = getchar();
+		} while (!c);
+		if (c >= 32 && pos < CMDLINE_MAXLEN) {
+			putchar(c);
+			cmdbuf[pos++] = c;
+		} else if (c == 0x08 && pos > 0) { // backspace
+			putchar(c);
+			pos--;
+		} else if (c == 0x02) { // cursor up
+			while (pos > 0) {
+				putchar(0x08); // backspace
+				pos--;
+			}
+			strcpy(cmdbuf, last_cmdbuf);
+			puts(cmdbuf);
+			pos = strlen(cmdbuf);
+		}
+    } while (c != '\n');
+	enable_cursor(0);
+
+	cmdbuf[pos] = 0x00;
+	strcpy(last_cmdbuf, cmdbuf);
+	strtolower(cmdbuf);
+	splitparams();
 
     putchar('\n');
 }

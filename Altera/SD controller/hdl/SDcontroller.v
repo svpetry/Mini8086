@@ -202,6 +202,7 @@ assign DEN = cs_drive;
 // interrupt control
 always @(posedge clk)
 begin
+	SD_IRQ = 1;
 //	case (irq_ctrl)
 //		2'd1: begin
 //			

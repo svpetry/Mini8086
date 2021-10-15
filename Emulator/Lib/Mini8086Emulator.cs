@@ -45,7 +45,7 @@ namespace Emulator
         {
             var components = new List<BaseComponent>();
 
-            _memMapper = new MemoryMapper(256);
+            _memMapper = new MemoryMapper(512);
             _portMapper = new PortMapper();
 
             _cpu = new Cpu8086(_memMapper, _portMapper);

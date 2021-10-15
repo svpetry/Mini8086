@@ -66,3 +66,4 @@ build.h
 Apps/Kernel/bin/
 Tools/PrepExec/bin/
 Tools/PrepExec/obj/
+Tools/DecoderBuilder/Properties/.vs/

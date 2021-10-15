@@ -1,5 +1,9 @@
 #include "debug.h"
 #include "../../Lib/types.h"
+#include "../../Lib/utils.h"
+#include "../../Lib/screen.h"
+#include "../../Lib/lowlevel.h"
+#include "../../Lib/strutils.h"
 #include "ff.h"
 
 void demo1() {

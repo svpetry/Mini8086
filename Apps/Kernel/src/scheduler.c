@@ -155,8 +155,8 @@ static void __far handle_timer() {
 
         // check if called from ROM or kernel
         "movw %%ss, %%ax\n"
-        "cmpw $0x0400, %%ax\n"
-        "ja cont\n"
+        "cmpw $0x1000, %%ax\n"
+        "jae cont\n"
 
         // send EOI
         "movb $0x20, %%al\n"

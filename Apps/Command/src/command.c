@@ -77,9 +77,6 @@ void start() {
 }
 
 int main() {
-    puts("Hello.\n");
-    while (1) ;
-    
     init();
     start();
 }

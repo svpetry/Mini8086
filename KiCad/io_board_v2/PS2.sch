@@ -461,50 +461,6 @@ KDATA_OUT
 Text Label 8300 4800 0    50   ~ 0
 ~PCLK
 $Comp
-L 74xx:74HC04 U3
-U 3 1 60241E6C
-P 3550 1150
-F 0 "U3" H 3550 1467 50  0000 C CNN
-F 1 "74HC07" H 3550 1376 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 3550 1150 50  0001 C CNN
-F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 3550 1150 50  0001 C CNN
-	3    3550 1150
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC04 U3
-U 4 1 60242776
-P 3550 1650
-F 0 "U3" H 3550 1967 50  0000 C CNN
-F 1 "74HC07" H 3550 1876 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 3550 1650 50  0001 C CNN
-F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 3550 1650 50  0001 C CNN
-	4    3550 1650
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC04 U3
-U 5 1 60243D7A
-P 3550 2150
-F 0 "U3" H 3550 2467 50  0000 C CNN
-F 1 "74HC07" H 3550 2376 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 3550 2150 50  0001 C CNN
-F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 3550 2150 50  0001 C CNN
-	5    3550 2150
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74HC04 U3
-U 6 1 602448F9
-P 3550 2650
-F 0 "U3" H 3550 2967 50  0000 C CNN
-F 1 "74HC07" H 3550 2876 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 3550 2650 50  0001 C CNN
-F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 3550 2650 50  0001 C CNN
-	6    3550 2650
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR0116
 U 1 1 6024AAF6
 P 3150 2750
@@ -566,4 +522,50 @@ Wire Wire Line
 	2650 5350 2900 5350
 Wire Bus Line
 	8650 2650 8650 3400
+$Comp
+L 74xx:SN74LS07N U3
+U 3 1 616DF698
+P 3550 2650
+F 0 "U3" H 3550 2333 50  0000 C CNN
+F 1 "74HC07" H 3550 2424 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 3550 2650 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 3550 2650 50  0001 C CNN
+	3    3550 2650
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:SN74LS07N U3
+U 4 1 616E0C03
+P 3550 2150
+F 0 "U3" H 3550 1833 50  0000 C CNN
+F 1 "74HC07" H 3550 1924 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 3550 2150 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 3550 2150 50  0001 C CNN
+	4    3550 2150
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:SN74LS07N U3
+U 5 1 616E1299
+P 3550 1650
+F 0 "U3" H 3550 1333 50  0000 C CNN
+F 1 "74HC07" H 3550 1424 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 3550 1650 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 3550 1650 50  0001 C CNN
+	5    3550 1650
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:SN74LS07N U3
+U 6 1 616E178A
+P 3550 1150
+F 0 "U3" H 3550 833 50  0000 C CNN
+F 1 "74HC07" H 3550 924 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 3550 1150 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 3550 1150 50  0001 C CNN
+	6    3550 1150
+	1    0    0    -1  
+$EndComp
+Text Notes 4150 3450 0    50   ~ 0
+U3 maybe 74HC06 for some keyboard controllers.
 $EndSCHEMATC

@@ -139,7 +139,7 @@ int putchar(int c) {
     char ch = (char)c;
 
     byte hidden = hide_cursor();
-    if (ch != '\n') {
+    if (ch > 0x1F) {
         word index = cursor_row * SCREEN_COLUMNS + cursor_col;
         word data = ch + (textcol << 8);
         (*screen)[index] = data;

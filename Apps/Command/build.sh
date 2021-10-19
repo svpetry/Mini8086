@@ -4,4 +4,5 @@ ia16-elf-gcc -O3 -mcmodel=tiny -fno-jump-tables -nostartfiles \
     ./src/command.c ./src/cmdline.c ./src/directory.c ./src/misc.c ./src/time.c \
     ../Lib/strutils.c ../Lib/utils.c \
     ../Lib/bios_screen.c ../Lib/bios_misc.c ../Lib/bios_fs.c ../Lib/kernel.c
+
 rm crt0.o

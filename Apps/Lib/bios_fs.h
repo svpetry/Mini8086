@@ -4,6 +4,24 @@
 #include "types.h"
 #include "biosdefs.h"
 
+#define MAX_PATH 80
+
+/* File attribute bits for directory entry */
+#define	AM_RDO	0x01	/* Read only */
+#define	AM_HID	0x02	/* Hidden */
+#define	AM_SYS	0x04	/* System */
+#define AM_DIR	0x10	/* Directory */
+#define AM_ARC	0x20	/* Archive */
+
+/* File access mode and open method flags */
+#define	FA_READ				0x01
+#define	FA_WRITE			0x02
+#define	FA_OPEN_EXISTING	0x00
+#define	FA_CREATE_NEW		0x04
+#define	FA_CREATE_ALWAYS	0x08
+#define	FA_OPEN_ALWAYS		0x10
+#define	FA_OPEN_APPEND		0x30
+
 /* get volume name */
 byte fs_volname(char *s);
 
@@ -14,8 +32,9 @@ byte fs_open(const char *path, byte *handle, byte mode);
 byte fs_close(byte handle);
 
 /* get file information */
-// byte fs_fileinfo(const char *path, dword *size,
-//     byte *year, byte *month, byte *day, byte *hour, byte *minute, byte *second);
+byte fs_fileinfo(const char *path, dword *size,
+    byte *year, byte *month, byte *day, byte *hour, byte *minute, byte *second,
+    byte *attrib);
 
 /* get the file size */
 byte fs_filesize(const char *path, dword *size);

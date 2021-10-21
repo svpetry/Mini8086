@@ -67,3 +67,5 @@ Apps/Kernel/bin/
 Tools/PrepExec/bin/
 Tools/PrepExec/obj/
 Tools/DecoderBuilder/Properties/.vs/
+Tools/PicBuilder/bin/
+Tools/PicBuilder/obj/

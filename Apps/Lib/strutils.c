@@ -1,5 +1,9 @@
 #include "strutils.h"
 
+int strempty(char *s) {
+	return s[0] == 0;
+}
+
 int strlen(char *str) {
     const char *s;
     for (s = str; *s; ++s) ;
@@ -34,6 +38,17 @@ void *ltrim(char *s, int n, char c) {
 		diff--;
 		s[diff] = c;
 	}
+	return s;
+}
+
+void *rtrim(char *s, int n, char c) {
+	int l = strlen(s);
+	int diff = n - l;
+	while (diff > 0) {
+		diff--;
+		s[l++] = c;
+	}
+	s[l] = 0;
 	return s;
 }
 
@@ -131,6 +146,19 @@ int tolower(int c) {
 void strtolower(char *s) {
 	while (*s) {
 		*s = tolower(*s);
+		s++;
+    }
+}
+
+int toupper(int c) {
+	if (c >= 'a' && c <= 'z')
+		return c - 'a' + 'A';
+	return c;
+}
+
+void strtoupper(char *s) {
+	while (*s) {
+		*s = toupper(*s);
 		s++;
     }
 }

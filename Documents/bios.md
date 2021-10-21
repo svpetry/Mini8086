@@ -183,6 +183,8 @@ returns:
 - AL: directory handle
 - DX:CX: pointer to destination string
 
+Returns a null string if all entries have been read.
+
 returns:
 - AL: 0 = OK, 1 = error
 

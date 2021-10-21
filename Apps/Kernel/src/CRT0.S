@@ -42,6 +42,7 @@ int20:
 	cld
 	call int_kernel
 
+	cli
 	movw int_ss_save, %ax
 	movw %ax, %ss
 	movw int_sp_save, %sp

@@ -13,7 +13,7 @@ namespace PicBuilder
         static void Main(string[] args)
         {
             var data = new byte[64000];
-            var bmp = new Bitmap(@"..\..\..\VGA\amber.bmp");
+            var bmp = new Bitmap(args[0]);
 
             var dataIdx = 0;
             for (var y = 0; y < 200; y++)
@@ -28,7 +28,7 @@ namespace PicBuilder
                 }
             }
 
-            File.WriteAllBytes(@"..\..\..\BIOS\picture.bin", data);
+            File.WriteAllBytes(args[1], data);
         }
     }
 }

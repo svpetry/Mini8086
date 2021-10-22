@@ -46,7 +46,6 @@ void read_cmdline() {
 	const char *wrong_parameter_count = "Wrong parameter count!";
 	const char *cmd_prompt = "CMD>";
 
-	last_cmdbuf[0] = 0;
 	putchar('\n');
     puts(cmd_prompt);
 
@@ -57,6 +56,7 @@ void read_cmdline() {
         do {
 			c = getchar();
 		} while (!c);
+
 		if (c >= 32 && pos < CMDLINE_MAXLEN) {
 			putchar(c);
 			cmdbuf[pos++] = c;

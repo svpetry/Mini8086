@@ -10,6 +10,5 @@ _start:
 	mov %si, %sp // SI contains new stack pointer
 	call main
 	int $0x81
-	hlt
 
 .size _start, . - _start

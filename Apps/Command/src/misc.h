@@ -2,5 +2,7 @@
 #define MISC_H
 
 void show_help();
+void print_file_contents();
+void showpic();
 
 #endif

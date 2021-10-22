@@ -27,8 +27,8 @@ static void add_to_queue(char c) {
 
 static byte getkeycode_wait() {
     byte code = 0;
-    int maxtries = 2000;
-    while ((inp(0x64) & 0b00000001) == 0) asm volatile("nop");
+    int maxtries = 10000;
+    while ((inp(0x64) & 0b00000001) == 0 && --maxtries > 0) asm volatile("nop");
     if ((inp(0x64) & 0b00000001) > 0)
         code = inp(0x60);
 #if KEYB_DEBUG

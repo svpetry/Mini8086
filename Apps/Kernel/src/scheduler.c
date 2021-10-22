@@ -229,22 +229,24 @@ static void init() {
 
 static void start_timer() {
     asm volatile (
-        "movw $0b01110110, %ax\n" // CH1, square wave generator
-        "out %ax, $"TMR_CMD_STR"\n"
-        "movw $"TMR_LO_STR", %ax\n"
-        "out %ax, $"TMR_CH1_STR"\n"
-        "movw $"TMR_HI_STR", %ax\n"
-        "out %ax, $"TMR_CH1_STR"\n"
+        "movw $0b01110110, %%ax\n" // CH1, square wave generator
+        "out %%ax, $"TMR_CMD_STR"\n"
+        "movw $"TMR_LO_STR", %%ax\n"
+        "out %%ax, $"TMR_CH1_STR"\n"
+        "movw $"TMR_HI_STR", %%ax\n"
+        "out %%ax, $"TMR_CH1_STR"\n"
+        : : : "ax"
     );
 }
 
 static void stop_timer() {
     asm volatile (
-        "movw $0b01110010, %ax\n" // CH1, hardware re-triggerable one-shot (means disabled)
-        "out %ax, $"TMR_CMD_STR"\n"
-        "movw $0xFF, %ax\n"
-        "out %ax, $"TMR_CH1_STR"\n"
-        "out %ax, $"TMR_CH1_STR"\n"
+        "movw $0b01110010, %%ax\n" // CH1, hardware re-triggerable one-shot (means disabled)
+        "out %%ax, $"TMR_CMD_STR"\n"
+        "movw $0xFF, %%ax\n"
+        "out %%ax, $"TMR_CH1_STR"\n"
+        "out %%ax, $"TMR_CH1_STR"\n"
+        : : : "ax"
     );
 }
 

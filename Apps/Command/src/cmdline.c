@@ -1,5 +1,6 @@
 #include "cmdline.h"
 #include "cmd_defs.h"
+#include "filesystem.h"
 #include "../../Lib/bios_misc.h"
 #include "../../Lib/bios_screen.h"
 #include "../../Lib/kernel.h"
@@ -44,10 +45,12 @@ void splitparams() {
 
 void read_cmdline() {
 	const char *wrong_parameter_count = "Wrong parameter count!";
-	const char *cmd_prompt = "CMD>";
 
-	putchar('\n');
-    puts(cmd_prompt);
+	if (strempty(current_path))
+		putchar('\\');
+	else
+		puts(current_path);
+	putchar('>');
 
 	enable_cursor(1);
 	int pos = 0;
@@ -79,6 +82,4 @@ void read_cmdline() {
 	strcpy(last_cmdbuf, cmdbuf);
 	strtolower(cmdbuf);
 	splitparams();
-
-    putchar('\n');
 }

@@ -42,11 +42,14 @@ void list_directory() {
         return;
     }
 
+    // print volume name
+    putchar('\n');
     putchar(' ');
     puts(volname);
     putchar('\n');
     for (i = 0; i < 48; i++) putchar('-');
     putchar('\n');
+    if (!strempty(current_path)) puts(" ..\n");
 
     byte handle;
     if (fs_opendir(current_path, &handle)) {
@@ -113,7 +116,7 @@ void list_directory() {
             }
             putchar('\n');
         }
-    } while (filename[0] != 0);
+    } while (!strempty(filename));
 
     fs_closedir(handle);
     for (i = 0; i < 48; i++) putchar('-');
@@ -129,5 +132,39 @@ void delete() {
 }
 
 void change_directory() {
+    if (paramcount < 2) {
+        puts("No directory name given.\n");
+        return;
+    }
+    char *folder_name = params[1];
+    strtoupper(folder_name);
 
+    if (!strcmp(folder_name, ".")) return;
+    if (!strcmp(folder_name, "..")) {
+        int i = strlen(current_path);
+        while (i > 0) {
+            i--;
+            if (current_path[i] == '\\') {
+                current_path[i] = 0;
+                return;
+            }
+        }
+        puts("Directory not found.\n");
+        return;
+    }
+
+    char path[MAX_PATH];
+    strcpy(path, current_path);
+    strcat(path, "\\");
+    strcat(path, folder_name);
+
+    dword size;
+    byte year, month, day, hour, minute, second, attrib;
+    if (fs_fileinfo(path, &size, &year, &month, &day, &hour, &minute, &second, &attrib)
+        || (attrib & AM_DIR) == 0) {
+        puts("Directory not found.\n");
+        return;
+    }
+
+    strcpy(current_path, path);
 }

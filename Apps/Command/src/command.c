@@ -84,6 +84,7 @@ void process_command() {
 
 void start() {
     while (1) {
+        putchar('\n');
         read_cmdline();
         if (paramcount > 0)
             process_command();

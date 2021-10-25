@@ -12,7 +12,10 @@ namespace Emulator.Lib.Components
         Idle,
         ReadCommand,
         ReadBlock,
-        WriteBlock
+        WriteMultipleIdle,
+        WriteMultiple,
+        WriteSingleIdle,
+        WriteSingle,
     }
 
     enum R1Flags
@@ -47,13 +50,13 @@ namespace Emulator.Lib.Components
 
         private bool _acmd;
 
-        private uint _blockSize = 512;
+        private int _blockSize = 512;
 
-        private uint? _blockCount;
+        private int? _blockCount;
 
         private byte[] _currentBlock = new byte[512];
 
-        private uint _currentBlockNo;
+        private int _currentBlockNo;
 
         private int _currentByteNo;
 
@@ -121,7 +124,7 @@ namespace Emulator.Lib.Components
                             _responseQueue.Enqueue(0x00);
 
                             if (_blockCount > 0 || _blockCount == null)
-                                InitReadBlock();
+                                InitReadMultiple();
                             else
                             {
                                 _state = SdState.Idle;
@@ -130,8 +133,62 @@ namespace Emulator.Lib.Components
                         }
                         return result;
                     }
-                case SdState.WriteBlock:
-                    break;
+                case SdState.WriteSingleIdle:
+                    {
+                        if (input == 0xFE)
+                        {
+                            _currentBlock = new byte[_blockSize];
+                            _currentByteNo = 0;
+                            _state = SdState.WriteSingle;
+                        }
+                        return 0;
+                    }
+                case SdState.WriteSingle:
+                    {
+                        if (_currentByteNo < _blockSize)
+                            _currentBlock[_currentByteNo++] = input; // read block
+                        else if (_currentByteNo < _blockSize + 2)
+                            _currentByteNo++; // read CRC (2 bytes)
+                        else
+                        {
+                            FinishWrite();
+                            _state = SdState.Idle;
+                            return 0x05;
+                        }
+                        return 0;
+                   }
+                case SdState.WriteMultipleIdle:
+                    {
+                        // break on stop tran token
+                        if (input == 0xFD)
+                        {
+                            _state = SdState.ReadCommand;
+                            _commandQueue.Enqueue(input);
+                            return 0;
+                        }
+                        if (input == 0xFC)
+                        {
+                            _currentBlock = new byte[_blockSize];
+                            _currentByteNo = 0;
+                            _state = SdState.WriteMultiple;
+                        }
+                        return 0;
+                    }
+                case SdState.WriteMultiple:
+                    {
+                        if (_currentByteNo < _blockSize)
+                            _currentBlock[_currentByteNo++] = input; // read block
+                        else if (_currentByteNo < _blockSize + 2)
+                            _currentByteNo++; // read CRC (2 bytes)
+                        else
+                        {
+                            FinishWrite();
+                            _state = SdState.WriteMultipleIdle;
+                            return 0x05;
+                        }
+
+                        return 0;
+                    }
             }
             return 0xFF;
         }
@@ -192,36 +249,40 @@ namespace Emulator.Lib.Components
                         break;
                     // SET_BLOCKLEN
                     case 16:
-                        _blockSize = param;
+                        _blockSize = (int)param;
                         _responseQueue.Enqueue(0x00);
                         break;
                     // READ_SINGLE_BLOCK
                     case 17:
                         _blockCount = 1;
-                        _currentBlockNo = param;
+                        _currentBlockNo = (int)param;
                         _responseQueue.Enqueue(0x00);
-                        InitReadBlock();
+                        InitReadMultiple();
                         _state = SdState.ReadBlock;
                         break;
                     // READ_MULTIPLE_BLOCK
                     case 18:
-                        _currentBlockNo = param;
+                        _currentBlockNo = (int)param;
                         _responseQueue.Enqueue(0x00);
-                        InitReadBlock();
+                        InitReadMultiple();
                         _state = SdState.ReadBlock;
                         break;
                     // SET_BLOCK_COUNT
                     case 23:
-                        _blockCount = param;
+                        _blockCount = (int)param;
                         _responseQueue.Enqueue(0x00);
                         break;
                     // WRITE_BLOCK
                     case 24:
+                        _currentBlockNo = (int)param;
                         _responseQueue.Enqueue(0x00);
+                        _state = SdState.WriteSingleIdle;
                         break;
                     // WRITE_MULTIPLE_BLOCK
                     case 25:
+                        _currentBlockNo = (int)param;
                         _responseQueue.Enqueue(0x00);
+                        _state = SdState.WriteMultipleIdle;
                         break;
                     // APP_CMD (ACMD prefix)
                     case 55:
@@ -239,7 +300,7 @@ namespace Emulator.Lib.Components
             }
         }
 
-        private void InitReadBlock()
+        private void InitReadMultiple()
         {
             _currentByteNo = 0;
             if (_blockCount > 0) _blockCount--;
@@ -258,9 +319,19 @@ namespace Emulator.Lib.Components
             _responseQueue.Enqueue(0xFE);
         }
 
-        private void InitWriteBlock()
+        private void FinishWrite()
         {
-
+            _currentByteNo = 0;
+            var blockStart = _currentBlockNo * _blockSize;
+            var size = (int)Math.Min(_fileInfo.Length - blockStart, _blockSize);
+            if (size > 0)
+            {
+                using (var fs = File.OpenWrite(_imgPath))
+                {
+                    fs.Seek(blockStart, SeekOrigin.Begin);
+                    fs.Write(_currentBlock, 0, size);
+                }
+            }
         }
     }
 }

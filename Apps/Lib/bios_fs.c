@@ -123,7 +123,23 @@ byte fs_seek(byte handle, dword pos) {
 }
 
 byte fs_rename(const char *oldname, const char *newname) {
-
+    byte status;
+    asm volatile (
+        "pushw %%cs\n"
+        "popw %%dx\n"
+        "movw %1, %%cx\n"
+        "pushw %%cs\n"
+        "popw %%si\n"
+        "movw %2, %%di\n"
+        "movb $0x25, %%ah\n"
+        "int $0x10\n"
+        "movb %%al, %0\n"
+        : "=g" (status)
+        : "g" (oldname), "g" (newname)
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
+    );
+    return status;
+ 
 }
 
 byte fs_read(byte handle, byte __far *buffer, word count) {
@@ -215,4 +231,20 @@ byte fs_read_entry(byte handle, char *s) {
 
 byte fs_createdir(const char *dirname) {
     
+}
+
+byte fs_delete(const char *path) {
+    byte status;
+    asm volatile (
+        "pushw %%cs\n"
+        "popw %%dx\n"
+        "movw %1, %%cx\n"
+        "movb $0x2C, %%ah\n"
+        "int $0x10\n"
+        "movb %%al, %0\n"
+        : "=g" (status)
+        : "g" (path)
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
+    );
+    return status;
 }

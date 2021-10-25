@@ -31,7 +31,7 @@ void show_help() {
 void print_file_contents() {
     char filepath[MAX_PATH];
     dword size;
-    if (handle_file_param(filepath, &size)) return;
+    if (handle_file_param(filepath, 1, &size, TRUE)) return;
 
     byte handle;
     if (fs_open(filepath, &handle, FA_READ | FA_OPEN_EXISTING)) {
@@ -54,7 +54,7 @@ void print_file_contents() {
 void showpic() {
     char filepath[MAX_PATH];
     dword size;
-    if (handle_file_param(filepath, &size)) return;
+    if (handle_file_param(filepath, 1, &size, TRUE)) return;
 
     if (size == 64000) {
         outp(0x50, 0b00000001); // 320 x 200 x 256

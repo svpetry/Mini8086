@@ -5,8 +5,6 @@
 #include "../../Lib/screen.h"
 #include "defs.h"
 
-#define SD_BLOCK_SIZE 512
-
 volatile byte initialized;
 
 /*
@@ -136,7 +134,7 @@ static byte send_cmd1() {
 static void sd_delay() {
     int i;
     for (i = 0; i < 2000; i++)
-        asm volatile("nop");
+        asm volatile ("nop");
 }
 
 static byte sd_init_internal() {
@@ -268,6 +266,46 @@ byte sd_read_data_packet(byte __far *buf) {
 #endif
 
     return res;
+}
+
+byte sd_write_data_packet(byte stoken, const byte __far *buf) {
+    int i, j;
+    byte res, data;
+#if SD_DEBUG
+    char s[8];
+    puts("sd_write_data_packet...\n");
+#endif
+
+    // send start token
+    spi_send(stoken);
+
+    // write data
+    for (i = 0; i < SD_BLOCK_SIZE; i++)
+        spi_send(*(buf++));
+
+    // write crc (2 bytes)
+    spi_send(0xFF);
+    spi_send(0xFF);
+
+    // wait
+    i = 1000;
+    do {
+        res = spi_send(0xFF);
+    } while (--i > 0 && res == 0xFF);
+
+#if SD_DEBUG
+    puts("\ndata packet written.\n");
+#endif
+
+    return res;
+}
+
+void wait_while_busy() {
+    word i = 4000;
+    while (spi_send(0xFF) == 0x00 && i > 0) {
+        asm volatile ("nop");
+        i--;
+    }
 }
 
 byte sd_inserted() {

@@ -3,6 +3,8 @@
 
 #include "../../Lib/types.h"
 
+#define SD_BLOCK_SIZE 512
+
 /* send and receive a byte via SPI (to the SD card) */
 byte spi_send(byte value);
 
@@ -26,6 +28,12 @@ byte sd_init();
 
 /* reads a data packet (use with CMD17 or CMD18) */
 byte sd_read_data_packet(byte __far *buf);
+
+/* writes a data packet (use with CMD24 or CMD25) */
+byte sd_write_data_packet(byte stoken, const byte __far *buf);
+
+/* waits for a write operation to finish */
+void wait_while_busy();
 
 /* returns true when the SD slot is currently containing an SD card */
 byte sd_inserted();

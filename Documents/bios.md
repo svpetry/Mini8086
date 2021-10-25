@@ -196,5 +196,13 @@ returns:
 returns:
 - AL: 0 = OK, 1 = error
 
+---
+**AH = 2Ch**	Delete file or directory
+
+- DX:CX: file name
+
+returns:
+- AL: 0 = OK, 1 = error
+
 # TODO
 - read/write date & time

@@ -15,17 +15,17 @@ static void put2digits(byte num) {
     puts(s);
 }
 
-byte handle_file_param(char *filepath, dword *size) {
-    if (paramcount < 2) {
+byte handle_file_param(char *filepath, byte index, dword *size, byte docheck) {
+    if (paramcount < index + 1) {
         puts("No file name given.\n");
         return 1;
     }
     
     strcpy(filepath, current_path);
     strcat(filepath, "\\");
-    strcat(filepath, params[1]);
+    strcat(filepath, params[index]);
 
-    if (fs_filesize(filepath, size)) {
+    if (docheck && fs_filesize(filepath, size) || size == 0) {
           puts("File not found or read error.\n");
           return 1;
     }
@@ -124,11 +124,19 @@ void list_directory() {
 }
 
 void rename() {
-
+    char filepath_old[MAX_PATH];
+    char filepath_new[MAX_PATH];
+    dword size;
+    if (handle_file_param(filepath_old, 1, &size, TRUE)) return;
+    if (handle_file_param(filepath_new, 2, &size, FALSE)) return;
+    if (fs_rename(filepath_old, filepath_new)) puts("Error: Could not rename file.\n");
 }
 
 void delete() {
-
+    char filepath[MAX_PATH];
+    dword size;
+    if (handle_file_param(filepath, 1, &size, TRUE)) return;
+    if (fs_delete(filepath)) puts("Error: Could not delete file.\n");
 }
 
 void change_directory() {

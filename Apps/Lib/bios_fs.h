@@ -63,4 +63,7 @@ byte fs_closedir(byte handle);
 /* create directory */
 byte fs_createdir(const char *dirname);
 
+/* delete file or directory */
+byte fs_delete(const char *path);
+
 #endif

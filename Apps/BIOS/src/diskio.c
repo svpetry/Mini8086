@@ -51,7 +51,7 @@ DSTATUS disk_initialize (
 /*-----------------------------------------------------------------------*/
 
 DRESULT disk_read (
-	BYTE pdrv,			/* Physical drive nmuber to identify the drive */
+	BYTE pdrv,			/* Physical drive number to identify the drive */
 	BYTE __far *buff,	/* Data buffer to store read data */
 	LBA_t sector,		/* Start sector in LBA */
 	UINT count			/* Number of sectors to read */
@@ -96,14 +96,14 @@ DRESULT disk_read (
 					error = 1;
 					break;
 				}
-				buff += 512;
+				buff += SD_BLOCK_SIZE;
 			}
 			spi_send(0xFF);
 			if (!error) {
 				sd_command(12, 0, 0);
 				spi_send(0xFF); // ignore stuff byte
 				read_r1();
-				while (spi_send(0xFF) == 0) ; // wait while busy
+				wait_while_busy();
 			}
 		}
 	}
@@ -124,7 +124,7 @@ DRESULT disk_read (
 #if FF_FS_READONLY == 0
 
 DRESULT disk_write (
-	BYTE pdrv,				/* Physical drive nmuber to identify the drive */
+	BYTE pdrv,				/* Physical drive number to identify the drive */
 	const BYTE __far *buff,	/* Data to be written */
 	LBA_t sector,			/* Start sector in LBA */
 	UINT count				/* Number of sectors to write */
@@ -143,13 +143,53 @@ DRESULT disk_write (
 	putchar('\n');
 #endif
 
+	int i;
+	byte error = 0, res;
+
 	sd_led_wr(1);
 	sd_select();
 
-	// TODO
-
+	if (count == 1) {
+		// write single block
+		sd_command(24, sector, 00);
+		if (read_r1() > 0x01)
+			error = 1;
+		else {
+			spi_send(0xFF);
+			if ((sd_write_data_packet(0xFE, buff) & 0x1F) != 0x05)
+				error = 1;
+			else
+				wait_while_busy();
+		}
+	} else {
+		// write multiple blocks
+		sd_command(25, sector, 00);
+		if (read_r1() > 0x01)
+			error = 1;
+		else {
+			word index = 0;
+			for (i = 0; i < count; i++) {
+				spi_send(0xFF);
+				if ((sd_write_data_packet(0xFC, buff + index) & 0x1F) != 0x05) {
+					error = 1;
+					break;
+				}
+				wait_while_busy();
+				index += SD_BLOCK_SIZE;
+			}
+			if (!error) {
+				spi_send(0xFD); // send stop tran token
+				wait_while_busy();
+			}
+		}
+	}
 	sd_deselect();
 	sd_led_wr(0);
+
+#if SD_DEBUG
+	if (error) puts("Error!\n");
+#endif
+	return error ? RES_ERROR : RES_OK;
 }
 
 #endif

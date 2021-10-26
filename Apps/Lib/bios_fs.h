@@ -31,10 +31,13 @@ byte fs_open(const char *path, byte *handle, byte mode);
 /* close file */
 byte fs_close(byte handle);
 
-/* get file information */
+/* get file/directory information */
 byte fs_fileinfo(const char *path, dword *size,
     byte *year, byte *month, byte *day, byte *hour, byte *minute, byte *second,
     byte *attrib);
+
+/* get file/directory attributes */
+byte fs_fileattrib(const char *path, byte *attrib);
 
 /* get the file size */
 byte fs_filesize(const char *path, dword *size);
@@ -61,7 +64,7 @@ byte fs_read_entry(byte handle, char *s);
 byte fs_closedir(byte handle);
 
 /* create directory */
-byte fs_createdir(const char *dirname);
+byte fs_createdir(const char *path);
 
 /* delete file or directory */
 byte fs_delete(const char *path);

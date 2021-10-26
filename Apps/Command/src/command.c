@@ -53,6 +53,14 @@ void process_command() {
     } else if (!strcmp(params[0], "cd")) {
         change_directory();
 
+    // MD
+    } else if (!strcmp(params[0], "md")) {
+        create_directory();
+
+    // RD
+    } else if (!strcmp(params[0], "rd")) {
+        remove_directory();
+
     // TIME
     } else if (!strcmp(params[0], "time")) {
 

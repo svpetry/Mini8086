@@ -46,6 +46,7 @@ void splitparams() {
 void read_cmdline() {
 	const char *wrong_parameter_count = "Wrong parameter count!";
 
+	puts("SD");
 	if (strempty(current_path))
 		putchar('\\');
 	else

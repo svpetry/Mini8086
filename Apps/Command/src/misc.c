@@ -18,6 +18,7 @@ void show_help() {
         "REN      Rename file\n"
         "DEL      Delete file\n"
         "CD       Change directory\n"
+        "MD       Create directory\n"
         "TIME     Show/set time\n"
         "DATE     Show/set date\n"
         "REBOOT   Reboot system\n"

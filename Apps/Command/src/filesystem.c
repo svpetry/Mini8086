@@ -15,7 +15,7 @@ static void put2digits(byte num) {
     puts(s);
 }
 
-byte handle_file_param(char *filepath, byte index, dword *size, byte docheck) {
+byte handle_file_param(char *filepath, byte index, dword *size, byte checkexist) {
     if (paramcount < index + 1) {
         puts("No file name given.\n");
         return 1;
@@ -25,9 +25,31 @@ byte handle_file_param(char *filepath, byte index, dword *size, byte docheck) {
     strcat(filepath, "\\");
     strcat(filepath, params[index]);
 
-    if (docheck && fs_filesize(filepath, size) || size == 0) {
+    if (checkexist && fs_filesize(filepath, size) || size == 0) {
           puts("File not found or read error.\n");
           return 1;
+    }
+    return 0;
+}
+
+byte handle_dir_param(char *path, byte checkexist) {
+    if (paramcount < 2) {
+        puts("No directory name given.\n");
+        return 1;
+    }
+    char *folder_name = params[1];
+    strtoupper(folder_name);
+
+    strcpy(path, current_path);
+    strcat(path, "\\");
+    strcat(path, folder_name);
+
+    if (checkexist) {
+        byte attrib;
+        if (fs_fileattrib(path, &attrib) || (attrib & AM_DIR) == 0) {
+            puts("Directory not found.\n");
+            return 1;
+        }
     }
     return 0;
 }
@@ -166,13 +188,23 @@ void change_directory() {
     strcat(path, "\\");
     strcat(path, folder_name);
 
-    dword size;
-    byte year, month, day, hour, minute, second, attrib;
-    if (fs_fileinfo(path, &size, &year, &month, &day, &hour, &minute, &second, &attrib)
-        || (attrib & AM_DIR) == 0) {
+    byte attrib;
+    if (fs_fileattrib(path, &attrib) || (attrib & AM_DIR) == 0) {
         puts("Directory not found.\n");
         return;
     }
 
     strcpy(current_path, path);
+}
+
+void create_directory() {
+    char path[MAX_PATH];
+    if (handle_dir_param(path, FALSE)) return;
+    if (fs_createdir(path)) puts("Error: Could not create directory.\n");
+}
+
+void remove_directory() {
+    char path[MAX_PATH];
+    if (handle_dir_param(path, TRUE)) return;
+    if (fs_delete(path)) puts("Error: Could not delete directory.\n");
 }

@@ -223,13 +223,20 @@ static void read_dir_entry() {
 }
 
 static void create_dir() {
+    char filepath[MAX_PATH_LEN];
+    far_to_near_str(int_dx, int_cx, filepath, MAX_PATH_LEN);
 
+    FRESULT result = f_mkdir(filepath);
+    if (result != FR_OK) {
+        int_ax = 0x01;
+        return;
+    }
+    int_ax = 0x00;
 }
 
 static void delete_file() {
     char filepath[MAX_PATH_LEN];
     far_to_near_str(int_dx, int_cx, filepath, MAX_PATH_LEN);
-    FILINFO fi;
 
     FRESULT result = f_unlink(filepath);
     if (result != FR_OK) {

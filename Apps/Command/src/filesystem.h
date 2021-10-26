@@ -12,5 +12,7 @@ void list_directory();
 void rename();
 void delete();
 void change_directory();
+void create_directory();
+void remove_directory();
 
 #endif

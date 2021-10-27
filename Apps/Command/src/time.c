@@ -29,7 +29,7 @@ void getset_time() {
     put2digits(minutes);
     putchar(':');
     put2digits(seconds);
-    putch('\n');
+    putchar('\n');
 }
 
 void getset_date() {
@@ -56,5 +56,5 @@ void getset_date() {
     put2digits(month);
     putchar('-');
     put2digits(day);
-    putch('\n');
+    putchar('\n');
 }

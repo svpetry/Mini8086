@@ -162,3 +162,17 @@ void strtoupper(char *s) {
 		s++;
     }
 }
+
+int atoi(char *s) {
+	int result = 0;
+	while (*s == ' ') s++;
+	int neg = (*s == '-');
+	if (neg) s++;
+	while (*s == ' ') s++;
+	while (*s) {
+		result = result * 10 + *s - '0';
+		s++;
+	}
+	if (neg) return -result;
+	return result;
+}

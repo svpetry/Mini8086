@@ -1,5 +1,6 @@
 #include "filesystem.h"
 #include "cmdline.h"
+#include "utils.h"
 #include "../../Lib/bios_fs.h"
 #include "../../Lib/bios_screen.h"
 #include "../../Lib/strutils.h"
@@ -7,13 +8,6 @@
 #define FILENAME_LEN 16
 
 char current_path[MAX_PATH];
-
-static void put2digits(byte num) {
-    char s[4];
-    if (num < 10) putchar('0');
-    itoa(num, s);
-    puts(s);
-}
 
 byte handle_file_param(char *filepath, byte index, dword *size, byte checkexist) {
     if (paramcount < index + 1) {

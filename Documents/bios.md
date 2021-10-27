@@ -70,8 +70,33 @@ returns:
 
 return:
 - AL: ticks (0-19)
----
 
+---
+**AH = 12**		Read date and time
+
+return:
+- AL: seconds
+- AH: minutes
+- CL: hours
+- CH: day
+- DL: month
+- DH: year
+
+---
+**AH = 13**		Set time
+
+- CL: seconds
+- CH: minutes
+- DL: hours
+
+---
+**AH = 14**		Set date
+
+- CL: day
+- CH: month
+- DL: year
+
+---
 
 ## FILE SYSTEM
 

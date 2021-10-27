@@ -63,9 +63,11 @@ void process_command() {
 
     // TIME
     } else if (!strcmp(params[0], "time")) {
+        getset_time();
 
     // DATE
     } else if (!strcmp(params[0], "date")) {
+        getset_date();
 
     // REBOOT
     } else if (!strcmp(params[0], "reboot")) {

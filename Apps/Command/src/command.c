@@ -16,6 +16,9 @@ char *cmd_version = "Mini8086 command shell " CMD_VER "\n";
 void init() {
 	// asm volatile ("movw $0x1234, %%ax" : : : "ax");
 
+    set_bgcolor(BLACK);
+    set_textcolor(WHITE);
+
     clrscr();
     puts(cmd_version);
     current_path[0] = 0;

@@ -52,6 +52,16 @@ returns:
 - AL: 0 = cursor disabled, 1 = cursor enabled
 
 ---
+**AH = 09h**	Set text color.
+
+- AL: text color
+
+---
+**AH = 0Ah**	Set background color
+
+- AL: background color
+
+---
 
 ## KEYBOARD
 

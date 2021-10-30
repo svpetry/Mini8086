@@ -2,6 +2,7 @@
 #include "../../Lib/types.h"
 #include "../../Lib/screen.h"
 #include "../../Lib/ds1307.h"
+#include "../../Lib/lowlevel.h"
 #include "keyboard.h"
 #include "bios_fsapi.h"
 #include "bios.h"
@@ -83,6 +84,18 @@ void int_bios() {
         // show or hide the cursor
         case 0x08: {
             enable_cursor(int_ax & 0xFF);
+            break;
+        }
+
+        // set text color
+        case 0x09: {
+            set_textcol(int_ax & 0xFF);
+            break;
+        }
+
+        // set background color
+        case 0x0A: {
+            outp(0x51, int_ax & 0xFF);
             break;
         }
 

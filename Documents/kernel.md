@@ -5,42 +5,36 @@
 
 returns:
 - AL: result code (0 = OK)
+- CX: process id
 
 ---
 ## AH = 01h kill process
 
-- CX:DX process name
+- CX: process id
 
 returns:
 - AL: result code (0 = OK)
 
 ---
-## AH = 10h list first process
+## AH = 10h list process
 
-- CX:DX pointer to data structure
-
-returns:
-- AL: result code (0 = OK)
-
----
-## AH = 11h list next process
-
-- CX:DX pointer to data structure
+- AL: 1 = first process, 0 = next process
+- DX:CX pointer to data structure
 
 returns:
 - AL: result code (0 = OK)
 
 ---
 ## AH = 20h allocate memory block
-- CX:DX		size in bytes
+- DX:CX		size in bytes
 
 returns:
-- CX:DX pointer to memory block
+- DX:CX pointer to memory block
 - AL: result code (0 = OK)
 
 ---
 ## AH = 21h free memory block
-- CX:DX pointer to memory block
+- DX:CX pointer to memory block
 
 returns:
 - AL: result code (0 = OK)
@@ -49,7 +43,7 @@ returns:
 ## AH = 22h check free memory
 
 returns:
-- CX:DX free memory in bytes
+- DX:CX free memory in bytes
 - AL: result code (0 = OK)
 
 # other

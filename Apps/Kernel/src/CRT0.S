@@ -8,8 +8,9 @@ _start:
 
 	// INT 20h
 	movw $0x0080, %di
-	movw $int20, (%di)
+	movw $int20-_start, (%di)
 	movw %cs, %ax
+	incw %di
 	incw %di
 	movw %ax, (%di)
 

@@ -9,6 +9,7 @@
 #include "misc.h"
 #include "time.h"
 #include "filesystem.h"
+#include "kernel.h"
 
 char *cmd_version = "Mini8086 command shell " CMD_VER "\n";
 
@@ -75,9 +76,11 @@ void process_command() {
 
     // PS
     } else if (!strcmp(params[0], "ps")) {
+        handle_ps();
 
-    // KILL
-    } else if (!strcmp(params[0], "kill")) {
+    // TERMINATE
+    } else if (!strcmp(params[0], "terminate")) {
+        handle_terminate();
 
     // TYPE
     } else if (!strcmp(params[0], "type")) {

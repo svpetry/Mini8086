@@ -5,7 +5,7 @@
 
 struct proc_info_ext {
     word id;
-    char name[9];
+    char name[10];
     dword size;
     byte priority;
 };
@@ -17,7 +17,8 @@ typedef enum {
     SR_FILE_OPEN_ERROR,
     SR_NO_EXEC,
     SR_READ_ERROR,
-    SR_CHECKSUM_ERROR
+    SR_CHECKSUM_ERROR,
+    SR_REJECTED
 } SRESULT;
 
 #endif

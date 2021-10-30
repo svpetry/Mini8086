@@ -33,6 +33,9 @@ typedef struct {
 } fileheader;
 
 extern volatile word sp_save;
+extern int process_count;
+extern processinfo __far *processes[];
+
 
 void start_scheduler(const char *command_name);
 

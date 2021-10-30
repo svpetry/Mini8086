@@ -59,6 +59,7 @@ void read_cmdline() {
     do {
         do {
 			c = getchar();
+			if (!c) sleep(40);
 		} while (!c);
 
 		if (c >= 32 && pos < CMDLINE_MAXLEN) {

@@ -27,12 +27,15 @@
 
 #define PRIORITY_ORDER_LEN 9
 #define PRIORITY_LEVELS    3 // priority levels P1, P2, P3. P0 = realtime priority (stored in the same list as P1)
+#define MAX_PROCESSES      32
 
 static byte priority_order[PRIORITY_ORDER_LEN] = {1, 1, 2, 1, 1, 2, 1, 1, 3};
 static byte prio_order_idx;
 
+int process_count;
+processinfo __far *processes[MAX_PROCESSES];
 static processinfo __far *current_process;
-static processinfo __far *processes[PRIORITY_LEVELS]; // double linked list of processes for each priority level
+static processinfo __far *proc_by_prio[PRIORITY_LEVELS]; // double linked list of processes for each priority level
 static volatile byte header_offset;
 static word pid_gen;
 
@@ -43,7 +46,6 @@ static volatile word proc_sp_save;
 static dword procstart;
 static byte terminate;
 
-/*
 static void puthexbyte(byte value) {
     char s[3];
     itohex(value, s);   
@@ -69,7 +71,6 @@ static void showpointer(void __far *ptr) {
     puthexword(lo);
     putchar('\n');
 }
-*/
 
 /* handle INT 81h (terminate process) */
 static void __far handle_terminate() {
@@ -207,8 +208,11 @@ static void __far handle_timer() {
 static void init() {
     current_process = NULL;
     for (int i = 0; i < PRIORITY_LEVELS; i++)
-        processes[i] = NULL;
+        proc_by_prio[i] = NULL;
     pid_gen = 1;
+    process_count = 0;
+    for (int i = 0; i < MAX_PROCESSES; i++)
+        processes[i] = NULL;
     prio_order_idx = 0;
     header_offset = (sizeof(processinfo) + 15) / 16;
 
@@ -256,12 +260,12 @@ static processinfo __far *get_next_process() {
     do {
         byte prio = priority_order[prio_order_idx];
         do {
-            process = processes[prio - 1];
+            process = proc_by_prio[prio - 1];
             if (process == NULL) prio--;
         } while (process == NULL && prio > 0);
         
         if (process != NULL)
-            processes[prio] = process->next;
+            proc_by_prio[prio] = process->next;
 
         if (++prio_order_idx == PRIORITY_ORDER_LEN)
             prio_order_idx = 0;
@@ -315,6 +319,13 @@ static void run_process() {
     if (ps == PS_NEW || ps == PS_IDLE) {
         current_process->state = PS_RUNNING;
         procstart = ptr;
+
+        // puts("start process @");
+        // showpointer((void __far *)procstart);
+        // puts(" with stack start ");
+        // puthexword(new_sp);
+        // while (1) ;
+
         asm volatile (
             // save stack segment + pointer, put new SP into SI
             "movw %%sp, %%ax\n"
@@ -365,6 +376,8 @@ static byte check_crc8(byte __far *mem, word size, byte expected_crc) {
 }
 
 static SRESULT new_process(const char *filename) {
+    if (process_count >= MAX_PROCESSES) return SR_REJECTED;
+
     dword size;
     if (fs_filesize(filename, &size)) {
         file_error(filename, "not found.");
@@ -388,7 +401,13 @@ static SRESULT new_process(const char *filename) {
     }
 
     word pheader_size = ((sizeof(processinfo) + 15) / 16) * 16;
-    byte __far *mem = malloc_((((dword)header.size) << 10) + pheader_size);
+    dword memsize = (((dword)header.size) << 10) + pheader_size;
+    byte __far *mem = malloc_(memsize);
+    // puts("allocated ");
+    // puthexword(memsize);
+    // puts(" at ");
+    // showpointer(mem);
+    // while (1) ;
 
     processinfo __far *new_pi = (processinfo __far *)mem;
     init_process(new_pi, filename, header.priority);
@@ -418,14 +437,15 @@ static SRESULT new_process(const char *filename) {
         free_(new_pi);
         return sresult;
     }
-        
+    
+    processes[process_count++] = new_pi;
     byte pindex = header.priority == 0 ? 0 : header.priority - 1;
-    processinfo __far *curr_pi = processes[pindex];
+    processinfo __far *curr_pi = proc_by_prio[pindex];
     if (curr_pi == NULL) {
         curr_pi = new_pi;
         curr_pi->next = new_pi;
         curr_pi->prev = new_pi;
-        processes[pindex] = curr_pi;
+        proc_by_prio[pindex] = curr_pi;
     } else {
         new_pi->next = curr_pi->next;
         new_pi->prev = curr_pi;
@@ -437,11 +457,23 @@ static SRESULT new_process(const char *filename) {
 
 static void terminate_process() {
     processinfo __far *p = current_process;
-    current_process = NULL;
     
+    int i = 0;
+    while (i < process_count && processes[i] != p)
+        i++;
+    if (i == process_count) return;
+    i++;
+    while (i < process_count) {
+        processes[i - 1] = processes[i];
+        i++;
+    }
+    processes[i - 1] = NULL;
+    process_count--;
+
+    current_process = NULL;
     if (p->next == p) {
          byte pindex = p->priority == 0 ? 0 : p->priority - 1;
-         processes[pindex] = NULL;
+         proc_by_prio[pindex] = NULL;
     } else {
         p->prev->next = p->next;
         p->next->prev = p->prev;

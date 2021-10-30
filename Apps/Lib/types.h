@@ -9,4 +9,7 @@ typedef unsigned long dword;
 #define TRUE 1
 #define FALSE 0
 
+/* makes IntelliSense happy */
+// #define __far
+
 #endif

@@ -93,6 +93,10 @@ void process_command() {
     } else if (!strcmp(params[0], "showpic")) {
         showpic();
 
+    // PALETTE
+    } else if (!strcmp(params[0], "palette")) {
+        show_palette();
+
     } else {
         // launch_application();
     }

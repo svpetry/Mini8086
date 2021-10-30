@@ -6,9 +6,11 @@
 #include "../../Lib/bios_fs.h"
 #include "../../Lib/bios_misc.h"
 #include "../../Lib/utils.h"
+#include "../../Lib/kernel.h"
 #include "../../Lib/lowlevel.h"
 
 void show_help() {
+    set_textcolor(LIGHT_BLUE);
     puts(
         "\n"
         "CLS        Clear screen\n"
@@ -26,6 +28,7 @@ void show_help() {
         "TERMINATE  Terminate process\n"
         "TYPE       Display file contents\n"
         "SHOWPIC    Show picture\n"
+        "PALETTE    Show color palette\n"
     );
 }
 
@@ -65,7 +68,7 @@ void showpic() {
         fs_read(handle, screen, 64000);
         fs_close(handle);
 
-        while (!getchar()) asm volatile ("nop");
+        while (!getchar()) sleep(0);
         outp(0x50, 0b00000000);
         clrscr();
 
@@ -74,4 +77,65 @@ void showpic() {
 
     } else
         puts("Cannot determine image resolution.\n");
+}
+
+static void draw_col_bar(char *name, byte color) {
+    char col_bar[21];
+    strcpy(col_bar, name);
+    char *s = col_bar;
+    while (*s) {
+        *s = *s + 128;
+        s++;
+    }
+    rtrim(col_bar, 20, ' ' + 128);
+    set_textcolor(color);
+    puts(col_bar);
+    putchar('\n');
+}
+
+static void show_col_blocks(byte blue) {
+    for (byte green = 0; green < 8; green++) {
+        puts("   ");
+        for (byte red = 0; red < 8; red++) {
+            byte col = red + (green << 3) + (blue << 6);
+            set_textcolor(col);
+            putchar(' ' + 128);
+            putchar(' ' + 128);
+        }
+        for (byte red = 0; red < 8; red++) {
+            byte col = red + (green << 3) + ((blue + 1) << 6);
+            set_textcolor(col);
+            putchar(' ' + 128);
+            putchar(' ' + 128);
+        }
+        putchar('\n');
+    }
+}
+
+void show_palette() {
+    
+    putchar('\n');
+    show_col_blocks(0);
+    show_col_blocks(2);
+
+    while (!getchar()) sleep(0);
+
+    putchar('\n');
+    draw_col_bar("RED", RED);
+    draw_col_bar("GREEN", GREEN);
+    draw_col_bar("BLUE", BLUE);
+    draw_col_bar("YELLOW", YELLOW);
+    draw_col_bar("MAGENTA", MAGENTA);
+    draw_col_bar("CYAN", CYAN);
+    draw_col_bar("LIGHT_RED", LIGHT_RED);
+    draw_col_bar("LIGHT_GREEN", LIGHT_GREEN);
+    draw_col_bar("LIGHT_BLUE", LIGHT_BLUE);
+    draw_col_bar("LIGHT_YELLOW", LIGHT_YELLOW);
+    draw_col_bar("LIGHT_MAGENTA", LIGHT_MAGENTA);
+    draw_col_bar("LIGHT_CYAN", LIGHT_CYAN);
+    draw_col_bar("WHITE", WHITE);
+    draw_col_bar("LIGHT_GRAY", LIGHT_GRAY);
+    draw_col_bar("DARK_GRAY", DARK_GRAY);
+    putchar('\n');
+    set_textcolor(WHITE);
 }

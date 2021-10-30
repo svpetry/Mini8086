@@ -3,22 +3,22 @@
 
 #include "types.h"
 
-#define RED           0b11100000
-#define GREEN         0b00011100
-#define BLUE          0b00000011
-#define YELLOW        0b11111100
-#define MAGENTA       0b11100011
-#define CYAN          0b00011111
-#define LIGHT_YELLOW  0b11111101
-#define LIGHT_MAGENTA 0b11101011
-#define LIGHT_CYAN    0b01011111
-#define LIGHT_RED     0b11101001
-#define LIGHT_GREEN   0b01011101
-#define LIGHT_BLUE    0b01001011
+#define RED           0b00000111
+#define GREEN         0b00111000
+#define BLUE          0b11000000
+#define YELLOW        0b00111111
+#define MAGENTA       0b11000111
+#define CYAN          0b11111000
+#define LIGHT_RED     0b01010111
+#define LIGHT_GREEN   0b10111010
+#define LIGHT_BLUE    0b11010010
+#define LIGHT_YELLOW  0b10111111
+#define LIGHT_MAGENTA 0b11010111
+#define LIGHT_CYAN    0b11111010
 #define WHITE         0b11111111
 #define BLACK         0b00000000
-#define LIGHT_GRAY    0b10110110
-#define DARK_GRAY     0b01001001
+#define LIGHT_GRAY    0b10101101
+#define DARK_GRAY     0b01010010
 
 /* clears the screen */
 void clrscr();

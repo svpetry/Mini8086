@@ -21,4 +21,9 @@ typedef enum {
     SR_REJECTED
 } SRESULT;
 
+typedef enum {
+    PT_FOREGROUND = 0,
+    PT_BACKGROUND
+} PROC_TYPE;
+
 #endif

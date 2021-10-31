@@ -19,7 +19,7 @@ byte handle_file_param(char *filepath, byte index, dword *size, byte checkexist)
     strcat(filepath, "\\");
     strcat(filepath, params[index]);
 
-    if (checkexist && fs_filesize(filepath, size) || size == 0) {
+    if (checkexist && (fs_filesize(filepath, size) || *size == 0)) {
           puts("File not found or read error.\n");
           return 1;
     }

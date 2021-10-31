@@ -10,7 +10,6 @@
 #include "../../Lib/lowlevel.h"
 
 void show_help() {
-    set_textcolor(LIGHT_BLUE);
     puts(
         "\n"
         "CLS        Clear screen\n"
@@ -143,5 +142,4 @@ void show_palette() {
     draw_col_bar("LIGHT_GRAY", LIGHT_GRAY);
     draw_col_bar("WHITE", WHITE);
     putchar('\n');
-    set_textcolor(WHITE);
 }

@@ -2,10 +2,10 @@
 #define STRUTILS_H
 
 /* returns 0 if the string is empty */
-int strempty(char *s);
+int strempty(const char *s);
 
 /* return the length of a string */
-int strlen(char *s);
+int strlen(const char *s);
 
 /* copy a string */
 char *strcpy(char *dest, const char *src);

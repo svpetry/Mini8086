@@ -10,6 +10,7 @@
 #include "time.h"
 #include "filesystem.h"
 #include "kernel.h"
+#include "applauncher.h"
 
 char *cmd_version = "Mini8086 command shell " CMD_VER "\n";
 
@@ -18,7 +19,6 @@ void init() {
 
     set_bgcolor(BLACK);
     set_textcolor(LIGHT_GRAY);
-
     clrscr();
     puts(cmd_version);
     current_path[0] = 0;
@@ -98,7 +98,7 @@ void process_command() {
         show_palette();
 
     } else {
-        // launch_application();
+        launch_application();
     }
 }
 

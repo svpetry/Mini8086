@@ -14,13 +14,16 @@ void k_free(void __far *ptr);
 dword k_check_free_memory();
 
 /* start a process */
-void start_process(char *filename);
+SRESULT start_process(char *path, word *pid, byte *process_kind);
 
 /* wait for a given number of milliseconds */
 void sleep(word milliseconds);
 
 /* kill a process */
-void kill_process(int process_id);
+byte terminate_process(int process_id);
+
+/* check if process exists */
+byte check_process(int process_id);
 
 /* list process */
 void list_process(proc_info_ext *proc_info, byte first);

@@ -52,8 +52,25 @@ dword k_check_free_memory() {
     return (((dword)mem_h) << 16) + mem_l;
 }
 
-void start_process(char *filename) {
-
+SRESULT start_process(char *path, word *pid, byte *process_type) {
+    byte status, ptype;
+    word id;
+    asm volatile (
+        "pushw %%cs\n"
+        "popw %%dx\n"
+        "movw %3, %%cx\n"
+        "movb $0x00, %%ah\n"
+        "int $0x20\n"
+        "movb %%al, %0\n"
+        "movw %%cx, %1\n"
+        "movb %%dl, %2\n"
+        : "=g" (status), "=m" (id), "=g" (ptype) // "=g" results in compiler error
+        : "g" (path)
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
+    );
+    *pid = id;
+    *process_type = ptype;
+    return status;
 }
 
 void sleep(word milliseconds) {
@@ -75,8 +92,32 @@ void sleep(word milliseconds) {
     }
 }
 
-void kill_process(int process_id) {
-    
+byte terminate_process(int process_id) {
+    byte status;
+    asm volatile (
+        "movw %1, %%cx\n"
+        "movb $0x01, %%ah\n"
+        "int $0x20\n"
+        "movb %%al, %0\n"
+        : "=g" (status)
+        : "g" (process_id)
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
+    );
+    return status;
+}
+
+byte check_process(int process_id) {
+    byte status;
+    asm volatile (
+        "movw %1, %%cx\n"
+        "movb $0x02, %%ah\n"
+        "int $0x20\n"
+        "movb %%al, %0\n"
+        : "=g" (status)
+        : "g" (process_id)
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
+    );
+    return status;
 }
 
 void list_process(proc_info_ext *proc_info, byte first) {

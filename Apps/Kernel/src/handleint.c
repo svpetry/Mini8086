@@ -4,6 +4,7 @@
 #include "../../Lib/types.h"
 #include "../../Lib/kernel_defs.h"
 #include "../../Lib/strutils.h"
+#include "../../Lib/bios_fs.h"
 
 volatile word int_sp_save;
 volatile word int_ss_save;
@@ -19,16 +20,46 @@ static void strcpy_far(char __far *dest, const char __far *src) {
     while (*dest++ = *src++) ;
 }
 
+static void strcpy_far_to_near(char *dest, const char __far *src) {
+    char *temp = dest;
+    while (*dest++ = *src++) ;
+}
+
 void int_kernel() {
-    byte status = 0x00;
+    byte status = 0;
     switch (int_ax >> 8) {
         // start process
-        case 0x00:
+        case 0x00: {
+            char __far *far_path = (char __far *)((((dword)int_dx) << 16) + int_cx);
+            char path[MAX_PATH];
+            int pid;
+            PROC_TYPE ptype;
+            strcpy_far_to_near(path, far_path);
+            status = new_process(path, &pid, &ptype);
+            int_cx = pid;
+            int_dx = ptype;
+            break;
+        }
+
+        // terminate process
+        case 0x01:
+            status = terminate_process(int_cx);
             break;
 
-        // kill process
-        case 0x01:
+        // check if process exists
+        case 0x02: {
+            status = 1;
+            int pid = int_cx;
+            int i = 0;
+            while (i < process_count) {
+                if (processes[i]->id == pid) {
+                    status = 0;
+                    break;
+                }
+                i++;
+            }
             break;
+        }
 
         // list process
         case 0x10: {
@@ -63,7 +94,7 @@ void int_kernel() {
                 break;
             }            
             void __far *memptr = malloc_(size);
-            if (memptr == NULL) status = 0x01;
+            if (memptr == NULL) status = 1;
             dword memaddr = (dword)memptr;
             int_dx = memaddr >> 16;
             int_cx = memaddr;           

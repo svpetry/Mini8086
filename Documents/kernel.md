@@ -3,17 +3,28 @@
 ---
 ## AH = 00h start process
 
+- DX:CX pointer to file name
+
 returns:
 - AL: result code (0 = OK)
 - CX: process id
+- DL: process kind (0 = application, 1 = background service)
 
 ---
-## AH = 01h kill process
+## AH = 01h terminate process
 
 - CX: process id
 
 returns:
 - AL: result code (0 = OK)
+
+---
+## AH = 02h check if process exists
+
+- CX: process id
+
+returns:
+- AL: result code (0 = OK, 1 = process not found)
 
 ---
 ## AH = 10h list process

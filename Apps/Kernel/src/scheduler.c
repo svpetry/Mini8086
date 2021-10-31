@@ -300,8 +300,8 @@ static void __far resume_process() {
 
 static void run_process() {
     terminate = 0;
-
-    pstate ps = current_process->state;
+    
+    PSTATE ps = current_process->state;
     dword ptr; /* contains the pointer to the code to be called */
     word new_sp = 0;
     if (ps == PS_NEW) {
@@ -361,11 +361,11 @@ static void init_process(processinfo __far *new_pi, const char *filename, byte p
     new_pi->priority = priority;
 
     // set process name
+    byte fidx = strlen(filename) - 1;
+    while (fidx > 0 && filename[fidx - 1] != '\\') fidx--;
     byte i = 0;
-    while (filename[i] != 0 && filename[i] != '.' && i < 8) {
-        new_pi->name[i] = filename[i];
-        i++;
-    }
+    while (filename[fidx] != 0 && filename[fidx] != '.' && i < 8)
+        new_pi->name[i++] = filename[fidx++];
     new_pi->name[i] = 0;
 }
 
@@ -375,7 +375,7 @@ static byte check_crc8(byte __far *mem, word size, byte expected_crc) {
     return crc != expected_crc;
 }
 
-static SRESULT new_process(const char *filename) {
+SRESULT new_process(const char *filename, int *pid, PROC_TYPE *ptype) {
     if (process_count >= MAX_PROCESSES) return SR_REJECTED;
 
     dword size;
@@ -412,6 +412,8 @@ static SRESULT new_process(const char *filename) {
     processinfo __far *new_pi = (processinfo __far *)mem;
     init_process(new_pi, filename, header.priority);
     new_pi->size = (word)header.size << 6;
+    *ptype = header.proc_type;
+    *pid = new_pi->id;
 
     // set pointer to memory after header
     word seg = (word)((dword)mem >> 16);
@@ -455,7 +457,7 @@ static SRESULT new_process(const char *filename) {
     return SR_OK;
 }
 
-static void terminate_process() {
+static void terminate_current_process() {
     processinfo __far *p = current_process;
     
     int i = 0;
@@ -482,14 +484,31 @@ static void terminate_process() {
     free_((void __far *)p);
 }
 
+byte terminate_process(int pid) {
+    if (current_process->id == pid) {
+        terminate = TRUE;
+        return 0;
+    }
+    int i = 0;
+    while (i < process_count) {
+        if (processes[i]->id == pid) {
+            processes[i]->state = PS_TERMINATE;
+            return 0;
+        }
+        i++;
+    }
+    return 1;
+}
+
 void start_scheduler(const char *command_name) {
     init();
 
     while (1) {
         current_process = get_next_process();
-
         if (current_process == NULL) {
-            new_process(command_name);
+            int pid;
+            PROC_TYPE ptype;
+            new_process(command_name, &pid, &ptype);
             current_process = get_next_process();
             if (current_process == NULL) {
                 error("Could not load command shell. System halted.");
@@ -500,9 +519,14 @@ void start_scheduler(const char *command_name) {
             }
         }
 
-        start_timer();
-        run_process();
-        stop_timer();
-        if (terminate) terminate_process();
+        if (current_process->state == PS_TERMINATE)
+            terminate_current_process();
+        else {
+            start_timer();
+            run_process();
+            stop_timer();
+            if (terminate)
+                terminate_current_process();
+        }
     }
 }

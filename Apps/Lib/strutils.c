@@ -1,10 +1,10 @@
 #include "strutils.h"
 
-int strempty(char *s) {
+int strempty(const char *s) {
 	return s[0] == 0;
 }
 
-int strlen(char *str) {
+int strlen(const char *str) {
     const char *s;
     for (s = str; *s; ++s) ;
     return s - str;

@@ -17,7 +17,7 @@ void init() {
 	// asm volatile ("movw $0x1234, %%ax" : : : "ax");
 
     set_bgcolor(BLACK);
-    set_textcolor(WHITE);
+    set_textcolor(LIGHT_GRAY);
 
     clrscr();
     puts(cmd_version);

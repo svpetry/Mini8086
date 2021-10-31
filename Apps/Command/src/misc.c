@@ -121,21 +121,27 @@ void show_palette() {
     while (!getchar()) sleep(0);
 
     putchar('\n');
+    draw_col_bar("DARK_RED", DARK_RED);
     draw_col_bar("RED", RED);
-    draw_col_bar("GREEN", GREEN);
-    draw_col_bar("BLUE", BLUE);
-    draw_col_bar("YELLOW", YELLOW);
-    draw_col_bar("MAGENTA", MAGENTA);
-    draw_col_bar("CYAN", CYAN);
     draw_col_bar("LIGHT_RED", LIGHT_RED);
+    draw_col_bar("DARK_GREEN", DARK_GREEN);
+    draw_col_bar("GREEN", GREEN);
     draw_col_bar("LIGHT_GREEN", LIGHT_GREEN);
+    draw_col_bar("DARK_BLUE", DARK_BLUE);
+    draw_col_bar("BLUE", BLUE);
     draw_col_bar("LIGHT_BLUE", LIGHT_BLUE);
+    draw_col_bar("DARK_YELLOW", DARK_YELLOW);
+    draw_col_bar("YELLOW", YELLOW);
     draw_col_bar("LIGHT_YELLOW", LIGHT_YELLOW);
+    draw_col_bar("DARK_MAGENTA", DARK_MAGENTA);
+    draw_col_bar("MAGENTA", MAGENTA);
     draw_col_bar("LIGHT_MAGENTA", LIGHT_MAGENTA);
+    draw_col_bar("DARK_CYAN", DARK_CYAN);
+    draw_col_bar("CYAN", CYAN);
     draw_col_bar("LIGHT_CYAN", LIGHT_CYAN);
-    draw_col_bar("WHITE", WHITE);
-    draw_col_bar("LIGHT_GRAY", LIGHT_GRAY);
     draw_col_bar("DARK_GRAY", DARK_GRAY);
+    draw_col_bar("LIGHT_GRAY", LIGHT_GRAY);
+    draw_col_bar("WHITE", WHITE);
     putchar('\n');
     set_textcolor(WHITE);
 }

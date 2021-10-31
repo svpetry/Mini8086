@@ -230,6 +230,13 @@ namespace Emulator.Lib.Components
             red = (byte)((color & 0b00000111) << 5);
             green = (byte)((color & 0b00111000) << 2);
             blue = (byte)(color & 0b11000000);
+
+            blue = (byte)(blue + ((blue & 0b10000000) >> 2));
+
+            red = (byte)(red + (red >> 3) + (red >> 6));
+            green = (byte)(green + (green >> 3) + (green >> 6));
+            blue = (byte)(blue + (blue >> 3) + (blue >> 6));
+
             if (factor != 64)
             {
                 red = (byte)(red * factor / 64);

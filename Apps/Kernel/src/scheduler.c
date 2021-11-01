@@ -365,7 +365,7 @@ static void init_process(processinfo __far *new_pi, const char *filename, byte p
     while (fidx > 0 && filename[fidx - 1] != '\\') fidx--;
     byte i = 0;
     while (filename[fidx] != 0 && filename[fidx] != '.' && i < 8)
-        new_pi->name[i++] = filename[fidx++];
+        new_pi->name[i++] = tolower(filename[fidx++]);
     new_pi->name[i] = 0;
 }
 

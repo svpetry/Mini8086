@@ -114,7 +114,8 @@ void int_bios() {
         // read date and time
         case 0x12: {
             byte day = 0, month = 0, year = 0;
-            if (cfg_rtc) ds1307_getdate(&day, &month, &year);
+            if (cfg_rtc && (int_ax & 0xFF) > 0)
+                ds1307_getdate(&day, &month, &year);
             asm volatile ("CLI");
             byte seconds = t_seconds;
             byte minutes = t_minutes;

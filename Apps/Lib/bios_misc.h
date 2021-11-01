@@ -11,6 +11,9 @@ byte get_ticks();
 void get_date_time(byte *year, byte *month, byte *day, 
     byte *hours, byte *minutes, byte *seconds);
 
+/* get time */
+void get_time(byte *hours, byte *minutes, byte *seconds);
+
 /* set time */
 void set_time(byte hours, byte minutes, byte seconds);
 

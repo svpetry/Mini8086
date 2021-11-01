@@ -32,6 +32,7 @@ void get_date_time(byte *year, byte *month, byte *day,
 
     word ax, cx, dx;
     asm volatile (
+        "movb $0x01, %%al\n"
         "movb $0x12, %%ah\n"
         "int $0x10\n"
         "movw %%ax, %0\n"
@@ -47,6 +48,23 @@ void get_date_time(byte *year, byte *month, byte *day,
     *day = cx >> 8;
     *month = dx;
     *year = dx >> 8;
+}
+
+void get_time(byte *hours, byte *minutes, byte *seconds) {
+    word ax, cx;
+    asm volatile (
+        "movb $0x00, %%al\n"
+        "movb $0x12, %%ah\n"
+        "int $0x10\n"
+        "movw %%ax, %0\n"
+        "movw %%cx, %1\n"
+        : "=g" (ax), "=g" (cx)
+        : /* no inputs */
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
+    );
+    *seconds = ax;
+    *minutes = ax >> 8;
+    *hours = cx;
 }
 
 void set_time(byte hours, byte minutes, byte seconds) {

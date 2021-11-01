@@ -84,6 +84,8 @@ return:
 ---
 **AH = 12**		Read date and time
 
+- AL: 0 = time only, 1 = date & time
+
 return:
 - AL: seconds
 - AH: minutes

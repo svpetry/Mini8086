@@ -176,3 +176,17 @@ int atoi(char *s) {
 	if (neg) return -result;
 	return result;
 }
+
+int strpos(const char *haystack, const char *needle) {
+	int needle_len = strlen(needle);
+	int maxi = strlen(haystack) - needle_len;
+	for (int i = 0; i <= maxi; i++) {
+		int j;
+		for (j = 0; j < needle_len; j++) {
+			if (haystack[i + j] != needle[j])
+				break;
+		}
+		if (j == needle_len) return i;
+	}
+	return -1;
+}

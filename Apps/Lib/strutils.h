@@ -52,4 +52,7 @@ void strtoupper(char *s);
 /* convert a string to an integer */
 int atoi(char *s);
 
+/* get the position of needle in haystack, -1 if not found */
+int strpos(const char *haystack, const char *needle);
+
 #endif

@@ -58,6 +58,12 @@ void list_directory() {
         return;
     }
 
+    char *filter = NULL;
+    if (paramcount > 1) {
+        filter = params[1];
+        strtoupper(filter);
+    }
+
     // print volume name
     putchar('\n');
     putchar(' ');
@@ -79,7 +85,7 @@ void list_directory() {
         if (fs_read_entry(handle, filename)) {
             puts("Error!\n");
             return;
-        } else if (filename[0] != 0) {
+        } else if (filename[0] != 0 && (filter == NULL || strpos(filename, filter) > -1)) {
             // print file name
             putchar(' ');
             rtrim(filename, 14, ' ');

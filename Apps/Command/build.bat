@@ -6,6 +6,6 @@ if exist c:\windows\sysnative\wsl.exe (
 )
 
 REM PrepExec [input file] [output file] [size in KB] [process type] [priority]
-..\..\Tools\PrepExec\bin\Release\PrepExec bin\command.raw bin\command.bin 16 0 1
+..\..\Tools\PrepExec\bin\Release\PrepExec bin\command.raw bin\command.bin 12 0 1
 
 pause

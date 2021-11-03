@@ -3,7 +3,7 @@ ENTRY(main)
 STARTUP(crt0.o)
 
 MEMORY {
-	ram (!rx) : ORIGIN = 0x00000, LENGTH = 0xC00
+	ram (!rx) : ORIGIN = 0x00000, LENGTH = 0x1000
 }
 
 SECTIONS {

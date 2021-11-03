@@ -1,9 +1,10 @@
+#include "kernel.h"
 #include "../../Lib/types.h"
 #include "../../Lib/kernel.h"
 #include "../../Lib/strutils.h"
 #include "../../Lib/bios_screen.h"
 #include "../../Lib/kernel_defs.h"
-#include "kernel.h"
+#include "cmdline.h"
 
 void handle_ps() {
     int i;
@@ -47,5 +48,14 @@ void handle_ps() {
 }
 
 void handle_terminate() {
-
+    if (paramcount < 2) {
+        puts("No process ID given.\n");
+        return;
+    }
+    int pid = atoi(params[1]);
+    if (terminate_process(pid)) {
+        puts("Could not terminate process with ID ");
+        puts(params[1]);
+        puts("!\n");
+    }
 }

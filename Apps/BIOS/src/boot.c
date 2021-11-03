@@ -50,11 +50,13 @@ static void tryboot() {
 
     // initialize segments and stack, then far jump to 0500:0000
     asm(
+        "cli\n"
         "mov $0x0500, %ax\n"
         "mov %ax, %ds\n"
         "mov %ax, %es\n"
         "mov %ax, %ss\n"
-        "mov $0x0AFFF, %sp\n"
+        "mov $0x0AFFE, %sp\n"
+        "sti\n"
         "ljmp $0x0500, $0x0000\n"
     );
 }

@@ -16,11 +16,13 @@ _start:
 
 	movw %ax, %ds
 
+	cli
 	call main
 	hlt
 
 /* INT 20h (kernel functions) */
 int20:
+	cli
 	push %bx
 	push %bp
 	push %ds
@@ -43,7 +45,6 @@ int20:
 	cld
 	call int_kernel
 
-	cli
 	movw int_ss_save, %ax
 	movw %ax, %ss
 	movw int_sp_save, %sp

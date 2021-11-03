@@ -75,6 +75,8 @@ static void showpointer(void __far *ptr) {
 /* handle INT 81h (terminate process) */
 static void __far handle_terminate() {
     asm volatile (
+        "cli\n"
+
 	    "push %%ax\n"
 	    "push %%bx\n"
 	    "push %%cx\n"
@@ -114,6 +116,8 @@ static void __far handle_terminate() {
 /* handle INT 80h (sleep) */
 static void __far handle_sleep() {
     asm volatile (
+        "cli\n"
+
 	    "pushw %%ax\n"
 	    "pushw %%bx\n"
 	    "pushw %%cx\n"

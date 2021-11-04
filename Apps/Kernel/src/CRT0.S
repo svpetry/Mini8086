@@ -22,7 +22,6 @@ _start:
 
 /* INT 20h (kernel functions) */
 int20:
-	cli
 	push %bx
 	push %bp
 	push %ds
@@ -36,6 +35,7 @@ int20:
 	movw %cx, int_cx
 	movw %dx, int_dx
 
+	cli
 	movw %ss, %ax
 	movw %ax, int_ss_save
 	movw %sp, int_sp_save

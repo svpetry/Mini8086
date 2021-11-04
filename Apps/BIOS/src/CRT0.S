@@ -230,12 +230,15 @@ int10:
 	movw %ss, %ax
 	movw %ax, int_ss_save
 	movw %sp, int_sp_save
+	cli
 	movw %bx, %ss
 	movw $BIOS_STACK_START, %sp
+	sti
 
 	cld
 	call int_bios
 
+	cli
 	movw int_ss_save, %ax
 	movw %ax, %ss
 	movw int_sp_save, %sp

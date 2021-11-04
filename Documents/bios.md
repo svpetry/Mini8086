@@ -52,6 +52,16 @@ returns:
 - AL: 0 = cursor disabled, 1 = cursor enabled
 
 ---
+**AH = 09h**	Set text color.
+
+- AL: text color
+
+---
+**AH = 0Ah**	Set background color
+
+- AL: background color
+
+---
 
 ## KEYBOARD
 
@@ -70,8 +80,35 @@ returns:
 
 return:
 - AL: ticks (0-19)
----
 
+---
+**AH = 12**		Read date and time
+
+- AL: 0 = time only, 1 = date & time
+
+return:
+- AL: seconds
+- AH: minutes
+- CL: hours
+- CH: day
+- DL: month
+- DH: year
+
+---
+**AH = 13**		Set time
+
+- CL: seconds
+- CH: minutes
+- DL: hours
+
+---
+**AH = 14**		Set date
+
+- CL: day
+- CH: month
+- DL: year
+
+---
 
 ## FILE SYSTEM
 
@@ -183,6 +220,8 @@ returns:
 - AL: directory handle
 - DX:CX: pointer to destination string
 
+Returns a null string if all entries have been read.
+
 returns:
 - AL: 0 = OK, 1 = error
 
@@ -190,6 +229,14 @@ returns:
 **AH = 2Bh**	Create directory
 
 - AL: directory handle
+
+returns:
+- AL: 0 = OK, 1 = error
+
+---
+**AH = 2Ch**	Delete file or directory
+
+- DX:CX: file name
 
 returns:
 - AL: 0 = OK, 1 = error

@@ -49,11 +49,13 @@ byte fs_close(byte handle) {
     );
     return status;
 }
-/*
+
 byte fs_fileinfo(const char *path, dword *size,
     byte *year, byte *month, byte *day, 
-    byte *hour, byte *minute, byte *second) {
+    byte *hour, byte *minute, byte *second,
+    byte *attrib) {
     
+    word stat_attrib;
     byte status;
     word date, time;
     word sizel, sizeh;
@@ -63,12 +65,12 @@ byte fs_fileinfo(const char *path, dword *size,
         "movw %5, %%cx\n"
         "movb $0x23, %%ah\n"
         "int $0x10\n"
-        "movb %%al, %0\n"
+        "movw %%ax, %0\n"
         "movw %%dx, %1\n"
         "movw %%cx, %2\n"
         "movw %%si, %3\n"
         "movw %%di, %4\n"
-        : "=g" (status), "=g" (sizeh), "=g" (sizel), "=g" (date), "=g" (time)
+        : "=g" (stat_attrib), "=g" (sizeh), "=g" (sizel), "=g" (date), "=g" (time)
         : "g" (path)
         : "ax", "cx", "dx", "si", "di", "cc", "memory"
     );
@@ -79,14 +81,34 @@ byte fs_fileinfo(const char *path, dword *size,
     *hour = time >> 11;
     *minute = (time >> 5) & 0x3F;
     *second = (time & 0x1F) << 1;
+    status = stat_attrib & 0xFF;
+    *attrib = (stat_attrib >> 8) & 0xFF;
     return status;
 }
-*/
+
+byte fs_fileattrib(const char *path, byte *attrib) {
+    word stat_attrib;
+    byte status;
+    asm volatile (
+        "pushw %%cs\n"
+        "popw %%dx\n"
+        "movw %1, %%cx\n"
+        "movb $0x23, %%ah\n"
+        "int $0x10\n"
+        "movw %%ax, %0\n"
+        : "=g" (stat_attrib)
+        : "g" (path)
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
+    );
+    status = stat_attrib & 0xFF;
+    *attrib = (stat_attrib >> 8) & 0xFF;
+    return status;
+}
+
 byte fs_filesize(const char *path, dword *size) {
     byte status;
     word sizel, sizeh;
     asm volatile (
-        // "movw $0x1234, %%dx\n"
         "pushw %%cs\n"
         "popw %%dx\n"
         "movw %3, %%cx\n"
@@ -120,7 +142,23 @@ byte fs_seek(byte handle, dword pos) {
 }
 
 byte fs_rename(const char *oldname, const char *newname) {
-
+    byte status;
+    asm volatile (
+        "pushw %%cs\n"
+        "popw %%dx\n"
+        "movw %1, %%cx\n"
+        "pushw %%cs\n"
+        "popw %%si\n"
+        "movw %2, %%di\n"
+        "movb $0x25, %%ah\n"
+        "int $0x10\n"
+        "movb %%al, %0\n"
+        : "=g" (status)
+        : "g" (oldname), "g" (newname)
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
+    );
+    return status;
+ 
 }
 
 byte fs_read(byte handle, byte __far *buffer, word count) {
@@ -210,6 +248,34 @@ byte fs_read_entry(byte handle, char *s) {
     return status;
 }
 
-byte fs_createdir(const char *dirname) {
-    
+byte fs_createdir(const char *path) {
+    byte status;
+    asm volatile (
+        "pushw %%cs\n"
+        "popw %%dx\n"
+        "movw %1, %%cx\n"
+        "movb $0x2B, %%ah\n"
+        "int $0x10\n"
+        "movb %%al, %0\n"
+        : "=g" (status)
+        : "g" (path)
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
+    );
+    return status;
+}
+
+byte fs_delete(const char *path) {
+    byte status;
+    asm volatile (
+        "pushw %%cs\n"
+        "popw %%dx\n"
+        "movw %1, %%cx\n"
+        "movb $0x2C, %%ah\n"
+        "int $0x10\n"
+        "movb %%al, %0\n"
+        : "=g" (status)
+        : "g" (path)
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
+    );
+    return status;
 }

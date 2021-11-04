@@ -8,13 +8,15 @@ _start:
 
 	// INT 20h
 	movw $0x0080, %di
-	movw $int20, (%di)
+	movw $int20-_start, (%di)
 	movw %cs, %ax
+	incw %di
 	incw %di
 	movw %ax, (%di)
 
 	movw %ax, %ds
 
+	cli
 	call main
 	hlt
 
@@ -33,6 +35,7 @@ int20:
 	movw %cx, int_cx
 	movw %dx, int_dx
 
+	cli
 	movw %ss, %ax
 	movw %ax, int_ss_save
 	movw %sp, int_sp_save

@@ -1,5 +1,5 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef LIB_UTILS_H
+#define LIB_UTILS_H
 
 #include "types.h"
 

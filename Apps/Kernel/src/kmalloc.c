@@ -1,6 +1,4 @@
 #include "kmalloc.h"
-#include "../../Lib/bios_screen.h"
-#include "../../Lib/strutils.h"
 
 #define UNIT_SIZE 16
 
@@ -67,7 +65,9 @@ void free_(void __far *ap) {
 	header __far *bp;
 	header __far *p;
 
-	bp = (header __far *)ap - 1;    /* point to block header */
+	bp = (header __far *)ap;    /* point to block header */
+	bp = inc_ptr(bp, -1);
+
 	for (p = freep; !(bp > p && bp < p->ptr); p = p->ptr)
 		if (p >= p->ptr && (bp > p || bp < p->ptr))
 			break;  /* freed block at start or end of arena */
@@ -77,7 +77,7 @@ void free_(void __far *ap) {
 		bp->ptr = p->ptr->ptr;
 	} else
 		bp->ptr = p->ptr;
-	if (p + p->size == bp) {            /* join to lower nbr */
+	if (p + p->size == bp) {          /* join to lower nbr */
 		p->size += bp->size;
 		p->ptr = bp->ptr;
 	} else

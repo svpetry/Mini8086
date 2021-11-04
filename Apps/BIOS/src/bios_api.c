@@ -1,9 +1,12 @@
 #include "bios_api.h"
 #include "../../Lib/types.h"
 #include "../../Lib/screen.h"
+#include "../../Lib/ds1307.h"
+#include "../../Lib/lowlevel.h"
 #include "keyboard.h"
 #include "bios_fsapi.h"
 #include "bios.h"
+#include "start.h"
 
 volatile word int_sp_save;
 volatile word int_ss_save;
@@ -84,6 +87,18 @@ void int_bios() {
             break;
         }
 
+        // set text color
+        case 0x09: {
+            set_textcol(int_ax & 0xFF);
+            break;
+        }
+
+        // set background color
+        case 0x0A: {
+            outp(0x51, int_ax & 0xFF);
+            break;
+        }
+
         // read character from keyboard buffer
         case 0x10: {
             int_ax = getchar();
@@ -93,6 +108,47 @@ void int_bios() {
         // read current tick count
         case 0x11: {
             int_ax = ticks;
+            break;
+        }
+
+        // read date and time
+        case 0x12: {
+            byte day = 0, month = 0, year = 0;
+            if (cfg_rtc && (int_ax & 0xFF) > 0)
+                ds1307_getdate(&day, &month, &year);
+            asm volatile ("CLI");
+            byte seconds = t_seconds;
+            byte minutes = t_minutes;
+            byte hours = t_hours;
+            asm volatile ("STI");
+
+            int_ax = (((word)minutes) << 8) + seconds;
+            int_cx = (((word)day) << 8) + hours;
+            int_dx = (((word)year) << 8) + month;
+            break;
+        }
+
+        // set time
+        case 0x13: {
+            byte seconds = int_cx;
+            byte minutes = int_cx >> 8;
+            byte hours = int_dx;
+
+            asm volatile ("CLI");
+            t_hours = hours;
+            t_minutes = minutes;
+            t_seconds = seconds;
+            asm volatile ("STI");
+            if (cfg_rtc) ds1307_settime(hours, minutes, seconds);
+            break;
+        }
+
+        // set date
+        case 0x14: {
+            byte day = int_cx;
+            byte month = int_cx >> 8;
+            byte year = int_dx;
+            if (cfg_rtc) ds1307_setdate(year, month, day);
             break;
         }
     }

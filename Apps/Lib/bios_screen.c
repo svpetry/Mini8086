@@ -97,3 +97,25 @@ void enable_cursor(byte enable) {
         : "ax", "cx", "dx", "si", "di", "cc", "memory"
     );
 }
+
+void set_textcolor(byte color) {
+    asm volatile (
+        "movb $0x09, %%ah\n"
+        "movb %0, %%al\n"
+        "int $0x10"
+        : /* no outputs */
+        : "g" (color)
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
+    );
+}
+
+void set_bgcolor(byte color) {
+    asm volatile (
+        "movb $0x0A, %%ah\n"
+        "movb %0, %%al\n"
+        "int $0x10"
+        : /* no outputs */
+        : "g" (color)
+        : "ax", "cx", "dx", "si", "di", "cc", "memory"
+    );
+}

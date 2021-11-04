@@ -1,6 +1,10 @@
 #include "strutils.h"
 
-int strlen(char *str) {
+int strempty(const char *s) {
+	return s[0] == 0;
+}
+
+int strlen(const char *str) {
     const char *s;
     for (s = str; *s; ++s) ;
     return s - str;
@@ -34,6 +38,17 @@ void *ltrim(char *s, int n, char c) {
 		diff--;
 		s[diff] = c;
 	}
+	return s;
+}
+
+void *rtrim(char *s, int n, char c) {
+	int l = strlen(s);
+	int diff = n - l;
+	while (diff > 0) {
+		diff--;
+		s[l++] = c;
+	}
+	s[l] = 0;
 	return s;
 }
 
@@ -133,4 +148,45 @@ void strtolower(char *s) {
 		*s = tolower(*s);
 		s++;
     }
+}
+
+int toupper(int c) {
+	if (c >= 'a' && c <= 'z')
+		return c - 'a' + 'A';
+	return c;
+}
+
+void strtoupper(char *s) {
+	while (*s) {
+		*s = toupper(*s);
+		s++;
+    }
+}
+
+int atoi(char *s) {
+	int result = 0;
+	while (*s == ' ') s++;
+	int neg = (*s == '-');
+	if (neg) s++;
+	while (*s == ' ') s++;
+	while (*s) {
+		result = result * 10 + *s - '0';
+		s++;
+	}
+	if (neg) return -result;
+	return result;
+}
+
+int strpos(const char *haystack, const char *needle) {
+	int needle_len = strlen(needle);
+	int maxi = strlen(haystack) - needle_len;
+	for (int i = 0; i <= maxi; i++) {
+		int j;
+		for (j = 0; j < needle_len; j++) {
+			if (haystack[i + j] != needle[j])
+				break;
+		}
+		if (j == needle_len) return i;
+	}
+	return -1;
 }

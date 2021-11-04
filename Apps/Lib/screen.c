@@ -136,12 +136,12 @@ void setcursor(byte col, byte row) {
 }
 
 int putchar(int c) {
-    char ch = (char)c;
+    byte ch = (byte)c;
 
     byte hidden = hide_cursor();
-    if (ch != '\n') {
+    if ((ch & 0b01111111) > 0x1F) {
         word index = cursor_row * SCREEN_COLUMNS + cursor_col;
-        word data = ch + (textcol << 8);
+        word data = ch + (((word)textcol) << 8);
         (*screen)[index] = data;
         (*scrbuf)[index] = data;
         cursor_col++;
@@ -165,7 +165,7 @@ int putchar(int c) {
             cursor_col--;
         
         word index = cursor_row * SCREEN_COLUMNS + cursor_col;
-        word data = 0x20 + (textcol << 8);
+        word data = 0x20 + (((word)textcol) << 8);
         (*screen)[index] = data;
         (*scrbuf)[index] = data;
     }
@@ -179,7 +179,7 @@ void setchar(byte col, byte row, char c) {
         hidden = hide_cursor();
     
     word index = row * SCREEN_COLUMNS + col;
-    word data = c + (textcol << 8);
+    word data = ((byte)c) + (textcol << 8);
     (*screen)[index] = data;
     (*scrbuf)[index] = data;
     if (hidden) restore_cursor();

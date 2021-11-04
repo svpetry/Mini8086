@@ -1,8 +1,11 @@
 #ifndef STRUTILS_H
 #define STRUTILS_H
 
+/* returns 0 if the string is empty */
+int strempty(const char *s);
+
 /* return the length of a string */
-int strlen(char *s);
+int strlen(const char *s);
 
 /* copy a string */
 char *strcpy(char *dest, const char *src);
@@ -12,6 +15,9 @@ char *strcat(char *dest, const char *src);
 
 /* enhance a string to length n by adding characters c to the left side */
 void *ltrim(char *s, int n, char c);
+
+/* enhance a string to length n by adding characters c to the right side */
+void *rtrim(char *s, int n, char c);
 
 /* reverse a string */
 void reverse(char s[]);
@@ -36,5 +42,17 @@ int tolower(int c);
 
 /* convert all characters in a string to lowercase */
 void strtolower(char *s);
+
+/* convert a character to uppercase */
+int toupper(int c);
+
+/* convert all characters in a string to uppercase */
+void strtoupper(char *s);
+
+/* convert a string to an integer */
+int atoi(char *s);
+
+/* get the position of needle in haystack, -1 if not found */
+int strpos(const char *haystack, const char *needle);
 
 #endif

@@ -35,7 +35,7 @@
 
 | | | |
 | --- | --- | --- |
-| mm | r/w | graphics mode (0 = text, 1 = 320x200x8) |
+| mm | r/w | graphics mode (0 = text, 1 = 320x200x8, 2 = 320x400x8, 3 = 640x200x8) |
 | p | r/w | active plane |
 | i | r/w | enable vertical retrace interrupt |
 | v | r | vertical retrace (1 = active) |

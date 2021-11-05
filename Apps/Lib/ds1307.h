@@ -1,7 +1,7 @@
 #ifndef DS1207_H
 #define DS1207_H
 
-#include "../Lib/types.h"
+#include "types.h"
 
 /* DS1307 initialization */
 byte ds1307_init();

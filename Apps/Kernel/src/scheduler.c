@@ -15,7 +15,7 @@
 #define TMR_CMD     0x43
 #define TMR_CMD_STR "0x43"
 
-// // timer values for 20 ms interval (decimal 20000)
+// timer values for 20 ms interval (decimal 20000)
 #define TMR_LO      0x20
 #define TMR_LO_STR  "0x20"
 #define TMR_HI      0x4E
@@ -33,7 +33,7 @@ static byte priority_order[PRIORITY_ORDER_LEN] = {1, 1, 2, 1, 1, 2, 1, 1, 3};
 static byte prio_order_idx;
 
 int process_count;
-processinfo __far *processes[MAX_PROCESSES];
+processinfo __far *processes[MAX_PROCESSES]; // linear list of processes
 static processinfo __far *current_process;
 static processinfo __far *proc_by_prio[PRIORITY_LEVELS]; // double linked list of processes for each priority level
 static volatile byte header_offset;
@@ -45,32 +45,6 @@ static volatile word proc_sp_save;
 
 static dword procstart;
 static byte terminate;
-
-static void puthexbyte(byte value) {
-    char s[3];
-    itohex(value, s);   
-    if (value < 16)
-        putchar('0');
-    puts(s);
-}
-
-static void puthexword(word value) {
-    volatile byte h = value >> 8;
-    volatile byte l = value & 0xFF;
-    puthexbyte(h);
-    puthexbyte(l);
-}
-
-static void showpointer(void __far *ptr) {
-	dword p = (dword)ptr;
-	volatile word hi = (word)(p >> 16);
-	volatile word lo = (word)(p & 0xFFFF);
-
-    puthexword(hi);
-	putchar(':');
-    puthexword(lo);
-    putchar('\n');
-}
 
 /* handle INT 81h (terminate process) */
 static void __far handle_terminate() {
@@ -324,12 +298,6 @@ static void run_process() {
         current_process->state = PS_RUNNING;
         procstart = ptr;
 
-        // puts("start process @");
-        // showpointer((void __far *)procstart);
-        // puts(" with stack start ");
-        // puthexword(new_sp);
-        // while (1) ;
-
         asm volatile (
             // save stack segment + pointer, put new SP into SI
             "movw %%sp, %%ax\n"
@@ -383,35 +351,24 @@ SRESULT new_process(const char *filename, int *pid, PROC_TYPE *ptype) {
     if (process_count >= MAX_PROCESSES) return SR_REJECTED;
 
     dword size;
-    if (fs_filesize(filename, &size)) {
-        file_error(filename, "not found.");
+    if (fs_filesize(filename, &size))
         return SR_FILE_NOT_FOUND;
-    }
 
     byte handle;
-    if (fs_open(filename, &handle, MODE_READ)) {
-        file_error(filename, "open error.");
+    if (fs_open(filename, &handle, MODE_READ))
         return SR_FILE_OPEN_ERROR;
-    }
     
     fileheader header;
     void __far *ptr = near_to_far(&header);
     fs_read(handle, ptr, sizeof(fileheader));
     size -= sizeof(fileheader);
 
-    if (header.id[0] != 'E' || header.id[1] != 'X') {
-        file_error(filename, "not executable.");
+    if (header.id[0] != 'E' || header.id[1] != 'X')
         return SR_NO_EXEC;
-    }
 
     word pheader_size = ((sizeof(processinfo) + 15) / 16) * 16;
     dword memsize = (((dword)header.size) << 10) + pheader_size;
     byte __far *mem = malloc_(memsize);
-    // puts("allocated ");
-    // puthexword(memsize);
-    // puts(" at ");
-    // showpointer(mem);
-    // while (1) ;
 
     processinfo __far *new_pi = (processinfo __far *)mem;
     init_process(new_pi, filename, header.priority);
@@ -426,17 +383,13 @@ SRESULT new_process(const char *filename, int *pid, PROC_TYPE *ptype) {
     mem = (byte __far *)(((dword)seg << 16) + (dword)offs);
 
     SRESULT sresult = SR_OK;
-    if (fs_read(handle, mem, size)) {
-        file_error(filename, "read error.");
+    if (fs_read(handle, mem, size))
         sresult = SR_READ_ERROR;
-    }
     fs_close(handle);
 
     if (sresult == SR_OK) {
-        if (check_crc8(mem, size, header.crc8)) {
-            file_error(filename, "checksum error.");
+        if (check_crc8(mem, size, header.crc8))
             sresult = SR_CHECKSUM_ERROR;
-        }
     }
 
     if (sresult != SR_OK) {

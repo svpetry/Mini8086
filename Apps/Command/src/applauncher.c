@@ -57,7 +57,6 @@ void launch_application() {
 
             set_bgcolor(BLACK);
             set_textcolor(LIGHT_GRAY);
-            clrscr();
         }
     } else 
         handle_error(result);

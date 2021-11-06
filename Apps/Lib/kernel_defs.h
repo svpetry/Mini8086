@@ -26,4 +26,26 @@ typedef enum {
     PT_BACKGROUND
 } PROC_TYPE;
 
+typedef enum {
+    PS_NEW = 0,
+    PS_RUNNING,
+    PS_FINISHED,
+    PS_IDLE,
+    PS_TERMINATE    
+} PSTATE;
+
+struct processinfo {
+    word id;
+    char name[9];
+    char params[64];
+    PSTATE state;
+    word size; // size in units (16 bytes)
+    word sp_save;
+    word ss_save;
+    byte priority;
+    struct processinfo __far *next;
+    struct processinfo __far *prev;
+};
+typedef struct processinfo processinfo;
+
 #endif

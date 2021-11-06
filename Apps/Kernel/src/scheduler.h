@@ -15,6 +15,7 @@ typedef enum {
 struct processinfo {
     word id;
     char name[9];
+    char params[64];
     PSTATE state;
     word size; // size in units (16 bytes)
     word sp_save;
@@ -42,7 +43,7 @@ extern processinfo __far *processes[];
 void start_scheduler(const char *command_name);
 
 /* run new process */
-SRESULT new_process(const char *filename, int *pid, PROC_TYPE *ptype);
+SRESULT new_process(const char *filename, const char *params, int *pid, PROC_TYPE *ptype);
 
 /* terminate process */
 byte terminate_process(int pid);

@@ -52,20 +52,21 @@ dword k_check_free_memory() {
     return (((dword)mem_h) << 16) + mem_l;
 }
 
-SRESULT start_process(char *path, word *pid, byte *process_type) {
+SRESULT start_process(char *path, char *params, word *pid, byte *process_type) {
     byte status, ptype;
     word id;
     asm volatile (
         "pushw %%cs\n"
         "popw %%dx\n"
         "movw %3, %%cx\n"
+        "movw %4, %%si\n"
         "movb $0x00, %%ah\n"
         "int $0x20\n"
         "movb %%al, %0\n"
         "movw %%cx, %1\n"
         "movb %%dl, %2\n"
         : "=g" (status), "=m" (id), "=g" (ptype) // "=g" results in compiler error
-        : "g" (path)
+        : "g" (path), "g" (params)
         : "ax", "cx", "dx", "si", "di", "cc", "memory"
     );
     *pid = id;

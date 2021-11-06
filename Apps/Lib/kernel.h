@@ -14,7 +14,7 @@ void k_free(void __far *ptr);
 dword k_check_free_memory();
 
 /* start a process */
-SRESULT start_process(char *path, word *pid, byte *process_kind);
+SRESULT start_process(char *path, char *params, word *pid, byte *process_kind);
 
 /* wait for a given number of milliseconds */
 void sleep(word milliseconds);

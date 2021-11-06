@@ -34,6 +34,7 @@ int20:
 	movw %ax, int_ax
 	movw %cx, int_cx
 	movw %dx, int_dx
+	movw %si, int_si
 
 	cli
 	movw %ss, %ax
@@ -52,6 +53,7 @@ int20:
 	movw int_ax, %ax
 	movw int_cx, %cx
 	movw int_dx, %dx
+	movw int_si, %si
 
 	pop %es
 	pop %ds

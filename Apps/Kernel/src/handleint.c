@@ -12,6 +12,7 @@ volatile word int_ss_save;
 volatile word int_ax;
 volatile word int_cx;
 volatile word int_dx;
+volatile word int_si;
 
 int process_index;
 
@@ -25,17 +26,23 @@ static void strcpy_far_to_near(char *dest, const char __far *src) {
     while (*dest++ = *src++) ;
 }
 
+static void strcpy_from_far_reg(char *dest, word seg, word offs) {
+    char __far *far_str = (char __far *)((((dword)seg) << 16) + offs);
+    strcpy_far_to_near(dest, far_str);
+}
+
 void int_kernel() {
     byte status = 0;
     switch (int_ax >> 8) {
         // start process
         case 0x00: {
-            char __far *far_path = (char __far *)((((dword)int_dx) << 16) + int_cx);
             char path[MAX_PATH];
+            char params[64];
             int pid;
             PROC_TYPE ptype;
-            strcpy_far_to_near(path, far_path);
-            status = new_process(path, &pid, &ptype);
+            strcpy_from_far_reg(path, int_dx, int_cx);
+            strcpy_from_far_reg(params, int_dx, int_si);
+            status = new_process(path, params, &pid, &ptype);
             int_cx = pid;
             int_dx = ptype;
             break;

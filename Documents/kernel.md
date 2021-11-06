@@ -4,6 +4,7 @@
 ## AH = 00h start process
 
 - DX:CX pointer to file name
+- DX:SI pointer to parameters
 
 returns:
 - AL: result code (0 = OK)

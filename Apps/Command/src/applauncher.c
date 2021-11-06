@@ -39,9 +39,16 @@ void launch_application() {
         }
     }
 
+    char app_params[64];
+    app_params[0] = 0;
+    for (int i = 1; i < paramcount; i++) {
+        if (i > 1) strcat(app_params, " ");
+        strcat(app_params, params[i]);
+    }
+
     word pid;
     PROC_TYPE ptype;
-    SRESULT result = start_process(filepath, &pid, &ptype);
+    SRESULT result = start_process(filepath, app_params, &pid, &ptype);
     if (result == SR_OK) {
         if (ptype == PT_FOREGROUND) {
             do {

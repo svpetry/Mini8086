@@ -327,7 +327,7 @@ static void run_process() {
     }
 }
 
-static void init_process(processinfo __far *new_pi, const char *filename, byte priority) {
+static void init_process(processinfo __far *new_pi, const char *filename, const char *params, byte priority) {
     new_pi->id = pid_gen++;
     new_pi->state = PS_NEW;
     new_pi->priority = priority;
@@ -336,9 +336,17 @@ static void init_process(processinfo __far *new_pi, const char *filename, byte p
     byte fidx = strlen(filename) - 1;
     while (fidx > 0 && filename[fidx - 1] != '\\') fidx--;
     byte i = 0;
-    while (filename[fidx] != 0 && filename[fidx] != '.' && i < 8)
+    while (filename[fidx] && filename[fidx] != '.' && i < 8)
         new_pi->name[i++] = tolower(filename[fidx++]);
     new_pi->name[i] = 0;
+    
+    // set parameter string
+    i = 0;
+    while (params[i]) {
+        new_pi->params[i] = params[i];
+        i++;
+    }
+    new_pi->params[i] = 0;
 }
 
 static byte check_crc8(byte __far *mem, word size, byte expected_crc) {
@@ -347,7 +355,7 @@ static byte check_crc8(byte __far *mem, word size, byte expected_crc) {
     return crc != expected_crc;
 }
 
-SRESULT new_process(const char *filename, int *pid, PROC_TYPE *ptype) {
+SRESULT new_process(const char *filename, const char *params, int *pid, PROC_TYPE *ptype) {
     if (process_count >= MAX_PROCESSES) return SR_REJECTED;
 
     dword size;
@@ -371,7 +379,7 @@ SRESULT new_process(const char *filename, int *pid, PROC_TYPE *ptype) {
     byte __far *mem = malloc_(memsize);
 
     processinfo __far *new_pi = (processinfo __far *)mem;
-    init_process(new_pi, filename, header.priority);
+    init_process(new_pi, filename, params, header.priority);
     new_pi->size = (word)header.size << 6;
     *ptype = header.proc_type;
     *pid = new_pi->id;
@@ -465,7 +473,7 @@ void start_scheduler(const char *command_name) {
         if (current_process == NULL) {
             int pid;
             PROC_TYPE ptype;
-            new_process(command_name, &pid, &ptype);
+            new_process(command_name, "", &pid, &ptype);
             current_process = get_next_process();
             if (current_process == NULL) {
                 error("Could not load command shell. System halted.");

@@ -4,6 +4,7 @@
 #include "../../Lib/strutils.h"
 #include "../../Lib/bios_screen.h"
 #include "../../Lib/kernel.h"
+#include "../../Lib/colors.h"
 
 static void handle_error(SRESULT result) {
     switch (result) {

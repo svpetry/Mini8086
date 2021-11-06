@@ -4,6 +4,7 @@
 #include "../../Lib/bios_fs.h"
 #include "../../Lib/kernel.h"
 #include "../../Lib/lowlevel.h"
+#include "../../Lib/colors.h"
 #include "cmd_defs.h"
 #include "cmdline.h"
 #include "misc.h"

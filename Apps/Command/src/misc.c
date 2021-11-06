@@ -8,6 +8,7 @@
 #include "../../Lib/utils.h"
 #include "../../Lib/kernel.h"
 #include "../../Lib/lowlevel.h"
+#include "../../Lib/colors.h"
 
 void show_help() {
     puts(

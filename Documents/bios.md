@@ -44,6 +44,7 @@ returns:
 - DL: column
 - DH: row
 - CL: color
+- CH: 0 = normal, 1 = inverse
 - SI:DI: pointer to string
 
 ---
@@ -60,6 +61,12 @@ returns:
 **AH = 0Ah**	Set background color
 
 - AL: background color
+
+---
+**AH = 0Bh**	Set scrollable screen area
+
+- DL: first row
+- DH: last row
 
 ---
 

@@ -77,7 +77,10 @@ void int_bios() {
         // output a text on the screen
         case 0x07: {
             dword addr = (((dword)int_si) << 16) + int_di;
-            settext_far(int_dx, int_dx >> 8, (char __far *)addr, int_cx);
+            if (int_cx >> 8)
+                settext_far_inv(int_dx, int_dx >> 8, (char __far *)addr, int_cx & 0xFF);
+            else
+                settext_far(int_dx, int_dx >> 8, (char __far *)addr, int_cx & 0xFF);
             break;
         }
 
@@ -96,6 +99,12 @@ void int_bios() {
         // set background color
         case 0x0A: {
             outp(0x51, int_ax & 0xFF);
+            break;
+        }
+
+        // set scrollable screen area
+        case 0x0B: {
+            setdimensions(int_dx & 0xFF, int_dx >> 8);
             break;
         }
 

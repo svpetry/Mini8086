@@ -71,7 +71,7 @@ int puts(const char *str) {
     return 0;
 }
 
-void settext(byte col, byte row, const char *s, byte color) {
+void settext(byte col, byte row, const char *s, byte color, byte inverse) {
     addr = (word)s;
     asm volatile (
         "movb $0x07, %%ah\n"
@@ -80,9 +80,10 @@ void settext(byte col, byte row, const char *s, byte color) {
         "movb %1, %%dl\n"
         "movb %2, %%dh\n"
         "movb %3, %%cl\n"
+        "movb %4, %%ch\n"
         "int $0x10"
         : /* no outputs */
-        : "m" (addr), "g" (col), "g" (row), "g" (color)
+        : "m" (addr), "g" (col), "g" (row), "g" (color), "g" (inverse)
         : "ax", "cx", "dx", "si", "di", "cc", "memory"
     );
 }

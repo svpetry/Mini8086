@@ -30,6 +30,9 @@ void scrollup();
 /* sets the cursor position */
 void setcursor(byte col, byte row);
 
+/* sets the scrollable screen dimensions */
+void setdimensions(byte first_row, byte last_row);
+
 /* outputs a single char at the cursor position */
 int putchar(int c);
 
@@ -41,6 +44,9 @@ void settext(byte col, byte row, const char *s, byte color);
 
 /* prints a text on the screen (far pointer) */
 void settext_far(byte col, byte row, const char __far *s, byte color);
+
+/* prints a text on the screen (far pointer, inverse) */
+void settext_far_inv(byte col, byte row, const char __far *s, byte color);
 
 /* gets a char at a given position */
 char getscreenchar(byte col, byte row);

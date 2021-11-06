@@ -6,6 +6,7 @@
 #include "../../Lib/kernel.h"
 #include "../../Lib/utils.h"
 #include "../../Lib/strutils.h"
+#include "../../Lib/colors.h"
 
 char last_cmdbuf[CMDLINE_MAXLEN + 1];
 char cmdbuf[CMDLINE_MAXLEN + 1];

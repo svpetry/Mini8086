@@ -63,7 +63,7 @@ void reverse(char s[]) {
 	}
 }
 
-int strcmp(const char* s1, const char* s2) {
+int strcmp(const char *s1, const char *s2) {
     while (*s1 && (*s1 == *s2)) {
         s1++;
         s2++;
@@ -189,4 +189,9 @@ int strpos(const char *haystack, const char *needle) {
 		if (j == needle_len) return i;
 	}
 	return -1;
+}
+
+char *strofchar(char *s, int n, char c) {
+	while (n > 0) *(s++) = c;
+	*s = '\0';
 }

@@ -140,7 +140,7 @@ void setcursor(byte col, byte row) {
     if (hidden) restore_cursor();
 }
 
-void setdimensions(byte first_row, byte last_row) {
+void settextdim(byte first_row, byte last_row) {
     s_first_row = first_row;
     s_last_row = last_row;
 }

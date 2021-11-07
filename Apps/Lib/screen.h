@@ -3,6 +3,9 @@
 
 #include "types.h"
 
+extern byte cursor_col;
+extern byte cursor_row;
+
 /* should be called by a timer and not manually */
 void cursor_blink();
 
@@ -31,7 +34,7 @@ void scrollup();
 void setcursor(byte col, byte row);
 
 /* sets the scrollable screen dimensions */
-void setdimensions(byte first_row, byte last_row);
+void settextdim(byte first_row, byte last_row);
 
 /* outputs a single char at the cursor position */
 int putchar(int c);

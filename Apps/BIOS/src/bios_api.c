@@ -34,9 +34,12 @@ void int_bios() {
             break;
         }
 
-        // set cursor position
+        // get/set cursor position
         case 0x01: {
-            setcursor(int_dx, int_dx >> 8);
+            if ((int_ax & 0xFF) > 0)
+                setcursor(int_dx, int_dx >> 8);
+            else
+                int_dx = ((word)cursor_row << 8) + cursor_col;
             break;
         }
 
@@ -104,7 +107,7 @@ void int_bios() {
 
         // set scrollable screen area
         case 0x0B: {
-            setdimensions(int_dx & 0xFF, int_dx >> 8);
+            settextdim(int_dx & 0xFF, int_dx >> 8);
             break;
         }
 

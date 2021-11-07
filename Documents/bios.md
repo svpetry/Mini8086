@@ -7,8 +7,13 @@
 **AH = 00h**	Clear screen
 
 ---
-**AH = 01h**	Set cursor position
+**AH = 01h**	Get/set cursor position
 
+- AL: 0 = get position, 1 = set position
+- DL: column (if AL = 1)
+- DH: row (if AL = 1)
+
+returns:
 - DL: column
 - DH: row
 

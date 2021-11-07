@@ -3,34 +3,40 @@
 
 #include "types.h"
 
-/* clears the screen */
+/* clear the screen */
 void clrscr();
 
-/* scrolls the screen down by one line */
+/* scroll the screen down by one line */
 void scrolldown();
 
-/* scrolls the screen up by one line */
+/* scroll the screen up by one line */
 void scrollup();
 
-/* sets the cursor position */
+/* set the cursor position */
 void setcursor(byte col, byte row);
 
-/* outputs a single char at the cursor position */
+/* get the cursor position */
+void getcursor(byte *col, byte *row);
+
+/* output a single char at the cursor position */
 int putchar(int c);
 
-/* outputs a string */
+/* output a string */
 int puts(const char *str);
 
-/* prints a text on the screen */
+/* print a text on the screen */
 void settext(byte col, byte row, const char *s, byte color, byte inverse);
 
-/* Show or hide the cursor */
+/* show or hide the cursor */
 void enable_cursor(byte enable);
 
-/* Set text color */
+/* set text color */
 void set_textcolor(byte color);
 
-/* Set background color */
+/* set background color */
 void set_bgcolor(byte color);
+
+/* sets the scrollable screen dimensions */
+void settextdim(byte first_row, byte last_row);
 
 #endif

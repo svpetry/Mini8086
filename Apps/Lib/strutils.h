@@ -23,7 +23,7 @@ void *rtrim(char *s, int n, char c);
 void reverse(char s[]);
 
 /* compare two strings, returns 0 if both are equal */
-int strcmp(const char* s1, const char* s2);
+int strcmp(const char *s1, const char *s2);
 
 /* compare two strings, returns 0 if both are equal */
 int strncmp(const char *s1, const char *s2, int n);
@@ -54,5 +54,8 @@ int atoi(char *s);
 
 /* get the position of needle in haystack, -1 if not found */
 int strpos(const char *haystack, const char *needle);
+
+/* fill string with characters */
+char *strofchar(char *s, int n, char c);
 
 #endif

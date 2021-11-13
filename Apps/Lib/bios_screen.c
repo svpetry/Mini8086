@@ -13,22 +13,24 @@ void clrscr() {
     );
 }
 
-void scrolldown() {
+void scrolldown(byte lines) {
     asm volatile (
+        "movb %0, %%al\n"
         "movb $0x02, %%ah\n"
         "int $0x10\n"
         : /* no outputs */
-        : /* no inputs */
+        : "g" (lines)
         : "ax", "cx", "dx", "si", "di", "cc", "memory"
     );
 }
 
-void scrollup() {
+void scrollup(byte lines) {
     asm volatile (
+        "movb %0, %%al\n"
         "movb $0x03, %%ah\n"
         "int $0x10\n"
         : /* no outputs */
-        : /* no inputs */
+        : "g" (lines)
         : "ax", "cx", "dx", "si", "di", "cc", "memory"
     );
 }
@@ -141,8 +143,8 @@ void set_bgcolor(byte color) {
 void settextdim(byte first_row, byte last_row) {
     asm volatile (
         "movb $0x0B, %%ah\n"
-        "movb %0, %%cl\n"
-        "movb %1, %%ch\n"
+        "movb %0, %%dl\n"
+        "movb %1, %%dh\n"
         "int $0x10\n"
         : /* no outputs */
         : "g" (first_row), "g" (last_row)

@@ -7,10 +7,10 @@
 void clrscr();
 
 /* scroll the screen down by one line */
-void scrolldown();
+void scrolldown(byte lines);
 
 /* scroll the screen up by one line */
-void scrollup();
+void scrollup(byte lines);
 
 /* set the cursor position */
 void setcursor(byte col, byte row);

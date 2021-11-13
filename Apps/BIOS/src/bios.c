@@ -24,7 +24,6 @@ volatile byte t_hours;
 volatile byte t_minutes;
 volatile byte t_seconds;
 volatile byte ticks; // 20 ticks/sec.
-volatile byte cursor_ticks;
 
 // interrupt handler
 void int_div_by_zero() {
@@ -46,10 +45,7 @@ void int_overflow() {
 }
 
 void int_timer() {
-    if (++cursor_ticks == 5) {
-        cursor_ticks = 0;
-        cursor_blink();
-    }
+    cursor_blink();
 
     if (++ticks < 20) return;
     ticks = 0;
@@ -109,7 +105,6 @@ int main() {
     byte a;
     char s[12];
 
-    cursor_ticks = 0;
     t_hours = 0;
     t_minutes = 0;
     t_seconds = 0;

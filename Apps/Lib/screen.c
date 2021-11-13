@@ -9,6 +9,7 @@
 #define SCREEN_ROWS    25
 #define SCREEN_SIZE (SCREEN_COLUMNS * SCREEN_ROWS)
 
+byte cursor_ticks = 0;
 byte cursor_state = 0;
 byte cursor_enabled = 0;
 byte cursor_hidden = 0;
@@ -21,36 +22,43 @@ word __far (*screen)[SCREEN_SIZE];
 word __far (*scrbuf)[SCREEN_SIZE];
 
 static byte hide_cursor() {
-    if (cursor_hidden || !cursor_enabled) return 0;
+    if (cursor_hidden || !cursor_enabled) return FALSE;
 
-    cursor_hidden = 1;
+    cursor_hidden = TRUE;
     if (cursor_state) {
         word index = cursor_row * SCREEN_COLUMNS + cursor_col;
         (*screen)[index] = (*scrbuf)[index];
     }
-    return 1;
+    return TRUE;
 }
 
 static void restore_cursor() {
-    if (!cursor_hidden || !cursor_enabled) return;
+    if (!cursor_hidden) return;
 
-    if (cursor_state) {
+    if (cursor_enabled) {
+        cursor_ticks = 0;
+        cursor_state = TRUE;
         word index = cursor_row * SCREEN_COLUMNS + cursor_col;
         (*screen)[index] = (*scrbuf)[index] + 128;
     }
-    cursor_hidden = 0;
+    cursor_hidden = FALSE;
 }
 
 void cursor_blink() {
     if (!cursor_enabled || cursor_hidden) return;
 
-    word index = cursor_row * SCREEN_COLUMNS + cursor_col;
-    if (cursor_state) {
-        cursor_state = 0;
-        (*screen)[index] = (*scrbuf)[index];
-    } else {
-        cursor_state = 1;
-        (*screen)[index] = (*scrbuf)[index] + 128;
+    cursor_ticks++;
+    if (cursor_ticks == 5) {
+        cursor_ticks = 0;
+
+        word index = cursor_row * SCREEN_COLUMNS + cursor_col;
+        if (cursor_state) {
+            cursor_state = FALSE;
+            (*screen)[index] = (*scrbuf)[index];
+        } else {
+            cursor_state = TRUE;
+            (*screen)[index] = (*scrbuf)[index] + 128;
+        }
     }
 }
 
@@ -62,8 +70,9 @@ void enable_cursor(byte enable) {
         (*screen)[index] = (*scrbuf)[index];
     }
     cursor_enabled = enable;
-    cursor_state = 0;
-    cursor_hidden = 0;
+    cursor_state = enable;
+    cursor_hidden = FALSE;
+    cursor_ticks = 0;
 }
 
 void set_textcol(byte color) {
@@ -111,11 +120,12 @@ static void copy_bufline(int dest, int src) {
 void scrolldown() {
     byte hidden = hide_cursor();
     int i;
-    for (i = s_first_row; i < s_last_row; i++)
-        copy_bufline(i + 1, i);
-    memset16(scrbuf + s_first_row * SCREEN_COLUMNS * 2, (word)text_color << 8, SCREEN_COLUMNS);
+    for (i = s_last_row; i > s_first_row; i--)
+        copy_bufline(i, i - 1);
+    byte __far *ptr = (byte __far *)scrbuf;
+    memset16(ptr + s_first_row * SCREEN_COLUMNS * 2, (word)text_color << 8, SCREEN_COLUMNS);
     memcpy_(screen, scrbuf, SCREEN_SIZE * 2);
-    if (cursor_row < SCREEN_ROWS - 1)
+    if (cursor_row < s_last_row)
         cursor_row++;
     if (hidden) restore_cursor();
 }
@@ -123,12 +133,12 @@ void scrolldown() {
 void scrollup() {
     byte hidden = hide_cursor();
     int i;
-    byte __far *ptr = (byte __far *)scrbuf;
     for (i = s_first_row; i < s_last_row; i++)
         copy_bufline(i, i + 1); 
+    byte __far *ptr = (byte __far *)scrbuf;
     memset16(ptr + s_last_row * SCREEN_COLUMNS * 2, (word)text_color << 8, SCREEN_COLUMNS);
     memcpy_(screen, scrbuf, SCREEN_SIZE * 2);
-    if (cursor_row > 0)
+    if (cursor_row > s_first_row)
         cursor_row--;
     if (hidden) restore_cursor();
 }
@@ -198,12 +208,13 @@ void setchar(byte col, byte row, char c) {
 void settext(byte col, byte row, const char *s, byte color) {
     byte hidden = hide_cursor();
     word index = row * SCREEN_COLUMNS + col;
-    while (*s && index < SCREEN_SIZE) {
+    while (*s && index < SCREEN_SIZE && col < SCREEN_COLUMNS) {
         word data = (byte)*s + (text_color << 8);
         (*screen)[index] = data;
         (*scrbuf)[index] = data;
         s++;
         index++;
+        col++;
     }
     if (hidden) restore_cursor();
 }
@@ -211,12 +222,13 @@ void settext(byte col, byte row, const char *s, byte color) {
 void settext_far(byte col, byte row, const char __far *s, byte color) {
     byte hidden = hide_cursor();
     word index = row * SCREEN_COLUMNS + col;
-    while (*s && index < SCREEN_SIZE) {
+    while (*s && index < SCREEN_SIZE && col < SCREEN_COLUMNS) {
         word data = (byte)*s + (text_color << 8);
         (*screen)[index] = data;
         (*scrbuf)[index] = data;
         s++;
         index++;
+        col++;
     }
     if (hidden) restore_cursor();
 }

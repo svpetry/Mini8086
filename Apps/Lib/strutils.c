@@ -192,6 +192,9 @@ int strpos(const char *haystack, const char *needle) {
 }
 
 char *strofchar(char *s, int n, char c) {
-	while (n > 0) *(s++) = c;
+	while (n > 0) {
+		*(s++) = c;
+		n--;
+	}
 	*s = '\0';
 }

@@ -113,6 +113,7 @@ void int_bios() {
 
         // read character from keyboard buffer
         case 0x10: {
+            asm volatile ("cli");
             int_ax = getchar();
             break;
         }
@@ -128,11 +129,11 @@ void int_bios() {
             byte day = 0, month = 0, year = 0;
             if (cfg_rtc && (int_ax & 0xFF) > 0)
                 ds1307_getdate(&day, &month, &year);
-            asm volatile ("CLI");
+            asm volatile ("cli");
             byte seconds = t_seconds;
             byte minutes = t_minutes;
             byte hours = t_hours;
-            asm volatile ("STI");
+            asm volatile ("sti");
 
             int_ax = (((word)minutes) << 8) + seconds;
             int_cx = (((word)day) << 8) + hours;

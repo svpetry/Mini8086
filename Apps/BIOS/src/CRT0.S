@@ -212,6 +212,7 @@ int0E:
 
 	/****** software interrupts ******/
 int10:
+	cli
 	push %bx
 	push %bp
 	push %ds
@@ -230,7 +231,6 @@ int10:
 	movw %ss, %ax
 	movw %ax, int_ss_save
 	movw %sp, int_sp_save
-	cli
 	movw %bx, %ss
 	movw $BIOS_STACK_START, %sp
 	sti

@@ -331,6 +331,7 @@ namespace Emulator.ViewModels
                 long sleepTicks = 0;
 
                 var lines = new Queue<string>();
+                var lastLine = "";
 
                 var stopWatch = new Stopwatch();
                 while (!_doStop)
@@ -342,8 +343,12 @@ namespace Emulator.ViewModels
                         _emulator.Step();
                         if (_emulator.EnableDisassembler)
                         {
-                            lines.Enqueue(_emulator.DisassembledLine);
-                            if (lines.Count > 1000)
+                            if (_emulator.DisassembledLine != lastLine)
+                            {
+                                lastLine = _emulator.DisassembledLine;
+                                lines.Enqueue(_emulator.DisassembledLine);
+                            }
+                            if (lines.Count > 2000)
                                 lines.Dequeue();
                             if (AssemblyBreak != "" && _emulator.DisassembledLine.Contains(AssemblyBreak))
                                 _doStop = true;

@@ -7,6 +7,9 @@
 
 #define LINE_LEN 80
 
+extern byte first_row;
+extern byte rows_total;
+
 void set_line(int row, char c);
 void write_inverse(byte row, byte col, const char *s);
 void put_line(const char *s, int row);

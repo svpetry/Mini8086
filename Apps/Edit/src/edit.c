@@ -7,4 +7,5 @@
 int main() {
 	init_params();
 	init_editor();
+	start_editor();
 }

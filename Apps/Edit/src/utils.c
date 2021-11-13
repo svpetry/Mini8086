@@ -5,8 +5,12 @@
 #include "../../Lib/bios_misc.h"
 #include "../../Lib/strutils.h"
 #include "../../Lib/strutils_far.h"
+#include "../../Lib/kernel.h"
 
 static byte text_color = LIGHT_GREEN;
+
+byte first_row;
+byte rows_total;
 
 void set_line(int row, char c) {
     char s[LINE_LEN + 1];
@@ -22,22 +26,22 @@ void write_inverse(byte row, byte col, const char *s) {
 }
 
 void put_line(const char *s, int row) {
-    settext(0, row, s, text_color, FALSE);
+    settext(0, first_row + row, s, text_color, FALSE);
     int len = strlen(s);
     if (len < 80) {
         char fill[81];
         strofchar(fill, 80 - len, ' ');
-        settext(len, row, fill, text_color, FALSE);
+        settext(len, first_row + row, fill, text_color, FALSE);
     }
 }
 
 void put_line_far(const char __far *s, int row) {
-    settext_far(0, row, s, text_color, FALSE);
+    settext_far(0, first_row + row, s, text_color, FALSE);
     int len = strlen_far(s);
     if (len < 80) {
         char fill[81];
         strofchar(fill, 80 - len, ' ');
-        settext(len, row, fill, text_color, FALSE);
+        settext(len, first_row + row, fill, text_color, FALSE);
     }
 }
 
@@ -49,6 +53,6 @@ void quit_app() {
 
 char getchar_wait() {
     char result;
-    while ((result = getchar()) == 0) ;
+    while ((result = getchar()) == 0) sleep(50);
     return result;
 }

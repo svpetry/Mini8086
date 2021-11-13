@@ -10,6 +10,7 @@
 #include "../../Lib/app_params.h"
 #include "../../Lib/keys.h"
 #include "../../Lib/colors.h"
+#include "../../Lib/debug.h"
 
 #define SCREEN_COLS 80
 
@@ -21,8 +22,6 @@ struct line_header __far *start_line; // 1st line of visible screen area
 struct line_header __far *curr_line; // cursor line
 
 byte edit_active;
-
-byte rows_total;
 
 const char msg_out_of_memory[] = "Out of memory. Press any key to continue.";
 
@@ -139,7 +138,7 @@ void init_line_base() {
 	line_base->next = NULL;
 	line_base->prev = NULL;
 	line_base->size = 0;
-	line_base->line[0] = 0;
+	line_base->line[0] = '\0';
 }
 
 void init_empty_file() {
@@ -150,7 +149,7 @@ void init_empty_file() {
 	line_base->next = curr_line;
 
 	curr_line->size = 0;
-	curr_line->line[0] = 0;
+	curr_line->line[0] = '\0';
 }
 
 void start_lineedit() {
@@ -204,6 +203,7 @@ void display() {
 		put_line_far(line->line, i);
 		line = line->next;
 	}
+
 	while (i < rows_total)
 		put_line("", i++);
 }
@@ -330,13 +330,17 @@ void init_editor() {
 	// k_malloc_reset(HEAP_START, HEAP_SIZE);
 
 	// settextdim(1, 23);
+	first_row = 1;
 	rows_total = 23;
 	set_bgcolor(DARKER_GREEN);
 	set_textcolor(LIGHTER_GREEN);
+	clrscr();
+	enable_cursor(1);
+	settextdim(first_row, first_row + rows_total - 1);
 
 	set_line(0, ' ' | 0x80);
 	set_line(24, ' ' | 0x80);
-	write_inverse(0, 0, " F2: SAVE   F3: LOAD   F5: -      F6: -      F8: DELETE   F10: QUIT");
+	write_inverse(0, 0, " F2: SAVE   F3: LOAD   F5: -   F6: -   F8: DELETE   F10: QUIT");
 
 	if (paramcount) {
 		strcpy(file_name, params[0]);
@@ -353,23 +357,22 @@ void start_editor() {
 	char __far *fs;
 	char __far *fdest;
 	char *s;
-	byte i;
-	int l;
+	int i, l;
 	struct line_header __far *line1;
 	struct line_header __far *line2;
 
 	edit_active = 0;
 	start_line = curr_line = line_base->next;
-	
+
 	display();
+	int cur_col = 0, cur_row = 0;
 
 	while (1) {
 		// showcursor();
+		setcursor(cur_col, first_row + cur_row);
 		c = getchar_wait();
 		// hidecursor();
 
-		byte cur_col, cur_row;
-		getcursor(&cur_col, &cur_row);
 		if (c < 0x20) {
         	// special key
 			switch (c) {
@@ -421,8 +424,8 @@ void start_editor() {
 					} else {
 						if (curr_line->prev != line_base) {
 							finish_lineedit();
-							cur_row--;
-							scrolldown();
+							// cur_row--;
+							scrolldown(1);
 							start_line = curr_line = curr_line->prev;
 							put_line_far(start_line->line, 0);
 						}
@@ -435,8 +438,8 @@ void start_editor() {
 							cur_row++;
 							curr_line = curr_line->next;
 						} else {
-							cur_row++;
-							scrollup();
+							// cur_row++;
+							scrollup(1);
 							start_line = start_line->next;
 							curr_line = curr_line->next;
 							put_line_far(curr_line->line, rows_total - 1);
@@ -496,8 +499,6 @@ void start_editor() {
                     	cur_col = SCREEN_COLS - 1;
 					break;
 			}
-
-		} else {
 
 			if (c == '\n') { // enter
 				finish_lineedit();
@@ -581,21 +582,21 @@ void start_editor() {
 
 				}
 			} else if (c == 9) { // tab
-
-			} else if (c >= ' ') {
-				// other characters
-				start_lineedit();
-				s = line_buf + MAX_LINE_LENGTH - 2;
-				while (s >= line_buf + cur_col) {
-					*(s + 1) = *(s);
-					s--;
-				}
-				*(s + 1) = c;
-				put_line(line_buf, cur_row);
-				if (cur_col < SCREEN_COLS - 1)
-					cur_col++;
 			}
+		} else {
+			
+			// other characters
+			start_lineedit();
+			s = line_buf + MAX_LINE_LENGTH - 2;
+			while (s >= line_buf + cur_col) {
+				*(s + 1) = *(s);
+				s--;
+			}
+			*(s + 1) = c;
+			put_line(line_buf, cur_row);
+			if (cur_col < SCREEN_COLS - 1)
+				cur_col++;
 		}
-		setcursor(cur_col, cur_row);
+		setcursor(cur_col, first_row +  cur_row);
 	}
 }

@@ -7,7 +7,7 @@
 #include "../../Lib/bios_screen.h"
 #include "../../Lib/bios_misc.h"
 #include "../../Lib/bios_fs.h"
-#include "../../Lib/app_params.h"
+#include "../../Lib/app_utils.h"
 #include "../../Lib/keys.h"
 #include "../../Lib/colors.h"
 #include "../../Lib/debug.h"
@@ -30,6 +30,21 @@ void show_message(const char *msg) {
 	write_inverse(24, 1, msg);
 }
 
+void free_lines() {	
+	struct line_header __far *lp = line_base;
+	while (lp != NULL) {
+		void __far *ptr = lp;
+		lp = lp->next;
+		k_free(ptr);
+	}
+	line_base = NULL;
+}
+
+void quit_editor() {
+	free_lines();
+	quit_app();
+}
+
 byte prompt_file_name() {
 	char s[13];
 	byte pos;
@@ -47,11 +62,8 @@ byte prompt_file_name() {
 	c = 0;
 	while (c != '\n' && !esc) {
 
-		col = pos_offset + pos;
-		// V_SETCHAR(col, 24, '_' + 128);
-		setcursor(col, 24);
+		setcursor(pos_offset + pos, 24);
 		c = getchar_wait();
-		// V_SETCHAR(col, 24, ' ' + 128);
 
 		if ((c >= 'A' && c <= 'Z')
 			|| (c >= 'a' && c <= 'z')
@@ -60,17 +72,16 @@ byte prompt_file_name() {
 		{
 			if (pos < 12) {
 				s[pos] = c;
-				// *((char *)0x1c00 + pos + pos_offset) = c + 128;
-				putchar(c);
+				putchar(c + 0x80);
 				pos++;
 			}
 
 		} else if (c == 8) { // backspace
 			if (pos > 0) {
 				pos--;
-				s[pos] = ' ';
-				// *((char *)0x1c00 + pos + pos_offset) = ' ' + 128;
-				putchar(c);
+				s[pos] = ' ' + 0x80;
+				setcursor(pos_offset + pos, 24);
+				putchar(' ' + 0x80);
 			}
 		} else if (c == 27) // escape
 			esc = 1;
@@ -99,7 +110,7 @@ void trim_line(struct line_header __far *line, byte use_line_buf) {
 		if ((new_line = k_malloc(LINE_HEADER_SIZE + l + 1)) == NULL) {
 			show_message(msg_out_of_memory);
 			getchar_wait();
-			quit_app();
+			quit_editor();
 		}
 		if (use_line_buf)
 			strcpy_far(new_line->line, line_buf);
@@ -194,7 +205,6 @@ void finish_lineedit() {
 	}
 }
 
-
 void display() {
 	byte i;
 	struct line_header __far *line = start_line;
@@ -214,6 +224,7 @@ void load_file() {
 	// struct line_header *line, *new_line;
 	// dword size;
 
+	// free_lines();
 	// init_line_base();
 	// line = line_base;
 
@@ -241,7 +252,7 @@ void load_file() {
 	// 				k_malloc_reset(HEAP_START, HEAP_SIZE);
 	// 				show_message(msg_out_of_memory);
 	// 				getchar_wait();
-	// 				quit_app();
+	// 				quit_editor();
 	// 			}
 	// 			line->next = new_line;
 	// 			new_line->prev = line;
@@ -259,7 +270,7 @@ void load_file() {
 	// 		k_malloc_reset(HEAP_START, HEAP_SIZE);
 	// 		show_message(msg_out_of_memory);
 	// 		getchar_wait();
-	// 		quit_app();
+	// 		quit_editor();
 	// 	}
 	// 	line->next = new_line;
 	// 	new_line->prev = line;
@@ -330,6 +341,7 @@ void init_editor() {
 	// k_malloc_reset(HEAP_START, HEAP_SIZE);
 
 	// settextdim(1, 23);
+	line_base = NULL;
 	first_row = 1;
 	rows_total = 23;
 	set_bgcolor(DARKER_GREEN);
@@ -414,7 +426,7 @@ void start_editor() {
 				case KEY_F9: // F9
 					break;
 				case KEY_F10: // F10
-					quit_app();
+					quit_editor();
 					break;
 				case KEY_UP: // up
 					if (cur_row > 0) {
@@ -509,7 +521,7 @@ void start_editor() {
 					if ((line2 = k_malloc(LINE_HEADER_SIZE + 1)) == NULL) {
 						show_message(msg_out_of_memory);
 						getchar_wait();
-						quit_app();
+						quit_editor();
 					}
 
 					line2->size = 0;
@@ -532,7 +544,7 @@ void start_editor() {
 					if ((line2 = k_malloc(LINE_HEADER_SIZE + l - cur_col + 1)) == NULL) {
 						show_message(msg_out_of_memory);
 						getchar_wait();
-						quit_app();
+						quit_editor();
 					}
 
 					i = l - cur_col;

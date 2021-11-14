@@ -45,12 +45,6 @@ void put_line_far(const char __far *s, int row) {
     }
 }
 
-void quit_app() {
-    asm volatile (
-        "int $0x81\n"
-    );
-}
-
 char getchar_wait() {
     char result;
     while ((result = getchar()) == 0) sleep(50);

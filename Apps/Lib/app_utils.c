@@ -1,6 +1,8 @@
-#include "app_params.h"
+#include "app_utils.h"
 #include "kernel_defs.h"
 #include "strutils.h"
+#include "bios_screen.h"
+#include "colors.h"
 
 int paramcount;
 char *params[MAX_PARAMS];
@@ -45,4 +47,14 @@ void init_params() {
     while (i > 0 && params[i - 1][0] == '\0')
         i--;
     paramcount = i;
+}
+
+void quit_app() {
+    set_bgcolor(BLACK);
+    set_textcolor(LIGHT_GRAY);
+    clrscr();
+
+    asm volatile (
+        "int $0x81\n"
+    );
 }

@@ -11,6 +11,7 @@
 #include "../../Lib/keys.h"
 #include "../../Lib/colors.h"
 #include "../../Lib/debug.h"
+#include "../../Lib/file_buffer.h"
 
 #define SCREEN_COLS 80
 
@@ -85,8 +86,6 @@ byte prompt_file_name() {
 			}
 		} else if (c == 27) // escape
 			esc = 1;
-		// else if (c == 0)
-		// 	getchar_wait();
 	}
 	
 	if (esc)
@@ -219,70 +218,70 @@ void display() {
 }
 
 void load_file() {
-	// char c;        
-	// byte i, col;
-	// struct line_header *line, *new_line;
-	// dword size;
+	char c;        
+	byte i, col, handle;
+	struct line_header __far *line;
+	struct line_header __far *new_line;
+	dword size;
 
-	// free_lines();
-	// init_line_base();
-	// line = line_base;
+	free_lines();
+	init_line_base();
+	line = line_base;
 
-	// if (fopen(file_name, FM_READ, &size)) {
-	// 	show_message("Loading...");
-	// 	col = 0;
+	if (!fs_open_buffered(file_name, &handle, &size)) {
+		show_message("Loading...");
+		col = 0;
 
-	// 	i = 0;
+		i = 0;
 		
-	// 	while (size > 0) {
-	// 		c = io_read(163);
-	// 		size--;
+		while (size > 0) {
+			c = fs_read_buffered(handle);
+			size--;
 
-	// 		if (c >= ' ' && (unsigned char)c < 128 ) {
-	// 			line_buf[i++] = c;
-	// 		} else if (c == '\t') {
-	// 			line_buf[i++] = ' ';
-	// 			while ((i & 0x03) > 0 && i < MAX_LINE_LENGTH)
-    //             	line_buf[i++] = ' ';
-	// 		}
-	// 		if (i == MAX_LINE_LENGTH || c == '\n') {
-	// 			line_buf[i++] = 0;
-	// 			new_line = k_malloc(LINE_HEADER_SIZE + i + 1);
-	// 			if (new_line == NULL) {
-	// 				k_malloc_reset(HEAP_START, HEAP_SIZE);
-	// 				show_message(msg_out_of_memory);
-	// 				getchar_wait();
-	// 				quit_editor();
-	// 			}
-	// 			line->next = new_line;
-	// 			new_line->prev = line;
-	// 			strcpy(new_line->line, line_buf);
-	// 			new_line->size = i;
+			if (c >= ' ' && (unsigned char)c < 128 ) {
+				line_buf[i++] = c;
+			} else if (c == '\t') {
+				line_buf[i++] = ' ';
+				while ((i & 0x03) > 0 && i < MAX_LINE_LENGTH)
+                	line_buf[i++] = ' ';
+			}
+			if (i == MAX_LINE_LENGTH || c == '\n') {
+				line_buf[i++] = 0;
+				new_line = k_malloc(LINE_HEADER_SIZE + i + 1);
+				if (new_line == NULL) {
+					show_message(msg_out_of_memory);
+					getchar_wait();
+					quit_editor();
+				}
+				line->next = new_line;
+				new_line->prev = line;
+				strcpy_far(new_line->line, line_buf);
+				new_line->size = i;
 
-	// 			line = new_line;
-	// 			i = 0;
-	// 		}
-	// 	}
+				line = new_line;
+				i = 0;
+			}
+		}
 
-	// 	line_buf[i++] = 0;
-	// 	new_line = k_malloc(LINE_HEADER_SIZE + i + 1);
-	// 	if (new_line == NULL) {
-	// 		k_malloc_reset(HEAP_START, HEAP_SIZE);
-	// 		show_message(msg_out_of_memory);
-	// 		getchar_wait();
-	// 		quit_editor();
-	// 	}
-	// 	line->next = new_line;
-	// 	new_line->prev = line;
-	// 	strcpy(new_line->line, line_buf);
-	// 	new_line->size = i;
-	// 	new_line->next = NULL;
+		line_buf[i++] = 0;
+		new_line = k_malloc(LINE_HEADER_SIZE + i + 1);
+		if (new_line == NULL) {
+			show_message(msg_out_of_memory);
+			getchar_wait();
+			quit_editor();
+		}
+		line->next = new_line;
+		new_line->prev = line;
+		strcpy_far(new_line->line, line_buf);
+		new_line->size = i;
+		new_line->next = NULL;
 
-	// } else {
-	// 	init_empty_file();
-	// 	show_message("File not found! Press any key to continue.");
-	// 	getchar_wait();
-	// }
+		fs_close(handle);
+	} else {
+		init_empty_file();
+		show_message("File not found! Press any key to continue.");
+		getchar_wait();
+	}
 }
 
 void save_file() {
@@ -295,7 +294,7 @@ void save_file() {
 
 	// 	show_message("Saving...");
 
-	// 	if (fopen(file_name, FM_WRITE, NULL)) {
+	// 	if (fopen_write(file_name, NULL)) {
 
 	// 		bidx = 0;
 	// 		line = line_base->next;

@@ -3,6 +3,7 @@
 
 #include "../../Lib/types.h"
 #include "../../Lib/bios_screen.h"
+#include "../../Lib/bios_fs.h"
 #include "../../Lib/colors.h"
 
 #define LINE_LEN 80

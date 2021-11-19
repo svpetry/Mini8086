@@ -4,6 +4,6 @@ ia16-elf-gcc -Os -mcmodel=tiny -fno-jump-tables -nostartfiles \
     ./src/edit.c ./src/editor.c ./src/utils.c \
     ../Lib/strutils.c ../Lib/utils.c ../Lib/app_utils.c ../Lib/kernel.c ../Lib/strutils_far.c \
     ../Lib/bios_screen.c ../Lib/bios_misc.c ../Lib/bios_fs.c ../Lib/bios_screen_far.c \
-    ../Lib/debug.c
+    ../Lib/debug.c ../Lib/file_buffer.c
 
 rm crt0.o

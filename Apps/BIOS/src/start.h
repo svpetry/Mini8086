@@ -24,6 +24,6 @@ extern byte cfg_bmp280;
 extern byte cfg_rtc;
 
 /* amount of RAM in KBytes */
-extern int ram_kb;
+extern int cfg_mem_kb;
 
 #endif

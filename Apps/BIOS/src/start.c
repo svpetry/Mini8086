@@ -22,9 +22,9 @@ byte cfg_i2c;
 byte cfg_eeprom;
 byte cfg_bmp280;
 byte cfg_rtc;
+int cfg_mem_kb;
 
 char freq_str[5];
-int ram_kb;
 volatile byte __far (*memptr);
  
 static void error() {
@@ -77,8 +77,8 @@ static void check_memory(int row) {
         if (*memptr != 0x0F) break;
 
         setcursor(RESULT_COL, row);
-        ram_kb = ((memstart >> 28) + 1) * 64;
-        itoa(ram_kb, s);
+        cfg_mem_kb = ((memstart >> 28) + 1) * 64;
+        itoa(cfg_mem_kb, s);
         puts(s);
         puts(" KB");
 
@@ -329,7 +329,7 @@ void startup() {
     char s[6];
     lcd_puts(0, 1, freq_str);
     lcd_puts(5, 1, "MHz");
-    itoa(ram_kb, s);
+    itoa(cfg_mem_kb, s);
     lcd_puts(10, 1, s);
     lcd_puts(14, 1, "KB");
 #endif

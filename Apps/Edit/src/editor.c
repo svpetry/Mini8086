@@ -59,6 +59,7 @@ byte prompt_file_name() {
 	show_message("");
 	write_inverse(24, 1, "Filename: ");
 	write_inverse(24, pos_offset, s);
+	enable_cursor(TRUE);
 
 	c = 0;
 	while (c != '\n' && !esc) {
@@ -87,6 +88,7 @@ byte prompt_file_name() {
 		} else if (c == 27) // escape
 			esc = 1;
 	}
+	enable_cursor(FALSE);
 	
 	if (esc)
 		return 0;
@@ -285,45 +287,48 @@ void load_file() {
 }
 
 void save_file() {
-	// word bidx;
-	// byte l, i;
-	// struct line_header *line;
-	// char *s;
+	word bidx;
+	byte l, i;
+	struct line_header __far *line;
+	char __far *s;
+	byte disk_buffer[0x200];
+	byte handle;
 
-	// if (prompt_file_name()) {
+	if (prompt_file_name()) {
 
-	// 	show_message("Saving...");
+		show_message("Saving...");
 
-	// 	if (fopen_write(file_name, NULL)) {
+		if (!fs_open(file_name, &handle, MODE_WRITE)) {
+			fs_seek(handle, 0);
 
-	// 		bidx = 0;
-	// 		line = line_base->next;
+			bidx = 0;
+			line = line_base->next;
 
-	// 		while (line != NULL) {
-	// 			l = strlen(line->line);
-	// 			if (bidx + l + 2 > 0x200) {
-	// 				fwriteblock(bidx);
-	// 				bidx = 0;
-	// 			}
-	// 			s = line->line;
-	// 			for (i = 0; i < l; i++)
-	// 				disk_buffer[bidx++] = *(s++);
-	// 			if (line->next != NULL) {
-	// 				disk_buffer[bidx++] = 13;
-	// 				disk_buffer[bidx++] = 10;
-	// 			}
+			while (line != NULL) {
+				l = strlen_far(line->line);
+				if (bidx + l + 2 > 0x200) {
+					fs_write(handle, disk_buffer, bidx);
+					bidx = 0;
+				}
+				s = line->line;
+				for (i = 0; i < l; i++)
+					disk_buffer[bidx++] = *(s++);
+				if (line->next != NULL) {
+					disk_buffer[bidx++] = 13;
+					disk_buffer[bidx++] = 10;
+				}
 
-	// 			line = line->next;
-	// 		}
-	// 		if (bidx > 0)
-	// 			fwriteblock(bidx);
+				line = line->next;
+			}
+			if (bidx > 0)
+				fs_write(handle, disk_buffer, bidx);
 
-	// 	} else {
-	// 		show_message("Error! Press any key to continue.");
-	// 		getchar_wait();
-	// 	}
-	// }
-
+			fs_close(handle);
+		} else {
+			show_message("Error! Press any key to continue.");
+			getchar_wait();
+		}
+	}
 }
 
 void prompt_load_file() {
@@ -379,10 +384,10 @@ void start_editor() {
 	int cur_col = 0, cur_row = 0;
 
 	while (1) {
-		// showcursor();
+		enable_cursor(TRUE);
 		setcursor(cur_col, first_row + cur_row);
 		c = getchar_wait();
-		// hidecursor();
+		enable_cursor(FALSE);
 
 		if (c < 0x20) {
         	// special key

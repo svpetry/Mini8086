@@ -19,7 +19,7 @@ static void read_next_block() {
 
 byte fs_open_buffered(const char *path, byte *handle, dword *size) {
     if (fs_filesize(path, &remaining)) return TRUE;
-    if (fs_open(path, &current_handle, FA_READ | FA_OPEN_EXISTING)) return TRUE;
+    if (fs_open(path, &current_handle, MODE_READ)) return TRUE;
     
     *size = remaining;
     *handle = current_handle;

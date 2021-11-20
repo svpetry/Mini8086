@@ -110,6 +110,7 @@ static void close_file() {
     FIL *fo = &file_obj[handle];
     f_close(fo);
     fo->obj.fs = NULL;
+    int_ax = 0x00;
 }
 
 static void file_info() {
@@ -248,7 +249,6 @@ static void delete_file() {
 
 void handle_filesys(byte code) {
     FRESULT res;
-    int_ax = 0;
     if (!sd_inserted()) {
         int_ax = 0x01; // error
         return;

@@ -88,6 +88,9 @@ static void open_file() {
         case MODE_APPEND:
             mode = FA_WRITE | FA_OPEN_APPEND;
             break;
+        default:
+            int_ax = 0x01;
+            return;
     }
     byte handle;
     if (new_file_handle(&handle)) {

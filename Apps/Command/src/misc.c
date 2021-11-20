@@ -38,7 +38,7 @@ void print_file_contents() {
     if (handle_file_param(filepath, 1, &size, TRUE)) return;
 
     byte handle;
-    if (fs_open(filepath, &handle, FA_READ | FA_OPEN_EXISTING)) {
+    if (fs_open(filepath, &handle, MODE_READ)) {
         puts("Error opening file.\n");
         return;
     }
@@ -64,7 +64,7 @@ void showpic() {
         outp(0x50, 0b00000001); // 320 x 200 x 256
         byte __far *screen = (void __far *)0xC0000000;
         byte handle;
-        fs_open(filepath, &handle, FA_READ | FA_OPEN_EXISTING);
+        fs_open(filepath, &handle, MODE_READ);
         fs_read(handle, screen, 64000);
         fs_close(handle);
 

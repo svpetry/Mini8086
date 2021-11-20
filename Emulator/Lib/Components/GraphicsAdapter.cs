@@ -1,6 +1,7 @@
 ﻿using Emulator.Utils;
 using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -225,6 +226,7 @@ namespace Emulator.Lib.Components
             _screen.WritePixels(new Int32Rect(0, 0, ScreenWidth, ScreenHeight), _dataBuffer, stride, 0);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void GetColors(byte color, out byte red, out byte green, out byte blue, int factor = 64)
         {
             red = (byte)((color & 0b00000111) << 5);
@@ -245,6 +247,7 @@ namespace Emulator.Lib.Components
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private uint GetColor32(byte color, int factor = 64)
         {
             GetColors(color, out var red, out var green, out var blue, factor);

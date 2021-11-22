@@ -45,8 +45,3 @@ void put_line_far(const char __far *s, int row) {
     }
 }
 
-char getchar_wait() {
-    char result;
-    while ((result = getchar()) == 0) sleep(50);
-    return result;
-}

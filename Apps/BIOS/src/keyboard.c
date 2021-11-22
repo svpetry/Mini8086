@@ -196,7 +196,7 @@ byte haschar() {
     return kb_queue_count > 0;
 }
 
-char getchar() {
+char getchar_nowait() {
     if (kb_queue_count == 0) return 0;
     char result = kb_queue[kb_queue_tail++];
     if (kb_queue_tail == KB_QUEUE_LEN) kb_queue_tail = 0;

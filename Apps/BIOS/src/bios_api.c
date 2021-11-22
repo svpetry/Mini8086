@@ -114,7 +114,7 @@ void int_bios() {
         // read character from keyboard buffer
         case 0x10: {
             asm volatile ("cli");
-            int_ax = getchar();
+            int_ax = getchar_nowait();
             break;
         }
 

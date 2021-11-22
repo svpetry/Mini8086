@@ -1,5 +1,6 @@
 #include "kernel.h"
 #include "bios_misc.h"
+#include "bios_time.h"
 #include "types.h"
 
 #define TICK_DURATION_MS 50

@@ -58,4 +58,7 @@ int strpos(const char *haystack, const char *needle);
 /* fill string with characters */
 char *strofchar(char *s, int n, char c);
 
+/* check if character is contained in string */
+char *strchr(const char *s, int c);
+
 #endif

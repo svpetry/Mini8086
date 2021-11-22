@@ -65,7 +65,7 @@ byte prompt_file_name() {
 	while (c != '\n' && !esc) {
 
 		setcursor(pos_offset + pos, 24);
-		c = getchar_wait();
+		c = getchar();
 
 		if ((c >= 'A' && c <= 'Z')
 			|| (c >= 'a' && c <= 'z')
@@ -110,7 +110,7 @@ void trim_line(struct line_header __far *line, byte use_line_buf) {
 	if (l + 2 < line->size || use_line_buf) {
 		if ((new_line = k_malloc(LINE_HEADER_SIZE + l + 1)) == NULL) {
 			show_message(msg_out_of_memory);
-			getchar_wait();
+			getchar();
 			quit_editor();
 		}
 		if (use_line_buf)
@@ -252,7 +252,7 @@ void load_file() {
 				new_line = k_malloc(LINE_HEADER_SIZE + i + 1);
 				if (new_line == NULL) {
 					show_message(msg_out_of_memory);
-					getchar_wait();
+					getchar();
 					quit_editor();
 				}
 				line->next = new_line;
@@ -269,7 +269,7 @@ void load_file() {
 		new_line = k_malloc(LINE_HEADER_SIZE + i + 1);
 		if (new_line == NULL) {
 			show_message(msg_out_of_memory);
-			getchar_wait();
+			getchar();
 			quit_editor();
 		}
 		line->next = new_line;
@@ -282,7 +282,7 @@ void load_file() {
 	} else {
 		init_empty_file();
 		show_message("File not found! Press any key to continue.");
-		getchar_wait();
+		getchar();
 	}
 }
 
@@ -326,7 +326,7 @@ void save_file() {
 			fs_close(handle);
 		} else {
 			show_message("Error! Press any key to continue.");
-			getchar_wait();
+			getchar();
 		}
 	}
 }
@@ -386,7 +386,7 @@ void start_editor() {
 	while (1) {
 		enable_cursor(TRUE);
 		setcursor(cur_col, first_row + cur_row);
-		c = getchar_wait();
+		c = getchar();
 		enable_cursor(FALSE);
 
 		if (c < 0x20) {
@@ -524,7 +524,7 @@ void start_editor() {
 					// cursor after text line
 					if ((line2 = k_malloc(LINE_HEADER_SIZE + 1)) == NULL) {
 						show_message(msg_out_of_memory);
-						getchar_wait();
+						getchar();
 						quit_editor();
 					}
 
@@ -547,7 +547,7 @@ void start_editor() {
 
 					if ((line2 = k_malloc(LINE_HEADER_SIZE + l - cur_col + 1)) == NULL) {
 						show_message(msg_out_of_memory);
-						getchar_wait();
+						getchar();
 						quit_editor();
 					}
 

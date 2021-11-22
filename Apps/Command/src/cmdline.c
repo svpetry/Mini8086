@@ -59,11 +59,7 @@ void read_cmdline() {
 	int pos = 0;
     char c;
     do {
-        do {
-			c = getchar();
-			if (!c) sleep(40);
-		} while (!c);
-
+		c = getchar();
 		if (c >= 32 && pos < CMDLINE_MAXLEN) {
 			putchar(c);
 			cmdbuf[pos++] = c;

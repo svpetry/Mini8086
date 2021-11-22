@@ -81,10 +81,10 @@ void draw_menu() {
 }
 
 void handle_bootmenu() {
-    char key = getchar();
+    char key = getchar_nowait();
     if (key == KEY_DELETE || key == KEY_ESCAPE || key >= KEY_F1 && key <= KEY_F12) {
         draw_menu();
-        while (getchar()) asm volatile("nop");
+        while (getchar_nowait()) asm volatile("nop");
         while (key != KEY_F1) {
             switch (key) {
                 case KEY_F2:
@@ -95,7 +95,7 @@ void handle_bootmenu() {
                     break;
             }
             while (!haschar()) asm volatile("nop");
-            key = getchar();
+            key = getchar_nowait();
         }
     }
 }

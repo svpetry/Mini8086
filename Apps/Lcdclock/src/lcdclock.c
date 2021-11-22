@@ -2,7 +2,7 @@
 #include "../../Lib/kernel.h"
 #include "../../Lib/lowlevel.h"
 #include "../../Lib/lcd.h"
-#include "../../Lib/bios_misc.h"
+#include "../../Lib/bios_time.h"
 
 byte month_offs[12] = {0, 3, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5};
 byte month_offs_leap[12] = {0, 3, 4, 0, 2, 5, 0, 3, 6, 1, 4, 6};

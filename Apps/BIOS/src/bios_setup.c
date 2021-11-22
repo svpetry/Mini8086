@@ -66,13 +66,14 @@ static int input_number(byte col, byte row, byte digits, byte *abort) {
     while (digits > 0) {
         byte wait = 1;
         do {
+            // TODO use cursor
             setchar(col, row, orig_char + 128);
             waitforchar(5);
             if (!haschar()) {
                 setchar(col, row, orig_char);
                 waitforchar(5);
             }
-            char c = getchar();
+            char c = getchar_nowait();
             if (c == KEY_ESCAPE) {
                 *abort = 1;
                 return 0;
@@ -152,7 +153,7 @@ void bios_setup() {
             }
         }
 
-        char c = getchar();
+        char c = getchar_nowait();
         switch (c) {
             case '1':
                 input_time();

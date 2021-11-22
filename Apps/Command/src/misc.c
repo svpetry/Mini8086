@@ -43,7 +43,7 @@ void print_file_contents() {
         return;
     }
 
-    while (size > 0 && getchar() != 0x1B) {
+    while (size > 0 && getchar_nowait() != 0x1B) {
         word readlen = size > 256 ? 256 : size;
         char buffer[257];
         fs_read(handle, near_to_far(buffer), readlen);
@@ -68,7 +68,7 @@ void showpic() {
         fs_read(handle, screen, 64000);
         fs_close(handle);
 
-        while (!getchar()) sleep(0);
+        while (!getchar_nowait()) sleep(0);
         outp(0x50, 0b00000000);
         clrscr();
 
@@ -118,7 +118,7 @@ void show_palette() {
     show_col_blocks(0);
     show_col_blocks(2);
 
-    while (!getchar()) sleep(0);
+    getchar();
 
     putchar('\n');
     draw_col_bar("DARK_RED", DARK_RED);

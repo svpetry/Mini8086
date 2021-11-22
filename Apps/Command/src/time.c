@@ -3,6 +3,7 @@
 #include "utils.h"
 #include "../../Lib/bios_screen.h"
 #include "../../Lib/bios_misc.h"
+#include "../../Lib/bios_time.h"
 #include "../../Lib/strutils.h"
 
 void getset_time() {

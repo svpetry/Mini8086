@@ -1,4 +1,5 @@
 #include "strutils.h"
+#include "types.h"
 
 int strempty(const char *s) {
 	return s[0] == 0;
@@ -197,4 +198,10 @@ char *strofchar(char *s, int n, char c) {
 		n--;
 	}
 	*s = '\0';
+}
+
+char *strchr(const char *s, int c) {
+    while (*s != (char)c)
+        if (*(++s) == '\0') return NULL;
+    return (char *)s;
 }

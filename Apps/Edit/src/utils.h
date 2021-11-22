@@ -16,6 +16,5 @@ void write_inverse(byte row, byte col, const char *s);
 void put_line(const char *s, int row);
 void put_line_far(const char __far *s, int row);
 void quit_app();
-char getchar_wait();
 
 #endif

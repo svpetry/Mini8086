@@ -13,6 +13,6 @@ void keyb_handleint();
 byte haschar();
 
 /* returns the next keycode in the queue */
-char getchar();
+char getchar_nowait();
 
 #endif

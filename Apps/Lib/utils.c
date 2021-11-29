@@ -1,17 +1,6 @@
 #include "utils.h"
 #include "types.h"
 
-static dword next = 1;
-
-int rand(void) { 
-    next = next * 1103515245 + 12345; 
-    return (word)(next / 65536) % 32768; 
-} 
-  
-void srand(word seed) { 
-    next = seed; 
-}
-
 void __far *memcpy_(void __far *dest, const void __far *src, size_t len) {
 	dword sp = (dword)src;
 	volatile word shi = (word)(sp >> 16);

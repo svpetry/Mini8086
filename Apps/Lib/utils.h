@@ -7,12 +7,6 @@
 
 typedef unsigned int size_t;
 
-/* returns a pseudo random number */
-int rand(void);
-
-/* initializes the random number generator */
-void srand(unsigned int seed);
-
 /* memory copy (far pointer) */
 void __far *memcpy_(void __far *dest, const void __far *src, size_t len);
 

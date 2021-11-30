@@ -520,8 +520,6 @@ Wire Wire Line
 Connection ~ 2650 5350
 Wire Wire Line
 	2650 5350 2900 5350
-Wire Bus Line
-	8650 2650 8650 3400
 $Comp
 L 74xx:SN74LS07N U3
 U 3 1 616DF698
@@ -566,6 +564,6 @@ F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf" H 3550 115
 	6    3550 1150
 	1    0    0    -1  
 $EndComp
-Text Notes 4150 3450 0    50   ~ 0
-U3 maybe 74HC06 for some keyboard controllers.
+Wire Bus Line
+	8650 2650 8650 3400
 $EndSCHEMATC

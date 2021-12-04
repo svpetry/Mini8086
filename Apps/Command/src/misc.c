@@ -90,6 +90,8 @@ static void draw_col_bar(char *name, byte color) {
     rtrim(col_bar, 20, ' ' + 128);
     set_textcolor(color);
     puts(col_bar);
+    puts("  ");
+    puts(name);
     putchar('\n');
 }
 

@@ -102,11 +102,14 @@ void list_directory() {
                 if ((attrib & AM_DIR) > 0) {
                     strcpy(sizestr, "<DIR>");
                 } else {
-                    size >>= 10;
                     sizestr[0] = 0;
-                    if (size > 999999) {
+                    if ((size >> 10) > 999999) {
                         strcpy(sizestr, ">= 1 G");
                     } else {
+                        byte size_in_k = size > 999999;
+                        if (size_in_k)
+                            size >>= 10;
+
                         if (size > 999) {
                             itoa(size / 1000, sizestr);
                             strcat(sizestr, ".");
@@ -114,7 +117,11 @@ void list_directory() {
                         itoa(size % 1000, s);
                         if (size > 999) ltrim(s, 3, '0');
                         strcat(sizestr, s);
-                        strcat(sizestr, " K");
+
+                        if (size_in_k)
+                            strcat(sizestr, " K");
+                        else
+                            strcat(sizestr, " B");
                     }
                 }
                 ltrim(sizestr, 10, ' ');

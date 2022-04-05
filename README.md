@@ -3,7 +3,7 @@ A small, extensible Intel 8086 based computer system.
 
 ## PCBs
 
-Some boards are made with Eagle but then I switched to KiCad because my Eagle License covers only 2 layer boards and I don't like their new licensing model (it's to expensive for hobbyists).
+Some boards are made with Eagle but then I switched to KiCad because my Eagle License covers only 2 layer boards and I don't like their new licensing model (it's too expensive for hobbyists).
 Schematics and layout are contained in the folders Eagle and KiCad.
 
 ### Backplane (Eagle)

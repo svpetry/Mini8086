@@ -1,0 +1,122 @@
+(kicad_sch (version 20230121) (generator eeschema)
+
+  (uuid 6c553184-aad8-44de-a6e5-e8fcae22dcac)
+
+  (paper "A4")
+
+  (title_block
+    (title "Mini8086 I/O board")
+    (date "2020-11-05")
+    (rev "1.0")
+  )
+
+  (lib_symbols
+  )
+
+
+  (sheet (at 25.4 25.4) (size 25.4 25.4) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-00005f8063b6)
+    (property "Sheetname" "serial" (at 25.4 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "serial.kicad_sch" (at 25.4 51.3846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "io_board"
+        (path "/6c553184-aad8-44de-a6e5-e8fcae22dcac" (page "2"))
+      )
+    )
+  )
+
+  (sheet (at 63.5 25.4) (size 25.4 25.4) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-00005f8064b1)
+    (property "Sheetname" "PS2" (at 63.5 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "PS2.kicad_sch" (at 63.5 51.3846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "io_board"
+        (path "/6c553184-aad8-44de-a6e5-e8fcae22dcac" (page "3"))
+      )
+    )
+  )
+
+  (sheet (at 101.6 25.4) (size 25.4 25.4) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-00005f806563)
+    (property "Sheetname" "SD drive" (at 101.6 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "SD drive.kicad_sch" (at 101.6 51.3846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "io_board"
+        (path "/6c553184-aad8-44de-a6e5-e8fcae22dcac" (page "4"))
+      )
+    )
+  )
+
+  (sheet (at 139.7 25.4) (size 25.4 25.4) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-00005f8065b9)
+    (property "Sheetname" "connector" (at 139.7 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "connector.kicad_sch" (at 139.7 51.3846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "io_board"
+        (path "/6c553184-aad8-44de-a6e5-e8fcae22dcac" (page "6"))
+      )
+    )
+  )
+
+  (sheet (at 177.8 25.4) (size 25.4 25.4) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-00005f8c5c81)
+    (property "Sheetname" "misc" (at 177.8 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "misc.kicad_sch" (at 177.8 51.3846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "io_board"
+        (path "/6c553184-aad8-44de-a6e5-e8fcae22dcac" (page "7"))
+      )
+    )
+  )
+
+  (sheet (at 215.9 25.4) (size 25.4 25.4) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-00005fad75b9)
+    (property "Sheetname" "I2C" (at 215.9 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "I2C.kicad_sch" (at 215.9 51.3846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "io_board"
+        (path "/6c553184-aad8-44de-a6e5-e8fcae22dcac" (page "8"))
+      )
+    )
+  )
+
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+)

@@ -1,3 +1,4 @@
 (sym_lib_table
-  (lib (name io_board-rescue)(type Legacy)(uri ${KIPRJMOD}/io_board-rescue.lib)(options "")(descr ""))
+  (version 7)
+  (lib (name "io_board-rescue")(type "KiCad")(uri "${KIPRJMOD}/io_board-rescue.kicad_sym")(options "")(descr ""))
 )

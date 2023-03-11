@@ -1,4 +1,5 @@
 (sym_lib_table
-  (lib (name vga-rescue)(type Legacy)(uri ${KIPRJMOD}/vga-rescue.lib)(options "")(descr ""))
-  (lib (name Mini8086)(type Legacy)(uri C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/KiCad/Mini8086.lib)(options "")(descr ""))
+  (version 7)
+  (lib (name "vga-rescue")(type "KiCad")(uri "${KIPRJMOD}/vga-rescue.kicad_sym")(options "")(descr ""))
+  (lib (name "Mini8086")(type "Legacy")(uri "C:/Users/svpet/Nextcloud/Elektronik/Projects/Mini8086/KiCad/Mini8086.lib")(options "")(descr ""))
 )

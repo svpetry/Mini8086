@@ -1,0 +1,121 @@
+(kicad_sch (version 20230121) (generator eeschema)
+
+  (uuid 2baeff95-78c5-4be0-bc73-0219b5ff4815)
+
+  (paper "A4")
+
+  (title_block
+    (title "Mini8086 VGA board")
+    (rev "1.1")
+  )
+
+  (lib_symbols
+  )
+
+
+  (sheet (at 25.4 25.4) (size 26.67 25.4) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-00005f676df2)
+    (property "Sheetname" "CPLD" (at 25.4 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "CPLD.kicad_sch" (at 25.4 51.3846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "vga"
+        (path "/2baeff95-78c5-4be0-bc73-0219b5ff4815" (page "2"))
+      )
+    )
+  )
+
+  (sheet (at 25.4 63.5) (size 26.67 25.4) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-00005f6844ef)
+    (property "Sheetname" "ram" (at 25.4 62.7884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "ram.kicad_sch" (at 25.4 89.4846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "vga"
+        (path "/2baeff95-78c5-4be0-bc73-0219b5ff4815" (page "3"))
+      )
+    )
+  )
+
+  (sheet (at 63.5 25.4) (size 25.4 25.4) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-00005f6f4e29)
+    (property "Sheetname" "glue logic" (at 63.5 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "glue logic.kicad_sch" (at 63.5 51.3846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "vga"
+        (path "/2baeff95-78c5-4be0-bc73-0219b5ff4815" (page "4"))
+      )
+    )
+  )
+
+  (sheet (at 63.5 63.5) (size 25.4 25.4) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-00005f8c2945)
+    (property "Sheetname" "latches" (at 63.5 62.7884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "latches.kicad_sch" (at 63.5 89.4846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "vga"
+        (path "/2baeff95-78c5-4be0-bc73-0219b5ff4815" (page "5"))
+      )
+    )
+  )
+
+  (sheet (at 101.6 63.5) (size 25.4 25.4) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-00005fb0f245)
+    (property "Sheetname" "misc" (at 101.6 62.7884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "misc.kicad_sch" (at 101.6 89.4846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "vga"
+        (path "/2baeff95-78c5-4be0-bc73-0219b5ff4815" (page "7"))
+      )
+    )
+  )
+
+  (sheet (at 101.6 25.4) (size 25.4 25.4) (fields_autoplaced)
+    (stroke (width 0) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00000000-0000-0000-0000-00005fb1662f)
+    (property "Sheetname" "connector" (at 101.6 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "connector.kicad_sch" (at 101.6 51.3846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "vga"
+        (path "/2baeff95-78c5-4be0-bc73-0219b5ff4815" (page "6"))
+      )
+    )
+  )
+
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+)

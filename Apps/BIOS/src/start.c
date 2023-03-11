@@ -151,6 +151,11 @@ static void check_timer(int row) {
     puts("OK");
 }
 
+static void kb_delay_short() {
+    int i;
+    for (i = 0; i < 4000; i++) asm volatile("nop");
+}
+
 static void check_keyboard(int row) {
     int i, j;
     byte data, status;
@@ -159,10 +164,15 @@ static void check_keyboard(int row) {
     puts("Keyboard");
     setcursor(RESULT_COL, row);
 
+    // flush output buffer
+    while ((inp(0x64) & 1) > 0)
+        data = inp(0x60);
+
+    // test controller
     outp(0x64, 0xAA);
     data = 0;
-    for (j = 0; j < 10 && data != 0x55; j++) {
-        for (i = 0; i < 2000; i++) asm volatile("nop");
+    for (j = 0; j < 20 && data != 0x55; j++) {
+        kb_delay_short();
         data = inp(0x60);
     }
     if (data != 0x55) {
@@ -170,39 +180,38 @@ static void check_keyboard(int row) {
         return;
     }
 
+    // test PS/2 port
     outp(0x64, 0xAB); // perform controller self test
     status = 0;
-    for (j = 0; j < 10 && (status & 1) == 0; j++) {
-        for (i = 0; i < 2000; i++) asm volatile("nop");
+    for (j = 0; j < 20 && (status & 1) == 0; j++) {
+        kb_delay_short();
         status = inp(0x64);
     }
-    if ((status & 1) == 1) {
-        data = inp(0x60);
-        switch (data) {
-            case 0x00:
-                outp(0x64, 0x60); // write controller configuration byte
-                while ((inp(0x64) & 0b00000010) > 1) ; // wait for empty input buffer
-                outp(0x60, 0b00000001); // enable first PS/2 port interrupt
-                
-                while ((inp(0x64) & 0b00000010) > 1) ; // wait for empty input buffer
-                outp(0x64, 0xAE); // enable keyboard interface
-                puts("OK");
-                return;
-            case 0x01:
-                puts("ERROR: clock line is stuck low");
-                return;
-            case 0x02:
-                puts("ERROR: clock line is stuck high");
-                return;
-            case 0x03:
-                puts("ERROR: data line is stuck low");
-                return;
-            case 0x04:
-                puts("ERROR: data line is stuck high");
-                return;
-        }
+    data = inp(0x60);
+    switch (data) {
+        case 0x00:
+            outp(0x64, 0x60); // write controller configuration byte
+            while ((inp(0x64) & 0b00000010) > 1) kb_delay_short(); // wait for empty input buffer
+
+            outp(0x60, 0b00000001); // enable first PS/2 port interrupt
+            while ((inp(0x64) & 0b00000010) > 1) kb_delay_short(); // wait for empty input buffer
+
+            outp(0x64, 0xAE); // enable keyboard interface
+            puts("OK");
+            return;
+        case 0x01:
+            puts("ERROR: clock line is stuck low");
+            return;
+        case 0x02:
+            puts("ERROR: clock line is stuck high");
+            return;
+        case 0x03:
+            puts("ERROR: data line is stuck low");
+            return;
+        case 0x04:
+            puts("ERROR: data line is stuck high");
+            return;
     }
-    puts("self test failed!");
 }
 
 static void check_serial(int row) {
